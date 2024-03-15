@@ -10,7 +10,7 @@
                 $conn->beginTransaction();
                 $conn->exec($sqlupdord);
                 $conn->commit();
-                $sql = "DELETE FROM public.order_item WHERE order_item.order_code IN (SELECT MAX(orders.code) FROM orders);";
+                $sql = "DELETE FROM order_item WHERE order_item.order_code IN (SELECT MAX(orders.code) FROM orders);";
                 try {
                     $conn->beginTransaction();
                     $conn->exec($sql);

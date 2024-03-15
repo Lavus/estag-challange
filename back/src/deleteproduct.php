@@ -6,7 +6,7 @@
         if (intval($_POST['deleteconfirmedkey']) !== 0){
             if ( checkvaliditycode(strval($_POST['deleteconfirmedkey']),'products') ){
                 require "connect-localhost.php";
-                $sql = "DELETE FROM public.products WHERE code = '".$_POST['deleteconfirmedkey']."';";
+                $sql = "DELETE FROM products WHERE code = '".$_POST['deleteconfirmedkey']."';";
                 try {
                     $conn->beginTransaction();
                     $conn->exec($sql);

@@ -30,9 +30,9 @@
                 if ( ($name1 == 'FALSE') || (!(preg_match($regexname, $decodename1))) || ($product_amount1 == 'FALSE') || ( (strval($decodeproduct_amount1) !== '0') && ($intdecodeproduct_amount1 === 0) ) || ($price1 == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeprice1))) || ($oldprice < 0.01 ) || ($tax1 == 'FALSE') || (!(preg_match($regexnumberstax, $decodetax1))) ){
                     $executesecure = FALSE;
                     if ( ($tax1 == 'FALSE') || (!(preg_match($regexnumberstax, $decodetax1))) ) {
-                        $sqldelete1 = "DELETE FROM public.categories WHERE categories.code IN (SELECT products.category_code FROM public.products WHERE products.code = '".$_POST['productidhidden']."');";
+                        $sqldelete1 = "DELETE FROM categories WHERE categories.code IN (SELECT products.category_code FROM products WHERE products.code = '".$_POST['productidhidden']."');";
                     } else {
-                        $sqldelete1 = "DELETE FROM public.products WHERE products.code = '".$_POST['productidhidden']."';";
+                        $sqldelete1 = "DELETE FROM products WHERE products.code = '".$_POST['productidhidden']."';";
                     }
                     try {
                         $conn->beginTransaction();
@@ -52,7 +52,7 @@
                         $intdecodecart_amount1 = intval($decodecart_amount1);
                         if ( ($cart_amount1 == 'FALSE') || ($intdecodecart_amount1 === 0) ) {
                             $executesecure = FALSE;
-                            $sqldelete2 = "DELETE FROM public.order_item WHERE order_item.product_code = '".$_POST['productidhidden']."' AND order_item.order_code IN (SELECT MAX(orders.code) FROM orders);";
+                            $sqldelete2 = "DELETE FROM order_item WHERE order_item.product_code = '".$_POST['productidhidden']."' AND order_item.order_code IN (SELECT MAX(orders.code) FROM orders);";
                             try {
                                 $conn->beginTransaction();
                                 $conn->exec($sqldelete2);
@@ -73,16 +73,16 @@
                             $totaltax = $newtax * $_POST['amount'];
                             $totalprice = round($totalprice, 2);
                             $totaltax = round($totaltax, 2);
-                            $sql1 = "DO ".'$do$'." BEGIN IF NOT EXISTS (SELECT code FROM orders) THEN INSERT INTO public.orders(value_total, value_tax) VALUES ('".safeEncrypt(codifyhtml('0'), getkey())."', '".safeEncrypt(codifyhtml('0'), getkey())."'); END IF; END ".'$do$';
+                            $sql1 = "DO ".'$do$'." BEGIN IF NOT EXISTS (SELECT code FROM orders) THEN INSERT INTO orders(value_total, value_tax) VALUES ('".safeEncrypt(codifyhtml('0'), getkey())."', '".safeEncrypt(codifyhtml('0'), getkey())."'); END IF; END ".'$do$';
                             try {
                                 $conn->beginTransaction();
                                 $conn->exec($sql1);
                                 $conn->commit();
                                 if ( $resultid['cart_amount'] == "0" ){
-                                    $sql = "INSERT INTO public.order_item(order_code, product_code, product_name, amount, price, tax) SELECT (SELECT MAX(orders.code) FROM orders) AS order_code, products.code AS product_code, products.name AS product_name, ('".safeEncrypt(codifyhtml(strval($_POST['amount'])), getkey())."') AS amount, products.price AS price, categories.tax AS tax FROM products, categories WHERE products.code = '".$_POST['productidhidden']."' AND products.category_code = categories.code;";
+                                    $sql = "INSERT INTO order_item(order_code, product_code, product_name, amount, price, tax) SELECT (SELECT MAX(orders.code) FROM orders) AS order_code, products.code AS product_code, products.name AS product_name, ('".safeEncrypt(codifyhtml(strval($_POST['amount'])), getkey())."') AS amount, products.price AS price, categories.tax AS tax FROM products, categories WHERE products.code = '".$_POST['productidhidden']."' AND products.category_code = categories.code;";
                                 } else {
                                     $updated_amount = intval($_POST['amount']) + $intdecodecart_amount1;
-                                    $sql = "UPDATE public.order_item SET amount = '".safeEncrypt(codifyhtml(strval($updated_amount)), getkey())."' WHERE order_item.product_code = '".$_POST['productidhidden']."';";
+                                    $sql = "UPDATE order_item SET amount = '".safeEncrypt(codifyhtml(strval($updated_amount)), getkey())."' WHERE order_item.product_code = '".$_POST['productidhidden']."';";
                                 }
                                 try {
                                     $conn->beginTransaction();

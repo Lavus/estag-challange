@@ -15,7 +15,7 @@
                 $name1 = safeDecrypt($data['name'], getkey());
                 $decodename1 = html_entity_decode($name1);
                 if ( ($name1 == 'FALSE') || (!(preg_match($regexname, $decodename1))) ){
-                    $sqldelete1 = "DELETE FROM public.products WHERE products.code = '".$_POST['deletekey']."';";
+                    $sqldelete1 = "DELETE FROM products WHERE products.code = '".$_POST['deletekey']."';";
                     try {
                         $conn->beginTransaction();
                         $conn->exec($sqldelete1);
@@ -79,9 +79,9 @@
                     if ( ($name4 == 'FALSE') || (!(preg_match($regexname, $decodename4))) || ($amount4 == 'FALSE') || ( (strval($decodeamount4) !== '0') && ($intdecodeamount4 === 0) ) || ($price4 == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeprice4))) || ($floatdecodeprice4 < 0.01 ) || ($category_name4 == 'FALSE') || (!(preg_match($regexname, $decodecategory_name4))) ){
                         $alterkey = FALSE;
                         if ( ($category_name4 == 'FALSE') || (!(preg_match($regexname, $decodecategory_name4))) ) {
-                            $sqldelete4 = "DELETE FROM public.categories WHERE categories.code IN ( SELECT category_code FROM products WHERE code = '".$_POST['alterkey']."');";
+                            $sqldelete4 = "DELETE FROM categories WHERE categories.code IN ( SELECT category_code FROM products WHERE code = '".$_POST['alterkey']."');";
                         } else {
-                            $sqldelete4 = "DELETE FROM public.products WHERE products.code = '".$_POST['alterkey']."';";
+                            $sqldelete4 = "DELETE FROM products WHERE products.code = '".$_POST['alterkey']."';";
                         }
                         try {
                             $conn->beginTransaction();
@@ -158,7 +158,7 @@
                                             $name2 = safeDecrypt($row['name'], getkey());
                                             $decodename2 = html_entity_decode($name2);
                                             if ( ($name2 == 'FALSE') || (!(preg_match($regexname, $decodename2))) ){
-                                                $sqldelete2 = "DELETE FROM public.products WHERE products.code = '".$row['code']."';";
+                                                $sqldelete2 = "DELETE FROM products WHERE products.code = '".$row['code']."';";
                                                 try {
                                                     $conn->beginTransaction();
                                                     $conn->exec($sqldelete2);
@@ -234,9 +234,9 @@
                                         $floatdecodeprice1 = floatval($decodeprice1);
                                         if ( ($name3 == 'FALSE') || (!(preg_match($regexname, $decodename3))) || ($amount1 == 'FALSE') || ( (strval($decodeamount1) !== '0') && (intval($decodeamount1) === 0) ) || ($price1 == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeprice1))) || ($floatdecodeprice1 < 0.01 ) || ($category_name1 == 'FALSE') || (!(preg_match($regexname, $decodecategory_name1))) ){
                                             if ( ($category_name1 == 'FALSE') || (!(preg_match($regexname, $decodecategory_name1))) ) {
-                                                $sqldelete3 = "DELETE FROM public.categories WHERE categories.code IN ( SELECT category_code FROM products WHERE code = '".$row['code']."');";
+                                                $sqldelete3 = "DELETE FROM categories WHERE categories.code IN ( SELECT category_code FROM products WHERE code = '".$row['code']."');";
                                             } else {
-                                                $sqldelete3 = "DELETE FROM public.products WHERE products.code = '".$row['code']."';";
+                                                $sqldelete3 = "DELETE FROM products WHERE products.code = '".$row['code']."';";
                                             }
                                             try {
                                                 $conn->beginTransaction();

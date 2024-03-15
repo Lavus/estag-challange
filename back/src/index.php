@@ -40,7 +40,7 @@
                 $value_total_orders = html_entity_decode($value_total1);
                 if ( ($tax_total1 == 'FALSE') || ($value_total1 == 'FALSE') || (!(preg_match($regexnumbers, $tax_total_orders))) || (!(preg_match($regexnumbers, $value_total_orders))) ){
                     $executesecure = FALSE;
-                    $sqldelete1 = "DELETE FROM public.orders WHERE orders.code = '".$resultorder['code']."' AND orders.code NOT IN (SELECT MAX(orders1.code) FROM orders AS orders1);";
+                    $sqldelete1 = "DELETE FROM orders WHERE orders.code = '".$resultorder['code']."' AND orders.code NOT IN (SELECT MAX(orders1.code) FROM orders AS orders1);";
                     try {
                         $conn->beginTransaction();
                         $conn->exec($sqldelete1);
@@ -95,9 +95,9 @@
                             if ( ($products_name == 'FALSE') || (!(preg_match($regexname, $decodeproducts_name))) || ($products_amount == 'FALSE') || ( (strval($decodeproducts_amount) !== '0') && ($products_amount_int === 0) ) || ($products_price == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeproducts_price))) || ($floatdecodeproducts_price < 0.01 ) || ($categories_tax == 'FALSE') || (!(preg_match($regexnumberstax, $decodecategories_tax))) ){
                                 $executesecure = FALSE;
                                 if ( ($categories_tax == 'FALSE') || (!(preg_match($regexnumberstax, $decodecategories_tax))) ) {
-                                    $sqldelete2 = "DELETE FROM public.categories WHERE categories.code IN (SELECT products.category_code FROM public.products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."')));";
+                                    $sqldelete2 = "DELETE FROM categories WHERE categories.code IN (SELECT products.category_code FROM products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."')));";
                                 } else {
-                                    $sqldelete2 = "DELETE FROM public.products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."');";
+                                    $sqldelete2 = "DELETE FROM products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."');";
                                 }
                                 try {
                                     $conn->beginTransaction();
@@ -123,7 +123,7 @@
                         $order_tax_float = floatval($decodeorder_tax);
                         if ( ($order_product_name == 'FALSE') || (!(preg_match($regexname, $decodeorder_product_name))) || ($order_amount == 'FALSE') || ($order_amount_int === 0) || ($order_price == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeorder_price))) || ($order_price_float < 0.01 ) || ($order_tax == 'FALSE') || (!(preg_match($regexnumberstax, $decodeorder_tax))) ){
                             $executesecure = FALSE;
-                            $sqldelete3 = "DELETE FROM public.order_item WHERE order_item.code = '".$row['order_item_code']."';";
+                            $sqldelete3 = "DELETE FROM order_item WHERE order_item.code = '".$row['order_item_code']."';";
                             try {
                                 $conn->beginTransaction();
                                 $conn->exec($sqldelete3);
@@ -247,9 +247,9 @@
                             if ( ($name1 == 'FALSE') || (!(preg_match($regexname, $decodename1))) || ($product_amount1 == 'FALSE') || ( (strval($decodeproduct_amount1) !== '0') && ($intdecodeproduct_amount1 === 0) ) || ($price1 == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeprice1))) || ($oldprice < 0.01 ) || ($tax1 == 'FALSE') || (!(preg_match($regexnumberstax, $decodetax1))) ){
                                 $executesecure = FALSE;
                                 if ( ($tax1 == 'FALSE') || (!(preg_match($regexnumberstax, $decodetax1))) ) {
-                                    $sqldelete4 = "DELETE FROM public.categories WHERE categories.code IN (SELECT products.category_code FROM public.products WHERE products.code = '".$_POST['changeidhidden']."');";
+                                    $sqldelete4 = "DELETE FROM categories WHERE categories.code IN (SELECT products.category_code FROM products WHERE products.code = '".$_POST['changeidhidden']."');";
                                 } else {
-                                    $sqldelete4 = "DELETE FROM public.products WHERE products.code = '".$_POST['changeidhidden']."';";
+                                    $sqldelete4 = "DELETE FROM products WHERE products.code = '".$_POST['changeidhidden']."';";
                                 }
                                 try {
                                     $conn->beginTransaction();
@@ -270,7 +270,7 @@
                                     $intdecodecart_amount1 = intval($decodecart_amount1);
                                     if ( ($cart_amount1 == 'FALSE') || ($intdecodecart_amount1 === 0) ) {
                                         $executesecure = FALSE;
-                                        $sqldelete5 = "DELETE FROM public.order_item WHERE order_item.product_code = '".$_POST['changeidhidden']."' AND order_item.order_code IN (SELECT MAX(orders.code) FROM orders);";
+                                        $sqldelete5 = "DELETE FROM order_item WHERE order_item.product_code = '".$_POST['changeidhidden']."' AND order_item.order_code IN (SELECT MAX(orders.code) FROM orders);";
                                         try {
                                             $conn->beginTransaction();
                                             $conn->exec($sqldelete5);
@@ -320,7 +320,7 @@
                                                 $decodename2 = html_entity_decode($name2);
                                                 if ( ($name2 == 'FALSE') || (!(preg_match($regexname, $decodename2))) ) {
                                                     $executesecure = FALSE;
-                                                    $sqldelete6 = "DELETE FROM public.products WHERE products.code = '".$row['code']."';";
+                                                    $sqldelete6 = "DELETE FROM products WHERE products.code = '".$row['code']."';";
                                                     try {
                                                         $conn->beginTransaction();
                                                         $conn->exec($sqldelete6);
@@ -428,9 +428,9 @@
                                             if ( ($products_name == 'FALSE') || (!(preg_match($regexname, $decodeproducts_name))) || ($products_amount == 'FALSE') || ( (strval($decodeproducts_amount) !== '0') && ($products_amount_int === 0) ) || ($products_price == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeproducts_price))) || ($floatdecodeproducts_price < 0.01 ) || ($categories_tax == 'FALSE') || (!(preg_match($regexnumberstax, $decodecategories_tax))) ){
                                                 $executesecure = FALSE;
                                                 if ( ($categories_tax == 'FALSE') || (!(preg_match($regexnumberstax, $decodecategories_tax))) ) {
-                                                    $sqldelete7 = "DELETE FROM public.categories WHERE categories.code IN (SELECT products.category_code FROM public.products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."')));";
+                                                    $sqldelete7 = "DELETE FROM categories WHERE categories.code IN (SELECT products.category_code FROM products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."')));";
                                                 } else {
-                                                    $sqldelete7 = "DELETE FROM public.products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."');";
+                                                    $sqldelete7 = "DELETE FROM products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."');";
                                                 }
                                                 try {
                                                     $conn->beginTransaction();
@@ -456,7 +456,7 @@
                                         $order_tax_float = floatval($decodeorder_tax);
                                         if ( ($order_product_name == 'FALSE') || (!(preg_match($regexname, $decodeorder_product_name))) || ($order_amount == 'FALSE') || ($order_amount_int === 0) || ($order_price == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeorder_price))) || ($order_price_float < 0.01 ) || ($order_tax == 'FALSE') || (!(preg_match($regexnumberstax, $decodeorder_tax))) ){
                                             $executesecure = FALSE;
-                                            $sqldelete3 = "DELETE FROM public.order_item WHERE order_item.code = '".$row['order_item_code']."';";
+                                            $sqldelete3 = "DELETE FROM order_item WHERE order_item.code = '".$row['order_item_code']."';";
                                             try {
                                                 $conn->beginTransaction();
                                                 $conn->exec($sqldelete3);
@@ -528,7 +528,7 @@
                                         $value_total_orders = html_entity_decode($total2);
                                         if ( ($tax2 == 'FALSE') || ($total2 == 'FALSE') || (!(preg_match($regexnumbers, $tax_total_orders))) || (!(preg_match($regexnumbers, $value_total_orders))) ){
                                             $executesecure = FALSE;
-                                            $sqldelete9 = "DELETE FROM public.orders WHERE orders.code = '".$resultorder['code']."' AND orders.code NOT IN (SELECT MAX(orders1.code) FROM orders AS orders1);";
+                                            $sqldelete9 = "DELETE FROM orders WHERE orders.code = '".$resultorder['code']."' AND orders.code NOT IN (SELECT MAX(orders1.code) FROM orders AS orders1);";
                                             try {
                                                 $conn->beginTransaction();
                                                 $conn->exec($sqldelete9);

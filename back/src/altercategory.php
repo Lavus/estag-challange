@@ -23,7 +23,7 @@
                 $decodetax1 = html_entity_decode($tax1);
                 $decodename1 = html_entity_decode($name1);
                 if ( ($name1 == 'FALSE') || (!(preg_match($regexname, $decodename1))) || ($tax1 == 'FALSE') || (!(preg_match($regexnumberstax, $decodetax1))) ){
-                    $sqldelete1 = "DELETE FROM public.categories WHERE categories.code = '".$_POST['alterid']."';";
+                    $sqldelete1 = "DELETE FROM categories WHERE categories.code = '".$_POST['alterid']."';";
                     try {
                         $conn->beginTransaction();
                         $conn->exec($sqldelete1);

@@ -27,7 +27,7 @@
                 $floatdecodeprice1 = floatval($decodeprice1);
                 $intval_oldcategory = intval($resultid['category_code']);
                 if ( ($name1 == 'FALSE') || (!(preg_match($regexname, $decodename1))) || ($amount1 == 'FALSE') || ( (strval($decodeamount1) !== '0') && ($intdecodeamount1 === 0) ) || ($price1 == 'FALSE') || (!(preg_match($regexnumbers, $decodeprice1))) || ($floatdecodeprice1 < 0.01 ) ){
-                    $sqldelete1 = "DELETE FROM public.products WHERE products.code = '".$_POST['alterid']."';";
+                    $sqldelete1 = "DELETE FROM products WHERE products.code = '".$_POST['alterid']."';";
                     try {
                         $conn->beginTransaction();
                         $conn->exec($sqldelete1);

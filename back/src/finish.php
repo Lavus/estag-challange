@@ -56,9 +56,9 @@
                             if ( ($products_name == 'FALSE') || (!(preg_match($regexname, $decodeproducts_name))) || ($products_amount == 'FALSE') || ( (strval($decodeproducts_amount) !== '0') && ($products_amount_int === 0) ) || ($products_price == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeproducts_price))) || ($floatdecodeproducts_price < 0.01 ) || ($categories_tax == 'FALSE') || (!(preg_match($regexnumberstax, $decodecategories_tax))) ){
                                 $executesecure = FALSE;
                                 if ( ($categories_tax == 'FALSE') || (!(preg_match($regexnumberstax, $decodecategories_tax))) ) {
-                                    $sqldelete2 = "DELETE FROM public.categories WHERE categories.code IN (SELECT products.category_code FROM public.products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."')));";
+                                    $sqldelete2 = "DELETE FROM categories WHERE categories.code IN (SELECT products.category_code FROM products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."')));";
                                 } else {
-                                    $sqldelete2 = "DELETE FROM public.products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."');";
+                                    $sqldelete2 = "DELETE FROM products WHERE products.code IN (SELECT order_item.product_code FROM order_item WHERE order_item.code = '".$row['order_item_code']."');";
                                 }
                                 try {
                                     $conn->beginTransaction();
@@ -84,7 +84,7 @@
                         $order_tax_float = floatval($decodeorder_tax);
                         if ( ($order_product_name == 'FALSE') || (!(preg_match($regexname, $decodeorder_product_name))) || ($order_amount == 'FALSE') || ($order_amount_int === 0) || ($order_price == 'FALSE') || (!(preg_match($regexnumbersprice, $decodeorder_price))) || ($order_price_float < 0.01 ) || ($order_tax == 'FALSE') || (!(preg_match($regexnumberstax, $decodeorder_tax))) ){
                             $executesecure = FALSE;
-                            $sqldelete3 = "DELETE FROM public.order_item WHERE order_item.code = '".$row['order_item_code']."';";
+                            $sqldelete3 = "DELETE FROM order_item WHERE order_item.code = '".$row['order_item_code']."';";
                             try {
                                 $conn->beginTransaction();
                                 $conn->exec($sqldelete3);
@@ -140,7 +140,7 @@
                             error_log($sqlupdateamount . "<br>" . $e->getMessage());
                         }
                     }
-                    $sqlinsert = "INSERT INTO public.orders(value_total, value_tax) VALUES ('".safeEncrypt(codifyhtml('0'), getkey())."', '".safeEncrypt(codifyhtml('0'), getkey())."');";
+                    $sqlinsert = "INSERT INTO orders(value_total, value_tax) VALUES ('".safeEncrypt(codifyhtml('0'), getkey())."', '".safeEncrypt(codifyhtml('0'), getkey())."');";
                     try {
                         $conn->beginTransaction();
                         $conn->exec($sqlinsert);

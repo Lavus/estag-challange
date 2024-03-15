@@ -12,7 +12,7 @@
                 require "connect-localhost.php";
                 require_once "safedecrypto.php";
                 $executesecure = TRUE;
-                $sqlsel = "SELECT order_item.price, order_item.amount, order_item.tax FROM public.order_item WHERE order_item.code = '".$_POST['deletekey']."';";
+                $sqlsel = "SELECT order_item.price, order_item.amount, order_item.tax FROM order_item WHERE order_item.code = '".$_POST['deletekey']."';";
                 try {
                     $prepsel = $conn->prepare($sqlsel);
                     $prepsel->execute();
@@ -33,7 +33,7 @@
                         $valuetotaldeleted = round(($price * (1 + ($tax/100))) * $amount,2);
                         $valuetaxdeleted = round(($price * ($tax/100)) * $amount,2);
                     }
-                    $sqlord = "SELECT orders.value_total, orders.value_tax FROM public.orders,public.order_item WHERE orders.code = order_item.order_code AND order_item.code = '".$_POST['deletekey']."';";
+                    $sqlord = "SELECT orders.value_total, orders.value_tax FROM orders,order_item WHERE orders.code = order_item.order_code AND order_item.code = '".$_POST['deletekey']."';";
                     try {
                         $prepord = $conn->prepare($sqlord);
                         $prepord->execute();
@@ -59,7 +59,7 @@
                             $conn->beginTransaction();
                             $conn->exec($sqlupdord);
                             $conn->commit();
-                            $sql = "DELETE FROM public.order_item WHERE order_item.code = '".$_POST['deletekey']."';";
+                            $sql = "DELETE FROM order_item WHERE order_item.code = '".$_POST['deletekey']."';";
                             try {
                                 $conn->beginTransaction();
                                 $conn->exec($sql);
