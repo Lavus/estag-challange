@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS LOG_ORDER_ITEM(
 
 CREATE OR REPLACE FUNCTION autodeleteproducts() RETURNS TRIGGER AS $deleteproduct$
    BEGIN
-      DELETE FROM public.products WHERE CATEGORY_CODE = OLD.code;
+      DELETE FROM products WHERE CATEGORY_CODE = OLD.code;
       RETURN OLD;
    END;
 $deleteproduct$ LANGUAGE plpgsql;
@@ -163,7 +163,7 @@ FOR EACH ROW EXECUTE PROCEDURE autologorder_item();
 
 CREATE OR REPLACE FUNCTION autodeleteorder_item() RETURNS TRIGGER AS $autodeleteorder_item$
    BEGIN
-      DELETE FROM public.order_item WHERE order_code = OLD.code;
+      DELETE FROM order_item WHERE order_code = OLD.code;
       RETURN OLD;
    END;
 $autodeleteorder_item$ LANGUAGE plpgsql;
