@@ -1,0 +1,813 @@
+td:hover,th:hover,input:disabled:hover{ 
+    cursor: default;
+}
+
+.dropdown.none:hover .dropbtn, .dropdown.none:hover .dropbtn .dropdowntext, .dropdown.none:hover .dropbtn .positiondropright .arrow {
+    color: #8D8D8D;
+    border-color: #8D8D8D;
+    background-color: #F4F4F4;
+}
+
+.dropdown.none .dropbtn .positiondropright{
+    display: none;
+}
+
+.dropdown.half, .dropdown.full {
+    background-color: #F4F4F4;
+    box-sizing: content-box;
+    padding: 0;
+}
+
+.dropdown .dropbtn {
+    background-color: #F4F4F4;
+    box-sizing: content-box;
+    display: flex;
+}
+
+.dropdown.full .dropbtn .dropdowntext {
+    width: 41.9vw;
+}
+.dropdown.full .dropdown-content, .dropdown.full .dropdown-content div {
+    max-width: 44.9vw;
+    width: 44.9vw;
+}
+
+.dropdown.half .dropbtn .dropdowntext {
+    width: 18.95vw;
+}
+
+.dropdown.half .dropdown-content, .dropdown.half .dropdown-content div {
+    max-width: 21.95vw;
+    width: 21.95vw;
+}
+
+.dropdown .dropbtn .dropdowntext {
+    color: #8D8D8D;
+    padding: 1vh 1vw;
+    margin: 0;
+    box-sizing: border-box;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.positiondropright {
+    width: 2vw;
+    padding: 0.65vh 2.5vw 0.65vh 0.5vw;
+    margin: 0;
+    box-sizing: border-box;
+    float: right;
+    color: #8D8D8D;
+}
+
+.dropdown .dropbtn .arrow.adown {
+    border-radius: 0;
+}
+
+.dropdown .dropbtn .dropdowntext.dropdownselected {
+    color: black;
+}
+
+.dropdown-content {
+    max-height: 50vh;
+    display: none;
+    position: absolute;
+    background-color: #F4F4F4;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.dropdown-content div {
+    padding: 1vh 1vw;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #555;
+    cursor: default;
+    color: white;
+    box-sizing: border-box;
+}
+
+.dropdown:hover .dropbtn .dropdowntext, .dropdown:hover .dropbtn .dropdowntext.dropdownselected {
+    color: white;
+}
+
+.dropdown:hover .dropbtn div div{
+    border-color: white;
+}
+
+
+.dropdown-content div:hover {
+    background-color: #ddd;
+    cursor: pointer;
+    color: black;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    font-family: Arial;
+    font-size: 2.5vh;
+}
+
+table,input,select,button {
+    font-size: 2.5vh;
+}
+
+table,input,select,button,div{
+    border-radius: 4px;
+    border: none;
+}
+
+
+.topnav {
+    border-radius: 3px;
+    overflow: hidden;
+    background-color: #6A65FE;
+    font-weight: bold;
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 1vh 1vw;
+    text-decoration: none;
+}
+
+div.textdropleft, div.textdropright {
+    border-radius: 3px;
+    width: 96vw;
+    margin: 0vh 2vw 1vh;
+    overflow: hidden;
+    background-color: #6A65FE;
+    font-weight: bold;
+    display: none;
+}
+
+div.textdropleft div, div.textdropright div {
+    margin: auto;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    width: 85vw;
+    font-size: 3.75vh;
+    padding: 0.30793319415448851774530271398747vh 0vw 0.30793319415448851774530271398747vh 4vw;
+    margin: auto;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.textdropleft div.icon, div.textdropright div.icon {
+    width: 5vw;
+    float: right;
+    font-size: 2.5vh;
+    padding: 0.5vh 1vw;
+}
+
+
+.topnav .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 2.5vh;
+    padding: 0.68vh 1vw;
+    display: none;
+    float: right;
+}
+
+.bluebold {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #6A65FE;
+    font-weight: bold;
+}
+
+.full {
+    width: 44.9vw;
+    padding: 1vh 1vw;
+    margin: 1vh 0.5vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+.half {
+    width: 21.95vw;
+    padding: 1vh 1vw;
+    margin: 1vh 0.5vw;
+    float: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+.quarter {
+    width: 10.475vw;
+    padding: 1vh 1vw;
+    margin: 1vh 0.5vw;
+    float: right;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+.cancel {
+    background-color: #C5C5C5;
+    font-weight: bold;
+}
+
+
+select, option, input {
+    background-color: #F4F4F4;
+    border: none;
+    outline: none;
+}
+
+a#selectedpage {
+    font-size: 3.75vh;
+    padding: 0.30793319415448851774530271398747vh 2vw;
+    margin: auto;
+}
+
+div.main{
+    padding-top: 1vh;
+    width: 100vw;
+    height: 94vh;
+}
+
+.floatright {
+    float: right;
+}
+
+div.main div.right table#tablecart td, div.main div.right table#tablecart th, div.main div.right table#tablecart td:last-child div, div.main div.right table#tablecart td:first-child div {
+    min-width: 6vw;
+    max-width: 6vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.main div.right table#tablecart td:nth-child(1), div.main div.right table#tablecart th:nth-child(1) {
+    min-width: 17.6vw;
+    max-width: 17.6vw;
+}
+
+div.main div.right table#tablecart td:first-child div {
+    min-width: 13.1vw;
+    max-width: 13.1vw;
+}
+
+div.main div.right table#tablecart td:last-child, div.main div.right table#tablecart th:last-child {
+    min-width: 10.5vw;
+    max-width: 10.5vw;
+}
+
+div.main div.right table#tableproduct td, div.main div.right table#tableproduct th, div.main div.right table#tableproduct td:first-child div {
+    min-width: 5vw;
+    max-width: 5vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.right table#tableproduct td:last-child div {
+    min-width: 7vw;
+    max-width: 7vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.main div.right table#tableproduct td:nth-child(2), div.main div.right table#tableproduct th:nth-child(2) {
+    min-width: 8vw;
+    max-width: 8vw;
+}
+
+div.main div.right table#tableproduct td:first-child, div.main div.right table#tableproduct th:first-child {
+    min-width: 9.5vw;
+    max-width: 9.5vw;
+}
+
+div.main div.right table#tableproduct td:last-child, div.main div.right table#tableproduct th:last-child {
+    min-width: 11.5vw;
+    max-width: 11.5vw;
+}
+
+div.main div.right table#tablecategories td, div.main div.right table#tablecategories th, div.main div.right table#tablecategories td:last-child div, div.main div.right table#tablecategories td:first-child div {
+    min-width: 9vw;
+    max-width: 9vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.right table#tablecategories td:nth-child(2), div.main div.right table#tablecategories th:nth-child(2) {
+    min-width: 14.1vw;
+    max-width: 14.1vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.right table#tablecategories td:last-child, div.main div.right table#tablecategories th:last-child, div.main div.right table#tablecategories td:first-child, div.main div.right table#tablecategories th:first-child {
+    min-width: 13.5vw;
+    max-width: 13.5vw;
+}
+
+div.main div.right table td:last-child button, div.main div.left table td:last-child button{
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.right table td:last-child button, div.main div.left table td:last-child button, div.main div.right table td:first-child button, div.main div.left table td:first-child button{
+    min-width: 4.5vw;
+    max-width: 4.5vw;
+}
+
+div.main div.right table td:last-child div, div.main div.left table td:last-child div, div.main div.right table td:first-child div, div.main div.left table td:first-child div{
+    float: left;
+}
+
+div.main div.right table#tableview td, div.main div.right table#tableview th, div.main div.right table#tableviewid td, div.main div.right table#tableviewid th {
+    min-width: 7vw;
+    max-width: 7vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.right table#tableview td:nth-child(1), div.main div.right table#tableview th:nth-child(1) {
+    min-width: 19.1vw;
+    max-width: 19.1vw;
+}
+
+div.main div.left table#tablehistory td, div.main div.left table#tablehistory th, div.main div.left table#tablehistory td:last-child div {
+    min-width: 12.2vw;
+    max-width: 12.2vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.left table#tablehistory td:last-child, div.main div.left table#tablehistory th:last-child {
+    min-width: 16.7vw;
+    max-width: 16.7vw;
+}
+
+div.main div.left div.scroll, div.main div.right div.scroll{
+    overflow:hidden;
+    overflow-y: scroll;
+    width: 45.9vw;
+    height: 90vh;
+}
+
+div.main div.right{
+    padding: 1vh 2vw 2vh;
+    float: right;
+    position: static;
+    width: 45.9vw;
+    height: 90vh;
+}
+
+div.main div.left{
+    padding: 1vh 2vw 2vh;
+    float: left;
+    position: static;
+    width: 45.9vw;
+    height: 90vh;
+    border-right: 0.2vw solid #DADADA;
+}
+
+div.main div.right div.twenty{
+    padding: 0 0 2vh;
+    position: static;
+    float: right;
+    width: 45.9vw;
+    height: 16vh;
+}
+
+div.main div.right div.eighty{
+    padding: 0 0 2vh;
+    position: static;
+    float: right;
+    width: 45.9vw;
+    height: 70vh;
+}
+
+div.main div.right div.eighty div.scroll {
+    height: 70vh;
+}
+
+div.main div.right div.ten{
+    padding: 0 0 2vh;
+    position: static;
+    float: right;
+    width: 45.9vw;
+    height: 7vh;
+}
+
+input.quarter{
+    border: none;
+    border-radius: 3px;
+}
+
+table.collapse {
+    border-collapse: collapse;
+    height: 100%;
+}
+
+table.collapse#tableviewid td, table.collapse#tableviewid th {
+    border-collapse: collapse;
+    height: 50%;
+}
+
+table.collapse td {
+    color: #8D8D8D;
+}
+
+table.collapse tr.last {
+    height: 100%;
+}
+
+table.collapse th {
+    top: 0;
+    z-index: 2;
+    position: sticky;
+    background-color: white;
+}
+
+table.collapse td, table.collapse th {
+    border: 0.2vw solid #DADADA;
+    padding: 0.9vh 0.5vw;
+    height: 8%;
+}
+
+table.collapse tr:first-child th {
+    border-top: 0;
+}
+
+table.collapse tr:last-child td {
+    border-bottom: 0;
+}
+table.collapse tr td:first-child, table.collapse tr th:first-child {
+    border-left: 0;
+}
+
+table.collapse tr.rederror, table.collapse tr.rederror td {
+    background-color: red;
+    font-weight: bold;
+    color: black;
+}
+
+table.collapse tr td:last-child, table.collapse tr th:last-child {
+    border-right: 0;
+}
+
+table.lefttext.floatright tr td.redtext{
+    font-weight: bold;
+    color: red;
+}
+
+.lefttext {
+    text-align: left;
+}
+
+table.collapse.half{
+    margin: auto;
+    text-align: center;
+    margin-left: 12.1vw
+}
+
+.extrabt.delete:hover{
+    color: rgb(139, 12, 12);
+}
+
+.extrabt{
+    background-color: #6A65FE;
+    border-radius: 200px;
+    text-align: center;
+    font-weight: bold;
+    border: none;
+    color: black;
+    float: right;
+}
+
+@media screen and (max-width: 800px) {
+    div.textdropleft, div.textdropright {
+        display: block;
+    }
+    div.textdropleft div.icon.hidden, div.textdropright div.icon.hidden{
+        display: none;
+    }
+    div.left, div.right {
+        display: none;
+    }
+    div.left.show, div.right.show {
+        display: block;
+    }
+    .full {
+        width: 95vw;
+    }
+    .half {
+        width: 47vw;
+    }
+    .quarter {
+        width: 23vw;
+    }
+    div.main div.right table#tablecart td, div.main div.right table#tablecart th, div.main div.right table#tablecart td:last-child div {
+        min-width: 13.584vw;
+        max-width: 13.584vw;
+    }
+    div.main div.right table#tablecart td:nth-child(1), div.main div.right table#tablecart th:nth-child(1) {
+        min-width: 40.448vw;
+        max-width: 40.448vw;
+    }
+    div.main div.right table#tablecart td:first-child div {
+        min-width: 31.448vw;
+        max-width: 31.448vw;
+    }
+    div.main div.right table#tablecart td:last-child, div.main div.right table#tablecart th:last-child {
+        min-width: 22.584vw;
+        max-width: 22.584vw;
+    }
+    div.main div.right table#tableproduct td, div.main div.right table#tableproduct th, div.main div.right table#tableproduct td:first-child div {
+        min-width: 11vw;
+        max-width: 11vw;
+    }
+    div.main div.right table#tableproduct td:last-child div {
+        min-width: 18vw;
+        max-width: 18vw;
+    }
+    div.main div.right table#tableproduct td:nth-child(2), div.main div.right table#tableproduct th:nth-child(2) {
+        min-width: 20.2vw;
+        max-width: 20.2vw;
+    }
+    div.main div.right table#tableproduct td:first-child, div.main div.right table#tableproduct th:first-child {
+        min-width: 20vw;
+        max-width: 20vw;
+    }
+    div.main div.right table#tableproduct td:last-child, div.main div.right table#tableproduct th:last-child {
+        min-width: 27vw;
+        max-width: 27vw;
+    }
+    div.main div.right table#tablecategories td, div.main div.right table#tablecategories th, div.main div.right table#tablecategories td:last-child div, div.main div.right table#tablecategories td:first-child div {
+        min-width: 20.876vw;
+        max-width: 20.876vw;
+    }
+    div.main div.right table#tablecategories td:nth-child(2), div.main div.right table#tablecategories th:nth-child(2) {
+        min-width: 31.448vw;
+        max-width: 31.448vw;
+    }
+    div.main div.right table#tablecategories td:last-child, div.main div.right table#tablecategories th:last-child, div.main div.right table#tablecategories td:first-child, div.main div.right table#tablecategories th:first-child {
+        min-width: 29.876vw;
+        max-width: 29.876vw;
+    }
+    .extrabt.alter, .extrabt.view{
+        font-size: 2vh;
+    }
+    div.main div.right table td:last-child button, div.main div.left table td:last-child button, div.main div.right table td:first-child button, div.main div.left table td:first-child button{
+        min-width: 9vw;
+        max-width: 9vw;
+    }
+    div.main div.right table#tableview td, div.main div.right table#tableview th, div.main div.right table#tableviewid td, div.main div.right table#tableviewid th {
+        min-width: 16.584vw;
+        max-width: 16.584vw;
+    }
+    div.main div.right table#tableview td:nth-child(1), div.main div.right table#tableview th:nth-child(1) {
+        min-width: 40.448vw;
+        max-width: 40.448vw;
+    }
+    div.main div.left table#tablehistory td, div.main div.left table#tablehistory th, div.main div.left table#tablehistory td:last-child div {
+        min-width: 27.4vw;
+        max-width: 27.4vw;
+    }
+    div.main div.left table#tablehistory td:last-child, div.main div.left table#tablehistory th:last-child {
+        min-width: 36.4vw;
+        max-width: 36.4vw;
+    }
+    div.main{
+        padding-top: 2vh;
+        height: 93vh;
+    }
+    div.main div.right div.scroll, div.main div.left div.scroll, div.main div.right, div.main div.left {
+        width: 96vw;
+        height: 78vh;
+    }
+    div.main div.right div.twenty{
+        width: 96vw;
+        height: 13.6vh;
+    }
+    div.main div.right div.eighty{
+        width: 96vw;
+        height: 60.4vh;
+    }
+    div.main div.right div.eighty div.scroll {
+        height: 60.4vh;
+    }
+    div.main div.right div.ten{
+        width: 96vw;
+        height: 5.8vh;
+    }
+    .dropdown.full .dropbtn .dropdowntext {
+        width: 90vw;
+    }
+    .dropdown.full .dropdown-content, .dropdown.full .dropdown-content div {
+        max-width: 95vw;
+        width: 95vw;
+    }
+    .dropdown.half .dropbtn .dropdowntext {
+        width: 42vw;
+    }
+    .dropdown.half .dropdown-content, .dropdown.half .dropdown-content div {
+        max-width: 47vw;
+        width: 47vw;
+    }
+    .positiondropright {
+        width: 2vw;
+        padding: 0.65vh 4vw 0.65vh 1vw;
+    }
+    div.main div.left{
+        border-right: none;
+    }
+    table.collapse.half{
+        margin-left: 23.864vw
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .topnav a:not(:first-child){
+      display: none;
+    }
+    .topnav a.icon {
+      display: block;
+    }
+    .topnav.responsive {position: relative;}
+    .topnav.responsive a {
+        float: none;
+        display: block;
+        text-align: left;
+        font-size: 3.0vh;
+        padding: 0.5vh 2vw;
+        margin: auto;
+    }
+    .topnav.responsive a.icon {
+        font-size: 2.5vh;
+        padding: 0.68vh 1vw;
+    }
+}
+
+
+.arrow {
+    border: solid #8D8D8D;
+    border-width: 0 0.4vh 0.4vh 0;
+    display: inline-block;
+    padding: 0.4vh;
+}
+
+.arrow.aright {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.arrow.aleft {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.arrow.aup {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.arrow.adown {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+div#alert {
+    position: absolute;
+    top : 6vh;
+    left : 2vw;
+    background-color: grey;
+    padding: 0;
+    opacity: 0.9;
+    height: 93vh;
+    width: 96vw;
+    font-size: 5vh;
+    z-index: 4;
+}
+
+div#alert div#textalert {
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    height: 68vh;
+    width: 92vw;
+    padding: 2vh 2vw;
+    box-sizing: content-box;
+    overflow: hidden;
+    overflow-y: scroll;
+    word-break: break-all;
+}
+
+div#alert div#textalert.alertremovefortable {
+    width: 96vw;
+    height: 72vh;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: none;
+}
+
+div#alert div#textalert div#dividetext {
+    padding: 1vh 2vw;
+    height: 20vh;
+    box-sizing: content-box;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+div#alert div#textalert div#dividetable {
+    padding: 1vh 2vw;
+    height: 48vh;
+    box-sizing: content-box;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+div#alert div#textalert table {
+    text-align: center;
+    border-collapse: collapse;
+    height: 100%;
+}
+
+div#alert div#textalert table th:nth-child(1), div#alert div#textalert table td:nth-child(1) {
+    max-width: 44vw;
+    min-width: 44vw;
+}
+
+div#alert div#textalert table th, div#alert div#textalert table td {
+    max-width: 15vw;
+    min-width: 15vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div#alert div#textalert table tr.last {
+    height: 100%;
+}
+
+div#alert button#yesbutton{
+    height: 5vh;
+    width: 18vw;
+    float: left;
+    box-sizing: content-box;
+    padding: 5vh 5vw;
+    margin: 2vh 2vw;
+    font-size: 5vh;
+    opacity: 0.6;
+    background-color: green;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+div#alert button#nobutton{
+    height: 5vh;
+    width: 18vw;
+    float: right;
+    box-sizing: content-box;
+    padding: 5vh 5vw;
+    margin: 2vh 2vw;
+    font-size: 5vh;
+    opacity: 0.6;
+    background-color: red;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
