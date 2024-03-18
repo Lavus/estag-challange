@@ -1,0 +1,95 @@
+.lefttext {
+    text-align: left;
+}
+
+table.collapse {
+    border-collapse: collapse;
+    height: 100%;
+}
+
+table.collapse#tableviewid td, table.collapse#tableviewid th {
+    border-collapse: collapse;
+    height: 50%;
+}
+
+table.collapse td {
+    color: #8D8D8D;
+}
+
+table.collapse tr.last {
+    height: 100%;
+}
+
+table.collapse th {
+    top: 0;
+    z-index: 2;
+    position: sticky;
+    background-color: white;
+}
+
+table.collapse td, table.collapse th {
+    border: 0.2vw solid #DADADA;
+    padding: 0.9vh 0.5vw;
+    height: 8%;
+}
+
+table.collapse tr:first-child th {
+    border-top: 0;
+}
+
+table.collapse tr:last-child td {
+    border-bottom: 0;
+}
+
+table.collapse tr td:first-child, table.collapse tr th:first-child {
+    border-left: 0;
+}
+
+table.collapse tr.rederror, table.collapse tr.rederror td {
+    background-color: red;
+    font-weight: bold;
+    color: black;
+}
+
+table.collapse tr td:last-child, table.collapse tr th:last-child {
+    border-right: 0;
+}
+
+table.lefttext.floatright tr td.redtext{
+    font-weight: bold;
+    color: red;
+}
+
+table.collapse.half{
+    margin: auto;
+    text-align: center;
+    margin-left: 12.1vw
+}
+
+div.main div.right table td:last-child button, div.main div.left table td:last-child button{
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.right table td:last-child button, div.main div.left table td:last-child button, div.main div.right table td:first-child button, div.main div.left table td:first-child button{
+    min-width: 4.5vw;
+    max-width: 4.5vw;
+}
+
+div.main div.right table td:last-child div, div.main div.left table td:last-child div, div.main div.right table td:first-child div, div.main div.left table td:first-child div{
+    float: left;
+}
+
+@media screen and (max-width: 800px) {
+
+    div.main div.right table td:last-child button, div.main div.left table td:last-child button, div.main div.right table td:first-child button, div.main div.left table td:first-child button{
+        min-width: 9vw;
+        max-width: 9vw;
+    }
+
+    table.collapse.half{
+        margin-left: 23.864vw
+    }
+
+}

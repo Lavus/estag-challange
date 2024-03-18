@@ -1,0 +1,39 @@
+td, th, td:last-child div, td:first-child div {
+    min-width: 9vw;
+    max-width: 9vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+td:nth-child(2), th:nth-child(2) {
+    min-width: 14.1vw;
+    max-width: 14.1vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+td:last-child, th:last-child, td:first-child, th:first-child {
+    min-width: 13.5vw;
+    max-width: 13.5vw;
+}
+
+@media screen and (max-width: 800px) {
+
+    td, th, td:last-child div, td:first-child div {
+        min-width: 20.876vw;
+        max-width: 20.876vw;
+    }
+
+    td:nth-child(2), th:nth-child(2) {
+        min-width: 31.448vw;
+        max-width: 31.448vw;
+    }
+
+    td:last-child, th:last-child, td:first-child, th:first-child {
+        min-width: 29.876vw;
+        max-width: 29.876vw;
+    }
+
+}

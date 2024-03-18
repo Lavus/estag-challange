@@ -1,0 +1,59 @@
+div.main div.right table#tableproduct td, div.main div.right table#tableproduct th, div.main div.right table#tableproduct td:first-child div {
+    min-width: 5vw;
+    max-width: 5vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.right table#tableproduct td:last-child div {
+    min-width: 7vw;
+    max-width: 7vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.main div.right table#tableproduct td:nth-child(2), div.main div.right table#tableproduct th:nth-child(2) {
+    min-width: 8vw;
+    max-width: 8vw;
+}
+
+div.main div.right table#tableproduct td:first-child, div.main div.right table#tableproduct th:first-child {
+    min-width: 9.5vw;
+    max-width: 9.5vw;
+}
+
+div.main div.right table#tableproduct td:last-child, div.main div.right table#tableproduct th:last-child {
+    min-width: 11.5vw;
+    max-width: 11.5vw;
+}
+
+@media screen and (max-width: 800px) {
+
+    div.main div.right table#tableproduct td, div.main div.right table#tableproduct th, div.main div.right table#tableproduct td:first-child div {
+        min-width: 11vw;
+        max-width: 11vw;
+    }
+
+    div.main div.right table#tableproduct td:last-child div {
+        min-width: 18vw;
+        max-width: 18vw;
+    }
+
+    div.main div.right table#tableproduct td:nth-child(2), div.main div.right table#tableproduct th:nth-child(2) {
+        min-width: 20.2vw;
+        max-width: 20.2vw;
+    }
+
+    div.main div.right table#tableproduct td:first-child, div.main div.right table#tableproduct th:first-child {
+        min-width: 20vw;
+        max-width: 20vw;
+    }
+
+    div.main div.right table#tableproduct td:last-child, div.main div.right table#tableproduct th:last-child {
+        min-width: 27vw;
+        max-width: 27vw;
+    }
+
+}

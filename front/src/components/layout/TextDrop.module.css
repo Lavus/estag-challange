@@ -1,0 +1,43 @@
+div.textdropleft, div.textdropright {
+    border-radius: 3px;
+    width: 96vw;
+    margin: 0vh 2vw 1vh;
+    overflow: hidden;
+    background-color: #6A65FE;
+    font-weight: bold;
+    display: none;
+}
+
+div.textdropleft div, div.textdropright div {
+    margin: auto;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    width: 85vw;
+    font-size: 3.75vh;
+    padding: 0.30793319415448851774530271398747vh 0vw 0.30793319415448851774530271398747vh 4vw;
+    margin: auto;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.textdropleft div.icon, div.textdropright div.icon {
+    width: 5vw;
+    float: right;
+    font-size: 2.5vh;
+    padding: 0.5vh 1vw;
+}
+
+@media screen and (max-width: 800px) {
+
+    div.textdropleft, div.textdropright {
+        display: block;
+    }
+
+    div.textdropleft div.icon.hidden, div.textdropright div.icon.hidden{
+        display: none;
+    }
+
+}

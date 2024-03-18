@@ -1,0 +1,54 @@
+div.main div.right table#tableview td, div.main div.right table#tableview th, div.main div.right table#tableviewid td, div.main div.right table#tableviewid th {
+    min-width: 7vw;
+    max-width: 7vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.right table#tableview td:nth-child(1), div.main div.right table#tableview th:nth-child(1) {
+    min-width: 19.1vw;
+    max-width: 19.1vw;
+}
+
+div.main div.left table#tablehistory td, div.main div.left table#tablehistory th, div.main div.left table#tablehistory td:last-child div {
+    min-width: 12.2vw;
+    max-width: 12.2vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+div.main div.left table#tablehistory td:last-child, div.main div.left table#tablehistory th:last-child {
+    min-width: 16.7vw;
+    max-width: 16.7vw;
+}
+
+table.collapse#tableviewid td, table.collapse#tableviewid th {
+    border-collapse: collapse;
+    height: 50%;
+}
+
+@media screen and (max-width: 800px) {
+
+    div.main div.right table#tableview td, div.main div.right table#tableview th, div.main div.right table#tableviewid td, div.main div.right table#tableviewid th {
+        min-width: 16.584vw;
+        max-width: 16.584vw;
+    }
+
+    div.main div.right table#tableview td:nth-child(1), div.main div.right table#tableview th:nth-child(1) {
+        min-width: 40.448vw;
+        max-width: 40.448vw;
+    }
+
+    div.main div.left table#tablehistory td, div.main div.left table#tablehistory th, div.main div.left table#tablehistory td:last-child div {
+        min-width: 27.4vw;
+        max-width: 27.4vw;
+    }
+
+    div.main div.left table#tablehistory td:last-child, div.main div.left table#tablehistory th:last-child {
+        min-width: 36.4vw;
+        max-width: 36.4vw;
+    }
+
+}

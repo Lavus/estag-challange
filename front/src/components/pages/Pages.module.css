@@ -1,0 +1,102 @@
+.main{
+    padding-top: 1vh;
+    width: 100vw;
+    height: 94vh;
+}
+
+div.main div.left div.scroll, div.main div.right div.scroll{
+    overflow:hidden;
+    overflow-y: scroll;
+    width: 45.9vw;
+    height: 90vh;
+}
+
+div.main div.right{
+    padding: 1vh 2vw 2vh;
+    float: right;
+    position: static;
+    width: 45.9vw;
+    height: 90vh;
+}
+
+div.main div.left{
+    padding: 1vh 2vw 2vh;
+    float: left;
+    position: static;
+    width: 45.9vw;
+    height: 90vh;
+    border-right: 0.2vw solid #DADADA;
+}
+
+div.main div.right div.twenty{
+    padding: 0 0 2vh;
+    position: static;
+    float: right;
+    width: 45.9vw;
+    height: 16vh;
+}
+
+div.main div.right div.eighty{
+    padding: 0 0 2vh;
+    position: static;
+    float: right;
+    width: 45.9vw;
+    height: 70vh;
+}
+
+div.main div.right div.eighty div.scroll {
+    height: 70vh;
+}
+
+div.main div.right div.ten{
+    padding: 0 0 2vh;
+    position: static;
+    float: right;
+    width: 45.9vw;
+    height: 7vh;
+}
+
+@media screen and (max-width: 800px) {
+
+    div.left, div.right {
+        display: none;
+    }
+
+    div.left.show, div.right.show {
+        display: block;
+    }
+
+    div.main{
+        padding-top: 2vh;
+        height: 93vh;
+    }
+
+    div.main div.left{
+        border-right: none;
+    }
+
+    div.main div.right div.scroll, div.main div.left div.scroll, div.main div.right, div.main div.left {
+        width: 96vw;
+        height: 78vh;
+    }
+
+    div.main div.right div.twenty{
+        width: 96vw;
+        height: 13.6vh;
+    }
+
+    div.main div.right div.eighty{
+        width: 96vw;
+        height: 60.4vh;
+    }
+
+    div.main div.right div.eighty div.scroll {
+        height: 60.4vh;
+    }
+
+    div.main div.right div.ten{
+        width: 96vw;
+        height: 5.8vh;
+    }
+
+}
