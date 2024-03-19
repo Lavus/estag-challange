@@ -1,8 +1,10 @@
 <?php
     declare(strict_types=1);
-    function SafeDecrypt(string $encrypted): string {
-        require_once "key/GetKey.php";
-        $key = GetKey();
+    function SafeDecrypt(string $encrypted, string $key = ''): string {
+        if ( $key == '' ){
+            require_once "key/GetKey.php";
+            $key = GetKey();
+        }
         $regexbase64 = '/^([A-Za-z0-9+\/]{4})*([A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}==)?$/';
         if (preg_match($regexbase64,$encrypted)){
             $decoded = base64_decode($encrypted);

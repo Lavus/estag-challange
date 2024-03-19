@@ -41,7 +41,7 @@
                             $names = ["Code","Category","Tax"];
                             echo("<tr>");
                                 for ($index = 0;$index < count($names);$index++) {
-                                    echo ("<th title='".$names[$index]."'>".codifyhtml($names[$index])."</th>");
+                                    echo ("<th title='".$names[$index]."'>".$names[$index]."</th>");
                                 }
                             echo("</tr>");
                             echo("<tr class='last'>");

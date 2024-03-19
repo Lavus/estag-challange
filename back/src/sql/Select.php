@@ -21,6 +21,7 @@
             $sql = "SELECT ".$table.".* FROM ".$table." Where code = ".$code.";";
         }
         $data = array();
+        // return($data);
         try {
             $prepare = $connection ->prepare($sql);
             $prepare->execute();
