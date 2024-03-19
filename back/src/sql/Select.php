@@ -1,7 +1,7 @@
 <?php
     declare(strict_types=1);
-    function SelectSql(string $type, string $table, string $code = '0') {
-        require "ConnectLocalHost.php";
+    function SelectSql(string $type, string $table, string $code = '0'): array {
+        require_once "ConnectLocalHost.php";
         require_once __DIR__."/../security/SafeCrypto.php";
         require_once __DIR__."/../security/CheckValidityCamp.php";
         require_once "Delete.php";
@@ -21,7 +21,6 @@
             $sql = "SELECT ".$table.".* FROM ".$table." Where code = ".$code.";";
         }
         $data = array();
-        // return($data);
         try {
             $prepare = $connection ->prepare($sql);
             $prepare->execute();

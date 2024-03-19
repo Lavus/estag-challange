@@ -1,6 +1,6 @@
 <?php
     declare(strict_types=1);
-    require "connect-localhost.php";
+    require_once "connect-localhost.php";
     require_once "safedecrypto.php";
     require_once "checkcode.php";
     require_once "sql/Select.php";
@@ -29,7 +29,7 @@
                 echo("<div class='textdropleft'><div title='View insert category'>View insert category</div><div class='icon'>&#9776;</div></div>");
                 echo("<div class='textdropright'><div title='View Categories'>View Categories</div><div class='icon hidden'>&#9776;</div></div>");
                 echo("<div class='left'>");
-                var_dump(SelectSql("FullSimple","categories"));
+                var_dump(json_encode(SelectSql("FullSimple","categories")));
                 echo("</div>");
                 echo("<div class='right show'>");
             ?> 

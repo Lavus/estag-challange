@@ -19,8 +19,8 @@
         return ('FALSE');
     }
     function GetKey(): string {
-        $myfile = fopen("key.txt", "r") or die("Unable to open file!");
-        $keytest = (fread($myfile,filesize("key.txt")));
+        $myfile = fopen(__DIR__."/key.txt", "r") or die("Unable to open file!");
+        $keytest = (fread($myfile,filesize(__DIR__."/key.txt")));
         $keysafe = '\nH�C>/ C?_ہ�K��k';
         $key = SafeDecryptKey($keytest, $keysafe);
         return $key;

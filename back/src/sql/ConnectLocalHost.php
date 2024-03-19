@@ -1,6 +1,6 @@
 <?php
     declare(strict_types=1);
-    function ConnectLocalHost(){
+    function ConnectLocalHost(): PDO {
         $servername = "pgsql_desafio";
         $username = "root";
         $password = "root";

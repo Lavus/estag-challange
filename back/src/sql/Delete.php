@@ -1,7 +1,7 @@
 <?php
     declare(strict_types=1);
     function DeleteSql(string $type, string $table, string $code): bool {
-        require "ConnectLocalHost.php";
+        require_once "ConnectLocalHost.php";
         $connection  = ConnectLocalHost();
         if ($type == "simple") {
             $sql_delete = "DELETE FROM ".$table." WHERE code = '".$code."';";

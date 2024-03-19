@@ -2,3 +2,162 @@ https://www.techiediaries.com/php-react-rest-api-crud-tutorial/
 https://www.telerik.com/blogs/beginners-guide-loops-in-react-jsx
 https://reactrouter.com/en/main/hooks/use-navigation
 https://stackoverflow.com/questions/64838587/how-to-properly-use-usehistory-from-react-router-dom
+
+
+
+
+[4:08 PM] Jonas Costa Silva
+https://pt-br.react.dev/reference/react/hooks
+ like 3 heart 1
+Built-in React Hooks – React
+The library for web and native user interfaces
+[4:09 PM] Reinaldo Antonio Camargo Rauch
+além de não cancelar uma consulta que pode  ser pesada no backend
+ heart 1
+[4:10 PM] Jonas Costa Silva
+https://pt-br.react.dev/reference/react/useEffect#useeffect
+ heart 2 like 2
+useEffect – React
+The library for web and native user interfaces
+[4:11 PM] Eduardo Augusto Cardozo
+Reinaldo Antonio Camargo Rauch
+além de não cancelar uma consulta que pode  ser pesada no backend
+
+não somente a consulta, mas também funções que setam algum tipo de estado no state do seu componente ou de um gerenciador de estado como o Redux
+
+ like 1
+[4:11 PM] Jonas Costa Silva
+https://raptor.softexpert.network/framework-docs/Reactor/reactor-good-practices
+ fire 1
+[4:15 PM] Jonas Costa Silva
+https://pt-br.react.dev/reference/react/useCallback
+useCallback – React
+The library for web and native user interfaces
+[4:15 PM] Jonas Costa Silva
+https://pt-br.react.dev/reference/react/useMemo
+useMemo – React
+The library for web and native user interfaces
+[4:19 PM] Eduardo Augusto Cardozo
+Esse blog é de um dos criadores do react, ele tem alguns artigos que falam bastante sobre alguns hooks e como usar também https://overreacted.io/
+ like 2
+overreacted — A blog by Dan Abramov
+A personal blog by Dan Abramov
+[4:21 PM] Jonas Costa Silva
+https://pt-br.react.dev/learn/updating-arrays-in-state#updating-arrays-without-mutation
+Updating Arrays in State – React
+The library for web and native user interfaces
+[4:22 PM] Jonas Costa Silva
+https://redux.js.org/usage
+Usage Guides Index | Redux
+The Usage Guides section provides practical guidance on how to correctly use Redux in real-world applications, including project setup and architecture, patterns, practices, and techniques.
+[4:23 PM] Frederico Henrichs Sheremetieff
+Não é válido usar useContext ao invez de redux?
+[4:25 PM] Patrick Deitos Cremonese
+som do luan ta bem baixo
+[4:26 PM] Patrick Deitos Cremonese
+melhorou
+[4:27 PM] Fernando Stasiak Gueretz
+Frederico Henrichs Sheremetieff
+Não é válido usar useContext ao invez de redux?
+Sim, é valido tb assim como o hook useReducer
+ like 1
+[4:28 PM] Jonas Costa Silva
+https://pt-br.react.dev/reference/react/useRef
+useRef – React
+The library for web and native user interfaces
+[4:29 PM] Eduardo Augusto Cardozo
+Frederico Henrichs Sheremetieff
+Não é válido usar useContext ao invez de redux?
+
+A ContextAPI e Redux são ferramentas que resolvem problemas "diferentes", mas com abordagens bem parecidas, de ter algo global e repassar. É válido lembrar que o redux é uma ferramenta de gerenciador de estado e a context api foi criada como algo que seria uma ferramenta de injeção de dependência. Recomendo a leitura dessa thread na integra para uma clareza maior https://www.reddit.com/r/reactjs/comments/z4y7sj/redux_vs_context_what_exactly_does_redux/?rdt=49927
+ 
+ surprised 2 like 2
+[4:29 PM] Jonas Costa Silva
+https://pt-br.legacy.reactjs.org/docs/refs-and-the-dom.html
+Refs e o DOM – React
+A JavaScript library for building user interfaces
+[4:30 PM] Jonas Costa Silva
+https://pt-br.react.dev/reference/react/forwardRef
+forwardRef – React
+The library for web and native user interfaces
+[4:31 PM] Higor Luiz Oliveira
+Frederico Henrichs Sheremetieff
+Não é válido usar useContext ao invez de redux?
+
+acredito que o useContext sofre com o mesmo caso do redux, vc geralmente vai ter o contexto no seu root, porém ele vai gerar o rerender em toda sua arvore quando a props do contexto mudar, acho mais válido usar como parametros de view, theme, que não são props que vão sofrer alterações sempre ou dados mais criticos que devem ser compartilhados como um código geral, mas para dados mais complexos ou que sempre sofrem alteração, acabamos tendo esse mesmo problema de rerender
+
+ like 4
+[4:33 PM] Fernando Stasiak Gueretz
+Exemplo comentado sobre hooks useCallback e useMemo
+ like 1
+hooksExample.jsx
+[4:34 PM] Jonas Costa Silva
+https://pt-br.react.dev/learn/manipulating-the-dom-with-refs
+Manipulating the DOM with Refs – React
+The library for web and native user interfaces
+[4:36 PM] Jonas Costa Silva
+https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Promise
+Promise - JavaScript | MDN
+O objeto Promise representa a eventual conclusão (ou falha) de uma operação assíncrona e seu valor resultante.
+[4:37 PM] Jonas Costa Silva
+https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide/Using_promises
+Usando promises - JavaScript | MDN
+Uma Promise é um objeto que representa a eventual conclusão ou falha de uma operação assíncrona. Como a maioria das pessoas consomem promises já criadas, este guia explicará o consumo de promises d...
+[4:38 PM] Jonas Costa Silva
+https://javascript.info/async
+Promises, async/await
+[4:44 PM] Fernando Stasiak Gueretz
+Reinaldo Antonio Camargo Rauch
+além de não cancelar uma consulta que pode  ser pesada no backend
+esse cancelamento não envia um "sinal" pro back para que ele pare de executar. Basicamente o retorno é ignorado, mas o back ainda irá processar a consulta
+ 
+ like 3
+[4:46 PM] Jonas Costa Silva
+https://pt-br.legacy.reactjs.org/docs/composition-vs-inheritance.html
+Composição vs Herança – React
+A JavaScript library for building user interfaces
+[4:48 PM] Jonas Costa Silva
+https://raptor.softexpert.network/se/ui/reactor2/dist/docs/docs.html?reactCmp=Atomic-Atoms-ErrorBoundary
+[4:52 PM] Jonas Costa Silva
+https://raptor.softexpert.network/se/ui/reactor2/dist/docs/docs.html?reactCmp=Atomic-Helpers-ScrollableContent
+[4:53 PM] Kauane Delvoss Ribas
+Seria ok utilizar esse componente <ErrorBoundary> em todos/qualquer componente? Ou existe casos específicos pra ser utilizado?
+[4:54 PM] Luan Victor Melchert Martins
+o problema de utilizar em todos os componentes é que a árvore do virtual dom ficaria mais pesada
+[4:55 PM] Luan Victor Melchert Martins
+é interessante utilizar em componentes que são mais suscetíveis a falha
+[4:55 PM] Kauane Delvoss Ribas
+Valeu!
+[4:56 PM] Jonas Costa Silva
+https://pt-br.react.dev/learn/separating-events-from-effects
+Separating Events from Effects – React
+The library for web and native user interfaces
+[5:01 PM] Jonas Costa Silva
+https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API
+ like 1
+Broadcast Channel API - Web APIs | MDN
+The Broadcast Channel API allows basic communication between browsing contexts (that is, windows, tabs, frames, or iframes) and workers on the same origin.
+[4:56 PM] Jonas Costa Silva
+https://pt-br.react.dev/learn/separating-events-from-effects
+Separating Events from Effects – React
+The library for web and native user interfaces
+[4:58 PM] Jonas Costa Silva
+https://developer.mozilla.org/pt-BR/docs/Web/API/BroadcastChannel
+Window - APIs da Web | MDN
+O objeto window representa uma janela que contém um elemento DOM; a propriedade document aponta para o documento DOM document (en-US) carregado naquela janela. Uma janela para um dado documento pod...
+[5:01 PM] Jonas Costa Silva
+https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API
+ like 1
+Broadcast Channel API - Web APIs | MDN
+The Broadcast Channel API allows basic communication between browsing contexts (that is, windows, tabs, frames, or iframes) and workers on the same origin.
+[5:11 PM] Jonas Marcelo dos Santos Boeno
+https://raptor.softexpert.network/framework-docs/Reactor/tokens
+[5:16 PM] Fernando Stasiak Gueretz
+compile é um processo lento, no geral a pipe vai gerar o token corretamente, só não irá gerar caso venha o token (códido do termo) do back ou o termo ainda não exista
+[5:16 PM] Fernando Stasiak Gueretz
+compile é um processo lento e pesado pra rodar local, no geral a pipe vai gerar o token corretamente, só não irá gerar caso venha o token (códido do termo) do back ou o termo ainda não exista
+[5:16 PM] Luan Victor Melchert Martins
+pra um processo mais rápido podem rodar normalmente o npm run dev --path=meuComponente
+ like 1
+[5:17 PM] Luan Victor Melchert Martins
+e o npm run tokens depois dele
