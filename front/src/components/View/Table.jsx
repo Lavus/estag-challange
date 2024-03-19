@@ -1,31 +1,25 @@
-import styles from './Table.module.css'
+import styles from './css/Table.module.css'
 
 function Table( { tableid, tablenames, valueid, tablesize } ) {
 
     function ShowTh(){
-        const tr = []
-        const ths = []
-        {tablenames.map((name, index) => (
-            ths.push(<th key={index}>{name}</th>)
-        ))}
-        tr.push(
-            <tr key='first'>{ths}</tr>
+        return (
+            <tr key='first'>
+                {tablenames.map((name, index) => (
+                    <th key={index}>{name}</th>
+                ))}
+            </tr>
         )
-        return (tr)
     }
 
     function ShowLastTd(){
-        const tr = []
-        const tds = []
-        for ( let index = 0; index < tablenames.length; index ++ ){
-            tds.push(
-                <td></td>
-            )
-        }
-        tr.push(
-            <tr key='last' className={styles.last}>{tds}</tr>
+        return (
+            <tr key='last' className={styles.last}>
+                {tablenames.map((name, index) => (
+                    <td key={index}></td>
+                ))}
+            </tr>
         )
-        return (tr)
     }
 
     return (
@@ -34,12 +28,7 @@ function Table( { tableid, tablenames, valueid, tablesize } ) {
                 <tbody>
                     {ShowTh()}
                     {ShowLastTd()}
-            {/* $names = ["Code","Category","Tax"];
-            echo("<tr>");
-                for ($index = 0;$index < count($names);$index++) {
-                    echo ("<th title='".$names[$index]."'>".codifyhtml($names[$index])."</th>");
-                }
-            echo("</tr>");
+            {/* 
             $sql = "SELECT categories.code, categories.name, categories.tax FROM categories ORDER BY code;";
             try {
                 $prep = $conn->prepare($sql);
@@ -79,11 +68,6 @@ function Table( { tableid, tablenames, valueid, tablesize } ) {
                 error_log($sql . "<br>" . $e->getMessage());
             }
             $conn = null;
-            echo("<tr class='last'>");
-                for ($index = 0;$index < count($names);$index++) {
-                    echo ("<td></td>");
-                }
-            echo("</tr>");
         ?> */}
                 </tbody>
             </table>

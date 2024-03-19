@@ -1,2 +1,4 @@
-
 https://www.techiediaries.com/php-react-rest-api-crud-tutorial/
+https://www.telerik.com/blogs/beginners-guide-loops-in-react-jsx
+https://reactrouter.com/en/main/hooks/use-navigation
+https://stackoverflow.com/questions/64838587/how-to-properly-use-usehistory-from-react-router-dom

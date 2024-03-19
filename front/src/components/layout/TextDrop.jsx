@@ -1,4 +1,4 @@
-import styles from './TextDrop.module.css'
+import styles from './css/TextDrop.module.css'
 
 function TextDrop({leftdescription, rightdescription, iconleft, iconright}) {
   return (

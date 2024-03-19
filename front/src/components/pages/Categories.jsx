@@ -1,7 +1,7 @@
 import Table from '../View/Table'
 import TextDrop from '../layout/TextDrop'
-import styles from './Pages.module.css'
-import './Categories.module.css'
+import styles from './css/Pages.module.css'
+import './css/Categories.module.css'
 
 function Categories () {
     let leftdescriptionpage = 'View insert category'
@@ -27,10 +27,12 @@ function Categories () {
                     </form>
                 </div>
                 <div className = {rightpage ? (`${styles.right} ${styles[rightpage]}`) : styles.right}>
-                    <Table 
-                        tableid = 'tablecategories'
-                        tablenames = {["Code","Category","Tax"]}
-                    />
+                    <div className={styles.scroll}>
+                        <Table 
+                            tableid = 'tablecategories'
+                            tablenames = {["Code","Category","Tax"]}
+                        />
+                    </div>
                 </div>
             </div>
         </>

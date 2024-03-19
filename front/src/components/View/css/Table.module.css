@@ -7,11 +7,6 @@ table.collapse {
     height: 100%;
 }
 
-table.collapse#tableviewid td, table.collapse#tableviewid th {
-    border-collapse: collapse;
-    height: 50%;
-}
-
 table.collapse td {
     color: #8D8D8D;
 }
