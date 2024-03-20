@@ -4,14 +4,31 @@ import styles from './css/Pages.module.css'
 import Loading from '../layout/Loading'
 import { useState, useEffect } from 'react'
 import './css/Categories.module.css'
-import FetchSelect from './functions/FetchSelect'
 
 function Categories () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [categories, setCategories] = useState([])
     const selectValues =  {'type':'FullSimple', 'table':'categories', 'code':'0'}
+
     useEffect(() => {
-        FetchSelect(categories,removeLoading,selectValues)
+    // Para ver o loading
+        setTimeout(
+            () =>
+                fetch('http://localhost/ports/SelectPort.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT':'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='
+                    },
+                    body: JSON.stringify(selectValues)
+                })
+                .then((resp) => resp.json())
+                .then((data) => {
+                    setCategories(data)
+                    setRemoveLoading(true)
+                }),
+            10,
+        )
     }, [])
 
     let leftDescriptionPage = 'View insert category'

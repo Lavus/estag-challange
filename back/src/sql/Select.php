@@ -39,9 +39,10 @@
                                 if (($type == "FullSimple") || ($type == "SingleSimple")) {
                                     if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) ) {
                                         $item = "$".number_format(floatval($item), 2, '.', '');
-                                    } else if ( str_contains($camp,"amount") ) {
                                     } else if ( str_contains($camp,"tax") ) {
+                                        $item = $item.'%';
                                     } else if ( str_contains($camp,"price") ) {
+                                        $item = "$".number_format(floatval($item), 2, '.', '');
                                     }
                                 }
                                 $temporary[$camp] = $item;

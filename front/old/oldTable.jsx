@@ -39,6 +39,7 @@ function Table( { tableid, tableNames, table, tableSize, first, firstButton, las
                 {Object.keys(table).map((keyvalue, indexkey) => (
                     <tr key={'middle'+indexkey}>
                         {Object.keys(table[keyvalue]).map((camp, indexcamp) => (
+                            // <td key={indexcamp} title={DecodeHtml(table[key][camp])} dangerouslySetInnerHTML={{ __html: table[key][camp] }}/>
                             ((first=='none' && last=='none') ? 
                                 ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]))
                             :
