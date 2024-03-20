@@ -198,19 +198,7 @@ input.quarter{
 
 
 
-.extrabt.delete:hover{
-  color: rgb(139, 12, 12);
-}
 
-.extrabt{
-  background-color: #6A65FE;
-  border-radius: 200px;
-  text-align: center;
-  font-weight: bold;
-  border: none;
-  color: black;
-  float: right;
-}
 
 @media screen and (max-width: 800px) {
   div.left, div.right {
@@ -227,9 +215,6 @@ input.quarter{
   }
   .quarter {
       width: 23vw;
-  }
-  .extrabt.alter, .extrabt.view{
-      font-size: 2vh;
   }
   .dropdown.full .dropbtn .dropdowntext {
       width: 90vw;

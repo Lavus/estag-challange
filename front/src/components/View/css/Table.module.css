@@ -61,30 +61,48 @@ table.collapse.half{
     margin-left: 12.1vw
 }
 
-div.main div.right table td:last-child button, div.main div.left table td:last-child button{
+td:last-child button{
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
 }
 
-div.main div.right table td:last-child button, div.main div.left table td:last-child button, div.main div.right table td:first-child button, div.main div.left table td:first-child button{
+td:last-child button, td:first-child button{
     min-width: 4.5vw;
     max-width: 4.5vw;
 }
 
-div.main div.right table td:last-child div, div.main div.left table td:last-child div, div.main div.right table td:first-child div, div.main div.left table td:first-child div{
+td:last-child div, td:first-child div{
     float: left;
+}
+
+.extrabt.delete:hover{
+    color: rgb(139, 12, 12);
+}
+
+.extrabt{
+    background-color: #6A65FE;
+    border-radius: 200px;
+    text-align: center;
+    font-weight: bold;
+    border: none;
+    color: black;
+    float: right;
 }
 
 @media screen and (max-width: 800px) {
 
-    div.main div.right table td:last-child button, div.main div.left table td:last-child button, div.main div.right table td:first-child button, div.main div.left table td:first-child button{
+    td:last-child button, td:first-child button{
         min-width: 9vw;
         max-width: 9vw;
     }
 
     table.collapse.half{
         margin-left: 23.864vw
+    }
+
+    .extrabt.alter, .extrabt.view{
+        font-size: 2vh;
     }
 
 }

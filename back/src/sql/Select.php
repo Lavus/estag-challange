@@ -31,12 +31,20 @@
                     $temporary = array();
                     foreach($list_of_camps as $camp) {
                         if ( str_contains($camp,"code") ){
-                            $temporary[$camp] = [$row[$camp],$row[$camp]];
+                            $temporary[$camp] = $row[$camp];
                         } else {
                             $item = SafeCrypto($row[$camp],"Decrypt");
                             $decoded_item = html_entity_decode($item);
                             if ( CheckValidityCamp($item,$decoded_item,$camp) ){
-                                $temporary[$camp] = [$item,$decoded_item];
+                                if (($type == "FullSimple") || ($type == "SingleSimple")) {
+                                    if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) ) {
+                                        $item = "$".number_format(floatval($item), 2, '.', '');
+                                    } else if ( str_contains($camp,"amount") ) {
+                                    } else if ( str_contains($camp,"tax") ) {
+                                    } else if ( str_contains($camp,"price") ) {
+                                    }
+                                }
+                                $temporary[$camp] = $item;
                             } else {
                                 DeleteSql('simple',$table,$row['code']);
                                 $deleted = TRUE;
