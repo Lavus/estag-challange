@@ -1,4 +1,4 @@
-div.main div.right table#tablecart td, div.main div.right table#tablecart th, div.main div.right table#tablecart td:last-child div, div.main div.right table#tablecart td:first-child div {
+.home td, .home th, .home td:last-child div, .home td:first-child div {
     min-width: 6vw;
     max-width: 6vw;
     white-space: nowrap; 
@@ -6,39 +6,39 @@ div.main div.right table#tablecart td, div.main div.right table#tablecart th, di
     text-overflow: ellipsis;
 }
 
-div.main div.right table#tablecart td:nth-child(1), div.main div.right table#tablecart th:nth-child(1) {
+.home td:nth-child(1), .home th:nth-child(1) {
     min-width: 17.6vw;
     max-width: 17.6vw;
 }
 
-div.main div.right table#tablecart td:first-child div {
+.home td:first-child div {
     min-width: 13.1vw;
     max-width: 13.1vw;
 }
 
-div.main div.right table#tablecart td:last-child, div.main div.right table#tablecart th:last-child {
+.home td:last-child, .home th:last-child {
     min-width: 10.5vw;
     max-width: 10.5vw;
 }
 
 @media screen and (max-width: 800px) {
 
-    div.main div.right table#tablecart td, div.main div.right table#tablecart th, div.main div.right table#tablecart td:last-child div {
+    .home td, .home th, .home td:last-child div {
         min-width: 13.584vw;
         max-width: 13.584vw;
     }
 
-    div.main div.right table#tablecart td:nth-child(1), div.main div.right table#tablecart th:nth-child(1) {
+    .home td:nth-child(1), .home th:nth-child(1) {
         min-width: 40.448vw;
         max-width: 40.448vw;
     }
 
-    div.main div.right table#tablecart td:first-child div {
+    .home td:first-child div {
         min-width: 31.448vw;
         max-width: 31.448vw;
     }
 
-    div.main div.right table#tablecart td:last-child, div.main div.right table#tablecart th:last-child {
+    .home td:last-child, .home th:last-child {
         min-width: 22.584vw;
         max-width: 22.584vw;
     }

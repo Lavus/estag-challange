@@ -1,5 +1,4 @@
-function FetchSelect(categories,removeLoading,selectValues){
-
+function FetchSelect(setTable,setRemoveLoading,selectValues){
     fetch('http://localhost/ports/SelectPort.php', {
         method: 'POST',
         headers: {
@@ -10,7 +9,7 @@ function FetchSelect(categories,removeLoading,selectValues){
     })
     .then((resp) => resp.json())
     .then((data) => {
-        setCategories(data)
+        setTable(data)
         setRemoveLoading(true)
     })
 

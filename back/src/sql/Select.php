@@ -37,12 +37,10 @@
                             $decoded_item = html_entity_decode($item);
                             if ( CheckValidityCamp($item,$decoded_item,$camp) ){
                                 if (($type == "FullSimple") || ($type == "SingleSimple")) {
-                                    if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) ) {
-                                        $item = "$".number_format(floatval($item), 2, '.', '');
+                                    if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) || ( str_contains($camp,"price") ) ) {
+                                        $item = $item = SafeCrypto("$".number_format(floatval($decoded_item), 2, '.', ''),'Html');
                                     } else if ( str_contains($camp,"tax") ) {
                                         $item = $item.'%';
-                                    } else if ( str_contains($camp,"price") ) {
-                                        $item = "$".number_format(floatval($item), 2, '.', '');
                                     }
                                 }
                                 $temporary[$camp] = $item;
