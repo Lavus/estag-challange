@@ -9,7 +9,16 @@ import FetchSelect from './functions/FetchSelect'
 function Products () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [products, setProducts] = useState([])
-    const selectValues =  {'type':'FullSimple', 'table':'products', 'code':'0'}
+    const selectValues =  {
+        'type':'SimpleForeign',
+        'table':'products',
+        'code':'0',
+        'camps':['code','name','amount','price'],
+        'innerCamps':['name'],
+        'innerCampsAlias':['category_name'],
+        'innerTable':'categories',
+        'foreignKey':'category_code'
+    }
     useEffect(() => {
         FetchSelect(setProducts,setRemoveLoading,selectValues)
     }, [])

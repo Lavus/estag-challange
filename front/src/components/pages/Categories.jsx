@@ -9,7 +9,12 @@ import FetchSelect from './functions/FetchSelect'
 function Categories () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [categories, setCategories] = useState([])
-    const selectValues =  {'type':'FullSimple', 'table':'categories', 'code':'0'}
+    const selectValues =  {
+        'type':'FullSimple',
+        'table':'categories',
+        'code':'0',
+        'camps':['code','name','tax']
+    }
     useEffect(() => {
         FetchSelect(setCategories,setRemoveLoading,selectValues)
     }, [])
