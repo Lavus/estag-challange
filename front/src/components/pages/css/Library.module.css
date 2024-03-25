@@ -24,7 +24,7 @@
     max-width: 16.7vw;
 }
 
-table.collapse#tableviewID td, table.collapse#tableviewID th {
+.libraryViewID td, .libraryViewID th {
     border-collapse: collapse;
     height: 50%;
 }

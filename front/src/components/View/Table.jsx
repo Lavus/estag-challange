@@ -1,9 +1,9 @@
 import styles from './css/Table.module.css'
 import PropTypes from 'prop-types'
 import DecodeHtml from './DecodeHtml'
+import { useState } from 'react'
 
-function Table( { tableid, tableNames, table, tableSize, first, firstButton, last, lastButton, tableStyle} ) {
-
+function Table( { tableid, tableNames, campsNames, table, tableSize, first, firstButton, last, lastButton, tableStyle} ) {
     function ShowTh(){
         return (
             <tr key='first'>
@@ -37,16 +37,24 @@ function Table( { tableid, tableNames, table, tableSize, first, firstButton, las
         return (
             <>
                 {Object.keys(table).map((keyvalue, indexkey) => (
-                    <tr key={'middle'+indexkey}>
-                        {Object.keys(table[keyvalue]).map((camp, indexcamp) => (
-                            ((first=='None' && last=='None') ? 
+                    <tr key={'middle'+indexkey} className={((tableid == 'tablecart') && table[keyvalue]['code'][1] == "Broken") && (styles.rederror)}>
+                        {campsNames.map((camp, indexcamp) => (
+                            ((first=='None' && last=='None') ?
                                 ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]))
                             :
                                 ((first!='None' && indexcamp==0) ?
-                                    ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),first,DecodeHtml(firstButton),table[keyvalue]["code"])
+                                    ((tableid == 'tablecart') ?
+                                        ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),first,DecodeHtml(firstButton),table[keyvalue]["code"][0])
+                                    :
+                                        ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),first,DecodeHtml(firstButton),table[keyvalue]["code"])
+                                    )
                                 :
                                     ((last!='None' && indexcamp==((Object.keys(table[keyvalue]).length)-1)) ?
-                                        ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),last,DecodeHtml(lastButton),table[keyvalue]["code"])
+                                        ((tableid == 'tablecart') ?
+                                            ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),last,DecodeHtml(lastButton),table[keyvalue]["code"][0])
+                                        :
+                                            ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),last,DecodeHtml(lastButton),table[keyvalue]["code"])
+                                        )
                                     :
                                         ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]))
                                     )
@@ -75,7 +83,7 @@ function Table( { tableid, tableNames, table, tableSize, first, firstButton, las
                 <tbody>
                     {ShowTh()}
                     {ShowContentTd()}
-                    {ShowLastTd()}
+                    {!(tableSize) && (ShowLastTd())}
                 </tbody>
             </table>
         </>

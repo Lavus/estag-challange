@@ -51,9 +51,10 @@ function Products () {
                     <div className={styles.scroll}>
                         {removeLoading ? (
                             <>
-                                <Table 
+                                <Table
                                     tableid = 'tableproducts'
                                     tableNames = {['Code','Product','Amount','Price','Category']}
+                                    campsNames = {['code','name','amount','price','category_name']}
                                     table = {products}
                                     first = 'alter'
                                     last = 'delete'

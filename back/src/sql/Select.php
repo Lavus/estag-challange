@@ -7,6 +7,7 @@
         require_once "Delete.php";
         require_once "functions/GenerateStringCampsSql.php";
         require_once "functions/GenerateStringTablesSql.php";
+        require_once "functions/GenerateFullCasesHome.php";
         $connection  = ConnectLocalHost();
         if ( count($type) == 1 ) {
             $stringCamps = GenerateStringCampsSql(array($table),array($camps),array($campsAlias));
@@ -21,11 +22,13 @@
             $stringTablesSql = rtrim($stringTablesSql, ",");
             if ($type[0] == "FullSimple"){
                 $sql = "SELECT ".$stringCampsSql." FROM ".$table." ORDER BY ".$table.".code;";
+            } else if ($type[0] == "SimpleWhere"){
+                $sql = "SELECT ".$stringCampsSql." FROM ".$stringTablesSql." WHERE ".$where;
             } else if ($type[0] == "SingleSimple"){
                 $sql = "SELECT ".$stringCampsSql." FROM ".$table." Where code = ".$code." ORDER BY ".$table.".code;";
             } else if ($type[0] == "SimpleForeign"){
                 $sql = "SELECT ".$stringCampsSql." FROM ".$stringTablesSql." WHERE ".$table.".".$foreignKey." = ".$innerTables[0].".code ORDER BY ".$table.".code;";
-            } else if ($type[0] == "FullCases"){            
+            } else if ( ($type[0] == "FullCases") || ($type[0] == "FullCasesHome") ){            
                 $stringCaseSql = "";
                 for ($index = 0; $index < count($caseVerifications); $index++){
                     $caseSelect = "SELECT ".GenerateStringCampsSql($caseVerificationTablesAlias[$index],array($caseVerifications[$index]),$caseVerifications[$index]);
@@ -42,7 +45,9 @@
                 $stringCaseSql  = rtrim($stringCaseSql, ",");
                 $stringCampsSql = $stringCampsSql.",".$stringCaseSql;
                 $stringCampsSql = rtrim($stringCampsSql, ",");
-                
+                if ($type[0] == "FullCases"){
+                    $campsSql = array_merge($campsSql,$caseVerificationAlias);
+                }
                 $sql = "SELECT ".$stringCampsSql." FROM ".$stringTablesSql." WHERE ".$where;
             }
         } else {
@@ -57,24 +62,30 @@
                 foreach($result as $row) {
                     $deleted = FALSE;
                     $temporary = array();
-                    foreach($campsSql as $camp) {
-                        if ( str_contains($camp,"code") ){
-                            $temporary[$camp] = $row[$camp];
-                        } else {
-                            $item = SafeCrypto($row[$camp],"Decrypt");
-                            $decoded_item = html_entity_decode($item);
-                            if ( CheckValidityCamp($item,$decoded_item,$camp) ){
-                                if ( ($type[0] == "FullSimple") || ($type[0] == "SingleSimple") || ($type[0] == "SimpleForeign") ) {
-                                    if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) || ( str_contains($camp,"price") ) ) {
-                                        $item = $item = SafeCrypto("$".number_format(floatval($decoded_item), 2, '.', ''),'Html');
-                                    } else if ( str_contains($camp,"tax") ) {
-                                        $item = $item.'%';
-                                    }
-                                }
-                                $temporary[$camp] = $item;
+                    if ( $type[0] == "FullCasesHome" ) {
+                        $resultTemporary = GenerateFullCasesHome($row);
+                        $deleted = $resultTemporary[0];
+                        $temporary = $resultTemporary[1];
+                    } else {
+                        foreach($campsSql as $camp) {
+                            if ( str_contains($camp,"code") ){
+                                $temporary[$camp] = $row[$camp];
                             } else {
-                                DeleteSql('simple',$table,$row['code']);
-                                $deleted = TRUE;
+                                $item = SafeCrypto($row[$camp],"Decrypt");
+                                $decoded_item = html_entity_decode($item);
+                                if ( CheckValidityCamp($item,$decoded_item,$camp) ){
+                                    if ( ($type[0] == "FullSimple") || ($type[0] == "SingleSimple") || ($type[0] == "SimpleForeign") || ($type[0] == "FullCases") || ($type[0] == "SimpleWhere") ) {
+                                        if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) || ( str_contains($camp,"price") ) ) {
+                                            $item = SafeCrypto("$".number_format(floatval($decoded_item), 2, '.', ''),'Html');
+                                        } else if ( str_contains($camp,"tax") ) {
+                                            $item = $item.'%';
+                                        }
+                                    }
+                                    $temporary[$camp] = $item;
+                                } else {
+                                    DeleteSql('simple',$table,$row['code']);//need work
+                                    $deleted = TRUE;
+                                }
                             }
                         }
                     }
