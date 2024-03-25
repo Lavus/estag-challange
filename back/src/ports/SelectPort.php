@@ -20,25 +20,30 @@
     if ($method == 'POST'){
         if (!empty($_SERVER['HTTP_I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT'])) {
             if ($_SERVER['HTTP_I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT'] == 'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='){
-                $json = file_get_contents('php://input');
+                $json = trim(file_get_contents('php://input'));
                 $data = json_decode($json,true);
-                error_log($data['code']);
-                if ( (!empty($data['type'])) && (!empty($data['table'])) && (isset($data['code'])) && (!empty($data['camps'])) ) {
-                    if ( ($data['type'] == "FullSimple") || ($data['type'] == "SingleSimple") ) {
-                        echo(json_encode(SelectSql(strval($data['type']),strval($data['table']),strval($data['code']),$data['camps'])));
-                    } else if ( $data['type'] == "SimpleForeign" ) {
-                        if ( (!empty($data['innerCamps'])) && (!empty($data['innerCampsAlias'])) && (!empty($data['innerTable'])) && (!empty($data['foreignKey'])) ) {
-                            echo( json_encode( SelectSql( strval($data['type']), strval($data['table']), strval($data['code']), $data['camps'], $data['innerCamps'], $data['innerCampsAlias'], strval($data['innerTable']), strval($data['foreignKey']) ) ) );
-                        } else {
-                            echo(json_encode(array()));
-                        }
-                    } else if ( $data['type'] == "FullCases" ) {
-                        if ( (isset($data['innerCamps'])) && (isset($data['innerCampsAlias'])) && (isset($data['innerTable'])) && (isset($data['foreignKey'])) && (isset($data['where'])) && (!empty($data['caseVerifications'])) && (!empty($data['caseVerificationTables'])) && (!empty($data['caseVerificationTablesAlias'])) && (!empty($data['caseVerificationWheres'])) && (!empty($data['caseVerificationParameters'])) && (!empty($data['caseVerificationValues'])) && (!empty($data['caseVerificationValueTables'])) && (!empty($data['caseVerificationValueTablesAlias'])) && (!empty($data['caseVerificationValueWheres'])) && (!empty($data['caseVerificationElse'])) && (!empty($data['caseVerificationAlias'])) ) {
-                            echo( json_encode( SelectSql( strval($data['type']), strval($data['table']), strval($data['code']), $data['camps'], $data['innerCamps'], $data['innerCampsAlias'], strval($data['innerTable']), strval($data['foreignKey']), strval($data['where']), $data['caseVerifications'], $data['caseVerificationTables'], $data['caseVerificationTablesAlias'], $data['caseVerificationWheres'], $data['caseVerificationParameters'], $data['caseVerificationValues'], $data['caseVerificationValueTables'], $data['caseVerificationValueTablesAlias'], $data['caseVerificationValueWheres'], $data['caseVerificationElse'], $data['caseVerificationAlias'] ) ) );
-                        } else {
-                            echo(json_encode(array()));
-                        }
-                    }                    
+                if ( (!empty($data['type'])) && (!empty($data['table'])) && (isset($data['code'])) && (!empty($data['camps'])) && (!empty($data['campsAlias'])) ) {
+                    if (count($data['type']) == 1){
+                        if ( ($data['type'][0] == "FullSimple") || ($data['type'][0] == "SingleSimple") ) {
+                            echo( json_encode( SelectSql( $data['type'], strval($data['table']), strval($data['code']), $data['camps'], $data['campsAlias'] ) ) );
+                        } else if ( $data['type'][0] == "SimpleForeign" ) {
+                            if ( (!empty($data['innerCamps'])) && (!empty($data['innerCampsAlias'])) && (!empty($data['innerTables'])) && (!empty($data['foreignKey'])) ) {
+                                echo( json_encode( SelectSql( $data['type'], strval($data['table']), strval($data['code']), $data['camps'], $data['campsAlias'], $data['innerCamps'], $data['innerCampsAlias'], $data['innerTables'], strval($data['foreignKey']) ) ) );
+                            } else {
+                                echo(json_encode(array()));
+                            }
+                        } else if ( $data['type'][0] == "FullCases" ) {
+                            if ( (isset($data['innerCamps'])) && (isset($data['innerCampsAlias'])) && (isset($data['innerTables'])) && (isset($data['foreignKey'])) && (isset($data['where'])) && (!empty($data['caseVerifications'])) && (!empty($data['caseVerificationTables'])) && (!empty($data['caseVerificationTablesAlias'])) && (!empty($data['caseVerificationWheres'])) && (!empty($data['caseVerificationParameters'])) && (!empty($data['caseVerificationValues'])) && (!empty($data['caseVerificationValueTables'])) && (!empty($data['caseVerificationValueTablesAlias'])) && (!empty($data['caseVerificationValueWheres'])) && (!empty($data['caseVerificationElse'])) && (!empty($data['caseVerificationAlias'])) ) {
+                                echo( json_encode( SelectSql( $data['type'], strval($data['table']), strval($data['code']), $data['camps'], $data['campsAlias'], $data['innerCamps'], $data['innerCampsAlias'], $data['innerTables'], strval($data['foreignKey']), strval($data['where']), $data['caseVerifications'], $data['caseVerificationTables'], $data['caseVerificationTablesAlias'], $data['caseVerificationWheres'], $data['caseVerificationParameters'], $data['caseVerificationValues'], $data['caseVerificationValueTables'], $data['caseVerificationValueTablesAlias'], $data['caseVerificationValueWheres'], $data['caseVerificationElse'], $data['caseVerificationAlias'] ) ) );
+                            } else {
+                                echo(json_encode(array()));
+                            }
+                        }                    
+                    } else if ( (count($data['type']) == 2) && ($data['type'][1] == "TooComplex") ) {
+                        echo( json_encode( SelectSql( $data['type'] ) ) );
+                    } else {
+                        echo(json_encode(array()));
+                    }
                 } else {
                     echo(json_encode(array()));
                 }

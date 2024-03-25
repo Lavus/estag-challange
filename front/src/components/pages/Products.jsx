@@ -10,13 +10,14 @@ function Products () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [products, setProducts] = useState([])
     const selectValues =  {
-        'type':'SimpleForeign',
+        'type':['SimpleForeign'],
         'table':'products',
         'code':'0',
-        'camps':['code','name','amount','price'],
-        'innerCamps':['name'],
-        'innerCampsAlias':['category_name'],
-        'innerTable':'categories',
+        'camps':[['code'],['name'],['amount'],['price']],
+        'campsAlias':['code','name','amount','price'],
+        'innerCamps':[[['name']]],
+        'innerCampsAlias':[['category_name']],
+        'innerTables':['categories'],
         'foreignKey':'category_code'
     }
     useEffect(() => {
