@@ -1,7 +1,6 @@
 import styles from './css/Table.module.css'
 import PropTypes from 'prop-types'
 import DecodeHtml from './DecodeHtml'
-import { useState } from 'react'
 
 function Table( { tableid, tableNames, campsNames, table, tableSize, first, firstButton, firstButtonFunction, last, lastButton, lastButtonFunction, tableStyle} ) {
     function ShowTh(){
@@ -14,7 +13,7 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
         )
     }
 
-    function ShowSingleTd(simpleKey,value,type = 'none',buttonText = 'none',id = 'none', buttonFunction = 'none'){
+    function ShowSingleTd(simpleKey,value,type = 'none',buttonText = 'none',id = 'none', buttonFunction = undefined){
         return (
             ((type == 'none') ?
                 <td key={simpleKey} title={value}>

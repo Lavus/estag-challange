@@ -2,122 +2,6 @@ td:hover,th:hover,input:disabled:hover{
   cursor: default;
 }
 
-.dropdown.none:hover .dropbtn, .dropdown.none:hover .dropbtn .dropdowntext, .dropdown.none:hover .dropbtn .positiondropright .arrow {
-  color: #8D8D8D;
-  border-color: #8D8D8D;
-  background-color: #F4F4F4;
-}
-
-.dropdown.none .dropbtn .positiondropright{
-  display: none;
-}
-
-.dropdown.half, .dropdown.full {
-  background-color: #F4F4F4;
-  box-sizing: content-box;
-  padding: 0;
-}
-
-.dropdown .dropbtn {
-  background-color: #F4F4F4;
-  box-sizing: content-box;
-  display: flex;
-}
-
-.dropdown.full .dropbtn .dropdowntext {
-  width: 41.9vw;
-}
-.dropdown.full .dropdown-content, .dropdown.full .dropdown-content div {
-  max-width: 44.9vw;
-  width: 44.9vw;
-}
-
-.dropdown.half .dropbtn .dropdowntext {
-  width: 18.95vw;
-}
-
-.dropdown.half .dropdown-content, .dropdown.half .dropdown-content div {
-  max-width: 21.95vw;
-  width: 21.95vw;
-}
-
-.dropdown .dropbtn .dropdowntext {
-  color: #8D8D8D;
-  padding: 1vh 1vw;
-  margin: 0;
-  box-sizing: border-box;
-  float: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.positiondropright {
-  width: 2vw;
-  padding: 0.65vh 2.5vw 0.65vh 0.5vw;
-  margin: 0;
-  box-sizing: border-box;
-  float: right;
-  color: #8D8D8D;
-}
-
-.dropdown .dropbtn .arrow.adown {
-  border-radius: 0;
-}
-
-.dropdown .dropbtn .dropdowntext.dropdownselected {
-  color: black;
-}
-
-.dropdown-content {
-  max-height: 50vh;
-  display: none;
-  position: absolute;
-  background-color: #F4F4F4;
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  overflow: hidden;
-  overflow-y: scroll;
-}
-
-.dropdown-content div {
-  padding: 1vh 1vw;
-  box-sizing: border-box;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: #555;
-  cursor: default;
-  color: white;
-  box-sizing: border-box;
-}
-
-.dropdown:hover .dropbtn .dropdowntext, .dropdown:hover .dropbtn .dropdowntext.dropdownselected {
-  color: white;
-}
-
-.dropdown:hover .dropbtn div div{
-  border-color: white;
-}
-
-
-.dropdown-content div:hover {
-  background-color: #ddd;
-  cursor: pointer;
-  color: black;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
   width: 100vw;
@@ -133,36 +17,6 @@ table,input,select,button {
 table,input,select,button,div{
   border-radius: 4px;
   border: none;
-}
-
-.bluebold {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #6A65FE;
-  font-weight: bold;
-}
-
-.full {
-  width: 44.9vw;
-  padding: 1vh 1vw;
-  margin: 1vh 0.5vw;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis;
-  box-sizing: border-box;
-}
-
-.half {
-  width: 21.95vw;
-  padding: 1vh 1vw;
-  margin: 1vh 0.5vw;
-  float: left;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis;
-  box-sizing: border-box;
 }
 
 .quarter {
@@ -196,10 +50,6 @@ input.quarter{
   border-radius: 3px;
 }
 
-
-
-
-
 @media screen and (max-width: 800px) {
   div.left, div.right {
       display: none;
@@ -207,61 +57,11 @@ input.quarter{
   div.left.show, div.right.show {
       display: block;
   }
-  .full {
-      width: 95vw;
-  }
-  .half {
-      width: 47vw;
-  }
   .quarter {
       width: 23vw;
   }
-  .dropdown.full .dropbtn .dropdowntext {
-      width: 90vw;
-  }
-  .dropdown.full .dropdown-content, .dropdown.full .dropdown-content div {
-      max-width: 95vw;
-      width: 95vw;
-  }
-  .dropdown.half .dropbtn .dropdowntext {
-      width: 42vw;
-  }
-  .dropdown.half .dropdown-content, .dropdown.half .dropdown-content div {
-      max-width: 47vw;
-      width: 47vw;
-  }
-  .positiondropright {
-      width: 2vw;
-      padding: 0.65vh 4vw 0.65vh 1vw;
-  }
 }
 
-.arrow {
-  border: solid #8D8D8D;
-  border-width: 0 0.4vh 0.4vh 0;
-  display: inline-block;
-  padding: 0.4vh;
-}
-
-.arrow.aright {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-}
-
-.arrow.aleft {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-}
-
-.arrow.aup {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-}
-
-.arrow.adown {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-}
 
 div#alert {
   position: absolute;

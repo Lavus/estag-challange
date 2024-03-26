@@ -12,7 +12,6 @@ function FetchSelect(setTable,setRemoveLoading,selectValues){
         setTable(data)
         setRemoveLoading(true)
     })
-
 }
   
 export default FetchSelect

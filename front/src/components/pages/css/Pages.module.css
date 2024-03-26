@@ -56,6 +56,36 @@ div.main div.right div.ten{
     height: 7vh;
 }
 
+.bluebold {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #6A65FE;
+    font-weight: bold;
+}
+
+.full {
+    width: 44.9vw;
+    padding: 1vh 1vw;
+    margin: 1vh 0.5vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+.half {
+    width: 21.95vw;
+    padding: 1vh 1vw;
+    margin: 1vh 0.5vw;
+    float: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
 @media screen and (max-width: 800px) {
 
     div.left, div.right {
@@ -97,6 +127,14 @@ div.main div.right div.ten{
     div.main div.right div.ten{
         width: 96vw;
         height: 5.8vh;
+    }
+
+    .full {
+        width: 95vw;
+    }
+
+    .half {
+        width: 47vw;
     }
 
 }

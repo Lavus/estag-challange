@@ -4,13 +4,12 @@ import Loading from '../layout/Loading'
 import { useState, useEffect } from 'react'
 import styleLibrary from './css/Library.module.css'
 import styles from './css/Pages.module.css'
-import FetchSelect from './functions/FetchSelect'
-
 
 function Library () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [library, setLibrary] = useState([])
-    const selectValues =  {
+    const [refresh, setRefresh] = useState(false)
+    const [selectValues, setSelectValues] =  useState({
         'type':['SimpleWhere'],
         'table':'orders',
         'code':'0',
@@ -21,10 +20,24 @@ function Library () {
         'innerTables':[],
         'foreignKey':'none',
         'where':'orders.code NOT IN ( SELECT MAX( orders1.code ) FROM orders AS orders1 ) ORDER BY orders.code;'
-    }
+    })
     useEffect(() => {
-        FetchSelect(setLibrary,setRemoveLoading,selectValues)
-    }, [])
+        setRemoveLoading(false)
+        setRefresh(false)
+        fetch('http://localhost/ports/SelectPort.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json',
+                'I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT' : 'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='
+            },
+            body: JSON.stringify(selectValues)
+        })
+        .then((resp) => resp.json())
+        .then((data) => {
+            setLibrary(data)
+            setRemoveLoading(true)
+        })
+    }, [refresh])
 
     const [removeLoadingView, setRemoveLoadingView] = useState(false)
     const [libraryView, setLibraryView] = useState([])
@@ -43,7 +56,19 @@ function Library () {
 
     useEffect(() => {
         setRemoveLoadingView(false) 
-        FetchSelect(setLibraryView,setRemoveLoadingView,selectValuesView)
+        fetch('http://localhost/ports/SelectPort.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json',
+                'I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT' : 'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='
+            },
+            body: JSON.stringify(selectValuesView)
+        })
+        .then((resp) => resp.json())
+        .then((data) => {
+            setLibraryView(data)
+            setRemoveLoadingView(true)
+        })
     }, [selectValuesView])
 
     function ChangeView(e) {
@@ -87,6 +112,11 @@ function Library () {
                 </div>
                 <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
                     {removeLoadingView ? (<>
+                        {libraryView['broken'] && (
+                            setLibraryView([]),
+                            setSelectValuesView({...selectValuesView, code: '0'}),
+                            setRefresh(true)
+                        )}
                         <div className={styles.twenty}>
                                 <>
                                     <Table 
@@ -94,7 +124,7 @@ function Library () {
                                         tableSize = 'half'
                                         tableNames = {['Code','Tax','Total']}
                                         campsNames = {['order_code','value_tax','value_total']}
-                                        table = {libraryView['orders']}
+                                        table = {libraryView['orders'] ? libraryView['orders'] : libraryView}
                                         tableStyle = {styleLibrary.libraryViewID}
                                     />
                                 </>
@@ -106,7 +136,7 @@ function Library () {
                                         tableid = 'tableview'
                                         tableNames = {['Product','Price','Amount','Total']}
                                         campsNames = {['product_name','price','amount','total']}
-                                        table = {libraryView['rows']}
+                                        table = {libraryView['rows'] ? libraryView['rows'] : libraryView}
                                         tableStyle = {styleLibrary.libraryView}
                                     />
                                 </>
