@@ -6,6 +6,7 @@ import styleLibrary from './css/Library.module.css'
 import styles from './css/Pages.module.css'
 import FetchSelect from './functions/FetchSelect'
 
+
 function Library () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [library, setLibrary] = useState([])
@@ -27,23 +28,29 @@ function Library () {
 
     const [removeLoadingView, setRemoveLoadingView] = useState(false)
     const [libraryView, setLibraryView] = useState([])
-    const selectValuesView =  {
-        'type':['SimpleWhere'],
-        'table':'orders',
+    const [selectValuesView, setSelectValuesView] =  useState({
+        'type':['SimpleWhere','tableview'],
+        'table':'order_item',
         'code':'0',
         'camps':[['code'],['product_name'],['amount'],['price'],['order_code']],
         'campsAlias':['code','product_name','amount','price','order_code'],
         'innerCamps':[[['value_total'],['value_tax']]],
         'innerCampsAlias':[['value_total','value_tax']],
         'innerTables':['orders'],
-        'foreignKey':'none',
+        'foreignKey':'order_code',
         'where':'order_item.order_code = orders.code and order_item.order_code IN ( SELECT CASE WHEN ( SELECT MIN( orders1.code ) FROM orders AS orders1 ) <>( SELECT MAX( orders2.code ) FROM orders AS orders2 ) THEN ( SELECT MIN( orders1.code ) FROM orders AS orders1 ) ELSE 0 END AS codeverified ) ORDER BY order_item.code;'
-    }
-    useEffect(() => {
-        FetchSelect(setLibraryView,setRemoveLoadingView,selectValuesView)
-    }, [])
+    })
 
-    
+    useEffect(() => {
+        setRemoveLoadingView(false) 
+        FetchSelect(setLibraryView,setRemoveLoadingView,selectValuesView)
+    }, [selectValuesView])
+
+    function ChangeView(e) {
+        (e) => { e.preventDefault() }
+        setSelectValuesView({...selectValuesView, code: e.target.value})
+    }
+
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Categories'
     let iconLeftPage = ''
@@ -67,10 +74,11 @@ function Library () {
                                 <Table 
                                     tableid = 'tablehistory'
                                     tableNames = {['Code','Tax','Total']}
-                                    campsNames = {['code','value_total','value_tax']}
+                                    campsNames = {['code','value_tax','value_total']}
                                     table = {library}
-                                    last = 'delete'
+                                    last = 'view'
                                     lastButton = '&#128270;'
+                                    lastButtonFunction = {ChangeView}
                                     tableStyle = {styleLibrary.library}
                                 />
                             </>
@@ -78,35 +86,33 @@ function Library () {
                     </div>
                 </div>
                 <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
-                    <div className={styles.twenty}>
-                            {removeLoadingView ? (
+                    {removeLoadingView ? (<>
+                        <div className={styles.twenty}>
                                 <>
                                     <Table 
                                         tableid = 'tableviewid'
                                         tableSize = 'half'
                                         tableNames = {['Code','Tax','Total']}
-                                        campsNames = {['code','value_total','value_tax']}
-                                        table = {libraryView}
+                                        campsNames = {['order_code','value_tax','value_total']}
+                                        table = {libraryView['orders']}
                                         tableStyle = {styleLibrary.libraryViewID}
                                     />
                                 </>
-                            ) : ( <Loading/> ) }
-                    </div>
-                    <div className={styles.eighty}>
-                        <div className={styles.scroll}>
-                            {removeLoadingView ? (
+                        </div>
+                        <div className={styles.eighty}>
+                            <div className={styles.scroll}>
                                 <>
                                     <Table 
                                         tableid = 'tableview'
-                                        tableNames = {['Code','Tax','Total']}
-                                        campsNames = {['code','value_total','value_tax']}
-                                        table = {libraryView}
+                                        tableNames = {['Product','Price','Amount','Total']}
+                                        campsNames = {['product_name','price','amount','total']}
+                                        table = {libraryView['rows']}
                                         tableStyle = {styleLibrary.libraryView}
                                     />
                                 </>
-                            ) : ( <Loading/> ) }
+                            </div>
                         </div>
-                    </div>
+                    </> ) : ( <Loading/> ) }
                 </div>
             </div>
         </>

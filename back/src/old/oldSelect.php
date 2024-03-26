@@ -72,13 +72,7 @@
                     } else {
                         foreach($campsSql as $camp) {
                             if ( str_contains($camp,"code") ){
-                                if ( ( (count($type) == 2) && ($type[0] == "SimpleWhere") && ($type[1] == "tableview") ) && ( ($camp == 'order_code') || ($camp == 'value_total') || ($camp == 'value_tax') ) ){
-                                    $temporary['orders'][$camp] = $row[$camp];
-                                } else if ( ( (count($type) == 2) && ($type[0] == "SimpleWhere") && ($type[1] == "tableview") ) ){
-                                    $temporary['order_item'][$camp] = $row[$camp];
-                                } else {
-                                    $temporary[$camp] = $row[$camp];
-                                }
+                                $temporary[$camp] = $row[$camp];
                             } else {
                                 $item = SafeCrypto($row[$camp],"Decrypt");
                                 $decoded_item = html_entity_decode($item);
@@ -107,8 +101,8 @@
                     if ($deleted == FALSE){
                         if ( (count($type) == 2) && ($type[0] == "SimpleWhere") && ($type[1] == "tableview") ){
                             $temporary['order_item']['total'] = (intval(html_entity_decode(SafeCrypto($row['amount'],"Decrypt")))*floatval(html_entity_decode(SafeCrypto($row['amount'],"Decrypt"))));
-                            $temporary['order_item']['total'] = SafeCrypto("$".number_format(floatval($temporary['order_item']['total']), 2, '.', ''),'Html');
-                            $data['orders'][0] = $temporary['orders'];
+                            $temporary['order_item']['total'] = SafeCrypto("$".number_format(floatval($temporary['total']), 2, '.', ''),'Html');
+                            $data['orders'] = $temporary['orders'];
                             $data['rows'][$row['code']] = $temporary['order_item'];
                         } else {
                             $data[$row['code']] = $temporary;
@@ -119,6 +113,10 @@
         } catch(PDOException $e) {
             error_log($sql . "<br>" . $e->getMessage());
         }
+        // error_log("data");
+        // error_log(print_r($type,true));
+        // error_log(print_r($data,true));
+        error_log(gettype($data));
         return ($data);
     }
 ?>

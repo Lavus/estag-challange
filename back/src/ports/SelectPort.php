@@ -45,8 +45,14 @@
                                 echo(json_encode(array()));
                             }
                         }                    
-                    } else if ( (count($data['type']) == 2) && ($data['type'][1] == "TooComplex") ) {
+                    } else if ( (count($data['type']) == 2) && ($data['type'][0] == "TooComplex") ) {
                         echo( json_encode( SelectSql( $data['type'] ) ) );
+                    } else if ( (count($data['type']) == 2) && ( $data['type'][0] == "SimpleWhere" ) ) {
+                            if ( (isset($data['innerCamps'])) && (isset($data['innerCampsAlias'])) && (isset($data['innerTables'])) && (isset($data['foreignKey'])) && (!empty($data['where'])) ) {
+                                echo( json_encode( SelectSql( $data['type'], strval($data['table']), strval($data['code']), $data['camps'], $data['campsAlias'], $data['innerCamps'], $data['innerCampsAlias'], $data['innerTables'], strval($data['foreignKey']), strval($data['where']) ) ) );
+                            } else {
+                                echo(json_encode(array()));
+                            }
                     } else {
                         echo(json_encode(array()));
                     }

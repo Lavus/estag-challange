@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import DecodeHtml from './DecodeHtml'
 import { useState } from 'react'
 
-function Table( { tableid, tableNames, campsNames, table, tableSize, first, firstButton, last, lastButton, tableStyle} ) {
+function Table( { tableid, tableNames, campsNames, table, tableSize, first, firstButton, firstButtonFunction, last, lastButton, lastButtonFunction, tableStyle} ) {
     function ShowTh(){
         return (
             <tr key='first'>
@@ -14,9 +14,9 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
         )
     }
 
-    function ShowSingleTd(simpleKey,value,type = 'None',buttonText = 'None',id = 'None'){
+    function ShowSingleTd(simpleKey,value,type = 'none',buttonText = 'none',id = 'none', buttonFunction = 'none'){
         return (
-            ((type == 'None') ?
+            ((type == 'none') ?
                 <td key={simpleKey} title={value}>
                     {value}
                 </td>
@@ -25,7 +25,7 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
                     <div title={value}>
                         {value}
                     </div>
-                    <button type='submit' name={type+'key'} form={type+'form'+tableid} className={(`${styles.extrabt} ${styles[type]}`)} value={id}>
+                    <button type='button' name={type+'key'} className={(`${styles.extrabt} ${styles[type]}`)} value={id} onClick={buttonFunction}>
                         {buttonText}
                     </button>
                 </td>
@@ -37,23 +37,23 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
         return (
             <>
                 {Object.keys(table).map((keyvalue, indexkey) => (
-                    <tr key={'middle'+indexkey} className={((tableid == 'tablecart') && table[keyvalue]['code'][1] == "Broken") && (styles.rederror)}>
+                    <tr key={'middle'+indexkey} className={((tableid == 'tablecart') && table[keyvalue]['code'][1] == "Broken") ? (styles.rederror) : undefined}>
                         {campsNames.map((camp, indexcamp) => (
-                            ((first=='None' && last=='None') ?
+                            ((first=='none' && last=='none') ?
                                 ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]))
                             :
-                                ((first!='None' && indexcamp==0) ?
+                                ((first!='none' && indexcamp==0) ?
                                     ((tableid == 'tablecart') ?
-                                        ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),first,DecodeHtml(firstButton),table[keyvalue]["code"][0])
+                                        ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),first,DecodeHtml(firstButton),table[keyvalue]["code"][0],firstButtonFunction)
                                     :
-                                        ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),first,DecodeHtml(firstButton),table[keyvalue]["code"])
+                                        ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),first,DecodeHtml(firstButton),table[keyvalue]["code"],firstButtonFunction)
                                     )
                                 :
-                                    ((last!='None' && indexcamp==((Object.keys(table[keyvalue]).length)-1)) ?
+                                    ((last!='none' && indexcamp==((Object.keys(table[keyvalue]).length)-1)) ?
                                         ((tableid == 'tablecart') ?
-                                            ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),last,DecodeHtml(lastButton),table[keyvalue]["code"][0])
+                                            ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),last,DecodeHtml(lastButton),table[keyvalue]["code"][0],lastButtonFunction)
                                         :
-                                            ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),last,DecodeHtml(lastButton),table[keyvalue]["code"])
+                                            ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),last,DecodeHtml(lastButton),table[keyvalue]["code"],lastButtonFunction)
                                         )
                                     :
                                         ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]))
@@ -67,9 +67,9 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
         )
     }
 
-    function ShowLastTd(){
+    function ShowEmptyTd(empty){
         return (
-            <tr key='last' className={styles.last}>
+            <tr key='last' className={!(empty) ? styles.last : undefined}>
                 {tableNames.map((name, index) => (
                     <td key={index}></td>
                 ))}
@@ -83,7 +83,7 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
                 <tbody>
                     {ShowTh()}
                     {ShowContentTd()}
-                    {!(tableSize) && (ShowLastTd())}
+                    {((table.length == 0)&&(tableid == 'tableviewid')) ? (ShowEmptyTd('True')) : (!(tableid == 'tableviewid')  &&  ShowEmptyTd())}
                 </tbody>
             </table>
         </>
@@ -96,10 +96,10 @@ Table.propsTypes = {
 }
 
 Table.defaultProps = {
-    first : 'None',
-    firstButton : 'None',
-    last : 'None',
-    lastButton : 'None'
+    first : 'none',
+    firstButton : 'none',
+    last : 'none',
+    lastButton : 'none'
 }
 
 export default Table

@@ -1,4 +1,4 @@
-.categories td, .categories th, .categories td:last-child div, .categories td:first-child div {
+table.categories td, table.categories th, table.categories td:last-child div, table.categories td:first-child div {
     min-width: 9vw;
     max-width: 9vw;
     white-space: nowrap; 
@@ -6,7 +6,7 @@
     text-overflow: ellipsis; 
 }
 
-.categories td:nth-child(2), .categories th:nth-child(2) {
+table.categories td:nth-child(2), table.categories th:nth-child(2) {
     min-width: 14.1vw;
     max-width: 14.1vw;
     white-space: nowrap; 
@@ -14,24 +14,24 @@
     text-overflow: ellipsis; 
 }
 
-.categories td:last-child, .categories th:last-child, .categories td:first-child, .categories th:first-child {
+table.categories td:last-child, table.categories th:last-child, table.categories td:first-child, table.categories th:first-child {
     min-width: 13.5vw;
     max-width: 13.5vw;
 }
 
 @media screen and (max-width: 800px) {
 
-    .categories td, .categories th, .categories td:last-child div, .categories td:first-child div {
+    table.categories td, table.categories th, table.categories td:last-child div, table.categories td:first-child div {
         min-width: 20.876vw;
         max-width: 20.876vw;
     }
 
-    .categories td:nth-child(2), .categories th:nth-child(2) {
+    table.categories td:nth-child(2), table.categories th:nth-child(2) {
         min-width: 31.448vw;
         max-width: 31.448vw;
     }
 
-    .categories td:last-child, .categories th:last-child, .categories td:first-child, .categories th:first-child {
+    table.categories td:last-child, table.categories th:last-child, table.categories td:first-child, table.categories th:first-child {
         min-width: 29.876vw;
         max-width: 29.876vw;
     }

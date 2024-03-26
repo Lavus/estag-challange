@@ -1,4 +1,4 @@
-.home td, .home th, .home td:last-child div, .home td:first-child div {
+table.home td, table.home th, table.home td:last-child div, table.home td:first-child div {
     min-width: 6vw;
     max-width: 6vw;
     white-space: nowrap; 
@@ -6,39 +6,39 @@
     text-overflow: ellipsis;
 }
 
-.home td:nth-child(1), .home th:nth-child(1) {
+table.home td:nth-child(1), table.home th:nth-child(1) {
     min-width: 17.6vw;
     max-width: 17.6vw;
 }
 
-.home td:first-child div {
+table.home td:first-child div {
     min-width: 13.1vw;
     max-width: 13.1vw;
 }
 
-.home td:last-child, .home th:last-child {
+table.home td:last-child, table.home th:last-child {
     min-width: 10.5vw;
     max-width: 10.5vw;
 }
 
 @media screen and (max-width: 800px) {
 
-    .home td, .home th, .home td:last-child div {
+    table.home td, table.home th, table.home td:last-child div {
         min-width: 13.584vw;
         max-width: 13.584vw;
     }
 
-    .home td:nth-child(1), .home th:nth-child(1) {
+    table.home td:nth-child(1), table.home th:nth-child(1) {
         min-width: 40.448vw;
         max-width: 40.448vw;
     }
 
-    .home td:first-child div {
+    table.home td:first-child div {
         min-width: 31.448vw;
         max-width: 31.448vw;
     }
 
-    .home td:last-child, .home th:last-child {
+    table.home td:last-child, table.home th:last-child {
         min-width: 22.584vw;
         max-width: 22.584vw;
     }

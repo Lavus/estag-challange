@@ -1,4 +1,4 @@
-.products td, .products th, .products td:first-child div {
+table.products td, table.products th, table.products td:first-child div {
     min-width: 5vw;
     max-width: 5vw;
     white-space: nowrap; 
@@ -6,7 +6,7 @@
     text-overflow: ellipsis; 
 }
 
-.products td:last-child div {
+table.products td:last-child div {
     min-width: 7vw;
     max-width: 7vw;
     white-space: nowrap; 
@@ -14,44 +14,44 @@
     text-overflow: ellipsis;
 }
 
-.products td:nth-child(2), .products th:nth-child(2) {
+table.products td:nth-child(2), table.products th:nth-child(2) {
     min-width: 8vw;
     max-width: 8vw;
 }
 
-.products td:first-child, .products th:first-child {
+table.products td:first-child, table.products th:first-child {
     min-width: 9.5vw;
     max-width: 9.5vw;
 }
 
-.products td:last-child, .products th:last-child {
+table.products td:last-child, table.products th:last-child {
     min-width: 11.5vw;
     max-width: 11.5vw;
 }
 
 @media screen and (max-width: 800px) {
 
-    .products td, .products th, .products td:first-child div {
+    table.products td, table.products th, table.products td:first-child div {
         min-width: 11vw;
         max-width: 11vw;
     }
 
-    .products td:last-child div {
+    table.products td:last-child div {
         min-width: 18vw;
         max-width: 18vw;
     }
 
-    .products td:nth-child(2), .products th:nth-child(2) {
+    table.products td:nth-child(2), table.products th:nth-child(2) {
         min-width: 20.2vw;
         max-width: 20.2vw;
     }
 
-    .products td:first-child, .products th:first-child {
+    table.products td:first-child, table.products th:first-child {
         min-width: 20vw;
         max-width: 20vw;
     }
 
-    .products td:last-child, .products th:last-child {
+    table.products td:last-child, table.products th:last-child {
         min-width: 27vw;
         max-width: 27vw;
     }

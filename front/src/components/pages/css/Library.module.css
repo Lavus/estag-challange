@@ -1,4 +1,4 @@
-.libraryView td, .libraryView th, .libraryViewID td, .libraryViewID th {
+table.libraryView td, table.libraryView th, table.libraryViewID td, table.libraryViewID th {
     min-width: 7vw;
     max-width: 7vw;
     white-space: nowrap; 
@@ -6,12 +6,12 @@
     text-overflow: ellipsis; 
 }
 
-.libraryView td:nth-child(1), .libraryView th:nth-child(1) {
+table.libraryView td:nth-child(1), table.libraryView th:nth-child(1) {
     min-width: 19.1vw;
     max-width: 19.1vw;
 }
 
-.library td, .library th, .library td:last-child div {
+table.library td, table.library th, table.library td:last-child div {
     min-width: 12.2vw;
     max-width: 12.2vw;
     white-space: nowrap; 
@@ -19,34 +19,34 @@
     text-overflow: ellipsis; 
 }
 
-.library td:last-child, .library th:last-child {
+table.library td:last-child, table.library th:last-child {
     min-width: 16.7vw;
     max-width: 16.7vw;
 }
 
-.libraryViewID td, .libraryViewID th {
+table.libraryViewID td, table.libraryViewID th {
     border-collapse: collapse;
     height: 50%;
 }
 
 @media screen and (max-width: 800px) {
 
-    .libraryView td, .libraryView th, .libraryViewID td, .libraryViewID th {
+    table.libraryView td, table.libraryView th, table.libraryViewID td, table.libraryViewID th {
         min-width: 16.584vw;
         max-width: 16.584vw;
     }
 
-    .libraryView td:nth-child(1), .libraryView th:nth-child(1) {
+    table.libraryView td:nth-child(1), table.libraryView th:nth-child(1) {
         min-width: 40.448vw;
         max-width: 40.448vw;
     }
 
-    .library td, .library th, .library td:last-child div {
+    table.library td, table.library th, table.library td:last-child div {
         min-width: 27.4vw;
         max-width: 27.4vw;
     }
 
-    .library td:last-child, .library th:last-child {
+    table.library td:last-child, table.library th:last-child {
         min-width: 36.4vw;
         max-width: 36.4vw;
     }
