@@ -5,11 +5,13 @@ import Loading from '../layout/Loading'
 import { useState, useEffect } from 'react'
 import styleCategories from './css/Categories.module.css'
 import FormCategories from './forms/FormCategories'
+import DecodeHtml from '../View/DecodeHtml'
 
 function Categories () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [categories, setCategories] = useState([])
     const [refresh, setRefresh] = useState(false)
+    const [code, setCode] = useState(0)
     const selectValues =  {
         'type':['FullSimple'],
         'table':'categories',
@@ -56,6 +58,23 @@ function Categories () {
         }
     }
 
+    function ChangeInsert(e) {
+        (e) => { e.preventDefault() }
+        if (categories.hasOwnProperty(e.target.value)) {
+            setCode(e.target.value)
+        } else {
+            setCode(0)
+            setRefresh(true)
+        }
+        
+    }
+
+    function DeleteCategory(e) {
+        (e) => { e.preventDefault() }
+        // setSelectValuesView({...selectValuesView, code: e.target.value})
+        alert(e.target.value)
+    }
+
     useEffect(() => {
         setRefresh(false)
         setRemoveLoading(false)
@@ -91,13 +110,17 @@ function Categories () {
                     iconRight = {iconRightPage}
                 />
                 <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
-                    {removeLoading ? (
-                        <>
-                            <FormCategories
-                                handleSubmit = {InsertCategories}
-                            />
-                        </>
-                    ) : ( <Loading/> ) }
+                    {(code == 0) ? (<>
+                        <FormCategories
+                            handleSubmit = {InsertCategories}
+                            categoryData = {{'name':'','tax':''}}
+                        />
+                    </>) : (<>
+                        <FormCategories
+                            handleSubmit = {InsertCategories}
+                            categoryData = {{'name':DecodeHtml(categories[code]['name']),'tax':(DecodeHtml(categories[code]['tax'])).slice(0, -1)}}
+                        />
+                    </>)}
                 </div>
                 <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
                     <div className={styles.scroll}>
@@ -112,6 +135,8 @@ function Categories () {
                                     last = 'delete'
                                     firstButton = '&#9997;'
                                     lastButton = '&#128465;'
+                                    firstButtonFunction = {ChangeInsert}
+                                    lastButtonFunction = {DeleteCategory}
                                     tableStyle = {styleCategories.categories}
                                 />
                             </>

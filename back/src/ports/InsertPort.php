@@ -16,7 +16,7 @@
                 $regexnumberstax = "/^[0-9]{1,4}([.]+[0-9]{1,2}){0,1}$/";
                 $regexnumbersprice = "/^[0-9]{1,10}([.]+[0-9]{1,2}){0,1}$/";
                 if ( !empty($data['type']) ) {
-                    if($data['type'] == "categories"){
+                    if( ($data['type'] == "categories") && ( !empty($data['name']) ) && ( !empty($data['tax']) ) ){
                         if ( (preg_match($regexname, $data['name'])) && (preg_match($regexnumberstax, $data['tax'])) && (CheckNameAvaliable($data['name'],"categories")) ) {
                             echo( json_encode ( InsertSql( 'categories', ['name','tax'], [$data['name'],$data['tax']] ) ) );
                         } else {

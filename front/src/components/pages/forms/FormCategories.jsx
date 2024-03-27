@@ -5,12 +5,15 @@ import styles from '../css/Pages.module.css'
 // import styles from './ProjectForm.module.css'
 
 function FormCategories({ handleSubmit, categoryData }) {
-    const [category, setCategory] = useState(categoryData || {'name':'','tax':''})
-
+    const [category, setCategory] = useState(categoryData)
     const submit = (e) => {
         e.preventDefault()
         handleSubmit(category)
     }
+
+    useEffect(() => {
+        setCategory(categoryData)
+    }, [categoryData])
 
     function handleChange(e) {
         setCategory({ ...category, [e.target.id]: e.target.value })
