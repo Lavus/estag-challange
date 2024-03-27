@@ -2,7 +2,7 @@
     declare(strict_types=1);
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: *");
-    require_once __DIR__."/../sql/InsertSql.php";
+    require_once __DIR__."/../sql/SelectSql.php";
     require_once __DIR__."/../security/CheckValidityCode.php";
     require_once __DIR__."/../security/CheckNameAvaliable.php";
     $method = $_SERVER['REQUEST_METHOD'];
@@ -18,7 +18,7 @@
                 if ( !empty($data['type']) ) {
                     if($data['type'] == "categories"){
                         if ( (preg_match($regexname, $data['name'])) && (preg_match($regexnumberstax, $data['tax'])) && (CheckNameAvaliable($data['name'],"categories")) ) {
-                            echo( json_encode ( InsertSql( 'categories', ['name','tax'], [$data['name'],$data['tax']] ) ) );
+                            echo(json_encode(array('result'=>true)));
                         } else {
                             echo(json_encode(array("broken"=>"broken")));
                         }

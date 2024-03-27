@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import NavBar from './components/layout/NavBar'
@@ -10,22 +9,19 @@ import NoPage from './components/pages/NoPage'
 
 
 function App() {
-  const [count, setCount] = useState(0)
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<NavBar/>}>
-            <Route index element={<Home/>}/>
-            <Route path="history" element={<Library/>}/>
-            <Route path="products" element={<Products/>}/>
-            <Route path="categories" element={<Categories/>}/>
-            <Route path="*" element={<NoPage/>}/>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
-  )
+    return (<>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<NavBar/>}>
+                    <Route index element={<Home/>}/>
+                    <Route path="history" element={<Library/>}/>
+                    <Route path="products" element={<Products/>}/>
+                    <Route path="categories" element={<Categories/>}/>
+                    <Route path="*" element={<NoPage/>}/>
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    </>)
 }
 
 export default App

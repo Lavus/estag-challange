@@ -5,7 +5,6 @@ import Loading from '../layout/Loading'
 import { useState, useEffect } from 'react'
 import styleCategories from './css/Categories.module.css'
 import FormCategories from './forms/FormCategories'
-import FetchInsert from './functions/FetchInsert'
 
 function Categories () {
     const [removeLoading, setRemoveLoading] = useState(false)
@@ -25,21 +24,34 @@ function Categories () {
             let regexTax = new RegExp("^[0-9]{1,4}([.]+[0-9]{1,2}){0,1}$")
             if ( (regexName.test(category['name'])) && (regexTax.test(category['tax']) ) ) {
                 if ( (document.getElementById('tableCategories').innerHTML).indexOf('"'+category['name']+'"') == -1 ){
-                    alert("all right")
-                    FetchInsert({'type':'categories','name':category['name'],'tax':category['tax']})
-                    // let fet = FetchInsert({'name':category['name'],'tax':category['tax']})
-                    // alert(fet)
-                    alert('error')
-
+                    let insertValues = {'type':'categories','name':category['name'],'tax':category['tax']}
+                    fetch('http://localhost/ports/InsertPort.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type' : 'application/json',
+                            'FJUYJDJMHYG1WAKXKANHDHA8WU9FCDS8M6YG2ZNLJHWXFSQSEHFCTVOIXTQ78B5JSECDPWF8XMTSHIZYV4IYONXBWFIUIE2ZUAJRQQ7RDLGJM3H7C8CA44' : 'Falw1qKPKZYufBz0r2S1avMZ16BeNHPn3/nqJzg2IyDHF+XtM4x9cBMTOvG++LTO3wCbTEJXEocIO+xfjPCEunNGKu8DvjQzXG29DSSiuQsPnwVV+/cHwnNh6MFLg3KvNC4k3v9uhXZkRMBaRIglt2FnKt3gLssn'
+                        },
+                        body: JSON.stringify(insertValues)
+                    })
+                    .then((resp) => resp.json())
+                    .then((data) => {
+                        if (data == true){
+                            alert('Category inserted with success.')
+                            setRefresh(true)
+                        } else {
+                            alert("There's some problem with the request, please try again.")
+                            setRefresh(true)
+                        }
+                    })
                 } else {
                     alert("There's already a category within this name, please add more information with the name or change the name.")
                 }
             } else {
-                alert("There's some problem with the request, please try again.");
+                alert("There's some problem with the request, please try again.")
                 setRefresh(true)
             }
         }else{
-            alert("There's some problem with the request, please try again.");
+            alert("There's some problem with the request, please try again.")
             setRefresh(true)
         }
     }

@@ -94,25 +94,30 @@ function Library () {
                 />
                 <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
                     <div className={styles.scroll}>
-                        {removeLoading ? (
-                            <>
-                                <Table 
-                                    tableid = 'tablehistory'
-                                    tableNames = {['Code','Tax','Total']}
-                                    campsNames = {['code','value_tax','value_total']}
-                                    table = {library}
-                                    last = 'view'
-                                    lastButton = '&#128270;'
-                                    lastButtonFunction = {ChangeView}
-                                    tableStyle = {styleLibrary.library}
-                                />
-                            </>
-                        ) : ( <Loading/> ) }
+                        {removeLoading ? (<>
+                            {library['broken'] && (
+                                alert("There's some problem with the request, please try again."),
+                                setLibrary([]),
+                                setSelectValuesView({...selectValuesView, code: '0'}),
+                                setRefresh(true)
+                            )}
+                            <Table 
+                                tableid = 'tablehistory'
+                                tableNames = {['Code','Tax','Total']}
+                                campsNames = {['code','value_tax','value_total']}
+                                table = {library}
+                                last = 'view'
+                                lastButton = '&#128270;'
+                                lastButtonFunction = {ChangeView}
+                                tableStyle = {styleLibrary.library}
+                            />
+                        </>) : ( <Loading/> ) }
                     </div>
                 </div>
                 <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
                     {removeLoadingView ? (<>
                         {libraryView['broken'] && (
+                            alert("There's some problem with the request, please try again."),
                             setLibraryView([]),
                             setSelectValuesView({...selectValuesView, code: '0'}),
                             setRefresh(true)

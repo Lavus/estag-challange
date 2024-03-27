@@ -2,21 +2,8 @@
     declare(strict_types=1);
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: *");
-    require_once __DIR__."/../sql/Select.php";
+    require_once __DIR__."/../sql/SelectSql.php";
     require_once __DIR__."/../security/CheckValidityCode.php";
-    // error_log(strval('serverlogSTART'));
-    // foreach($_SERVER as $keylog => $keylogvalue ) {
-    //     if (is_array($keylogvalue)){
-    //         error_log(strval('key : '.$keylog.', ARRAYstart'));
-    //         foreach($keylogvalue as $log => $logvalue) {
-    //             error_log(strval('key : '.$log.', value : '.$logvalue));
-    //         }
-    //         error_log(strval('key : '.$keylog.', ARRAYend'));
-    //     } else {
-    //         error_log(strval('key : '.$keylog.', value : '.$keylogvalue));
-    //     }
-    // }
-    // error_log(strval('serverlogEND'));
     $method = $_SERVER['REQUEST_METHOD'];
     if ($method == 'POST'){
         if (!empty($_SERVER['HTTP_I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT'])) {
@@ -26,8 +13,7 @@
                 if ( (!empty($data['type'])) && (!empty($data['table'])) && (isset($data['code'])) && (!empty($data['camps'])) && (!empty($data['campsAlias'])) ) {
                     if ( (strval($data['code']) !== '0') && (intval($data['code']) === 0) ){
                         echo(json_encode(array("broken"=>"broken")));
-                    } else if  ( (CheckValidityCode($data['code'],$data['table'])) && ( $data['type'][0] != "SimpleWhere" ) || (strval($data['code']) === '0') || ( ( CheckValidityCode($data['code'],$data['innerTables'][0]) ) && ( (count($data['type']) == 2) && ( $data['type'][0] == "SimpleWhere" ) ) ) ) {
-                        error_log("entrou");
+                    } else if  ( ( (CheckValidityCode($data['code'],$data['table'])) && (count($data['type']) == 1) ) || (strval($data['code']) === '0') || ( ( CheckValidityCode($data['code'],$data['innerTables'][0],$data['innerTables'][0].'.code = '.$data['code'].' AND '.$data['innerTables'][0].'.code NOT IN ( SELECT MAX( orders1.code ) FROM orders AS orders1 ) ORDER BY '.$data['innerTables'][0].'.code;') ) && ( (count($data['type']) == 2) && ( $data['type'][0] == "SimpleWhere" ) ) ) ) {
                         if (count($data['type']) == 1){
                             if ( ($data['type'][0] == "FullSimple") || ($data['type'][0] == "SingleSimple") ) {
                                 echo( json_encode( SelectSql( $data['type'], strval($data['table']), strval($data['code']), $data['camps'], $data['campsAlias'] ) ) );
