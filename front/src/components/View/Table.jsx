@@ -1,6 +1,6 @@
 import styles from './css/Table.module.css'
 import PropTypes from 'prop-types'
-import DecodeHtml from './DecodeHtml'
+import DecodeHtml from '../functions/DecodeHtml'
 
 function Table( { tableid, tableNames, campsNames, table, tableSize, first, firstButton, firstButtonFunction, last, lastButton, lastButtonFunction, tableStyle} ) {
     function ShowTh(){

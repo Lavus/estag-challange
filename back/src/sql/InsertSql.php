@@ -7,12 +7,12 @@
         $stringValues = "";
         foreach($camps as $indexCamp => $camp) {
             $stringCamps .= $camp.",";
-            $stringValues .= "'".SafeCrypto(SafeCrypto($values[$indexCamp],'Html'),'Encrypt')."',";
+            $stringValues .= "'".SafeCrypto($values[$indexCamp],'Encrypt')."',";
         }
         $stringCamps = rtrim($stringCamps, ",");
         $stringValues = rtrim($stringValues, ",");
         $sql = "INSERT INTO ".$table." ( ".$stringCamps." ) VALUES ( ".$stringValues." );";
-        error_log($sql);
+        // error_log($sql);
         $connection  = ConnectLocalHost();
         try {
             $connection->beginTransaction();

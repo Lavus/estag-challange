@@ -1,6 +1,6 @@
 <?php
     declare(strict_types=1);
-    function CheckValidityCamp (string $text, string $decode_text, string $camp, string $type = "None"): bool {
+    function CheckValidityCamp (string $text, string $decode_text, string $camp, string $type = "none"): bool {
         if ( $text == 'FALSE' ){
             return (FALSE);
         } else {
@@ -9,14 +9,14 @@
                 $min = "not";
             } else if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) ) {
                 $regex = "/^[0-9]{1,}([.]+[0-9]{1,2}){0,1}$/";
-                if ( ( $type == "None" ) && ( $camp == "value_total" ) ) {
+                if ( ( $type == "none" ) && ( $camp == "value_total" ) ) {
                     $min = "0.1";
                 } else {
                     $min = "0";
                 }
             } else if ( str_contains($camp,"amount") ) {
                 $regex = "/^[0-9]{1,}$/";
-                if ( $type == "None" ) {
+                if ( $type == "none" ) {
                     $min = "0";
                 } else {
                     $min = "1";

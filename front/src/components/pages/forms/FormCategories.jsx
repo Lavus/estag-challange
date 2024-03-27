@@ -4,11 +4,17 @@ import styles from '../css/Pages.module.css'
 
 // import styles from './ProjectForm.module.css'
 
-function FormCategories({ handleSubmit, categoryData }) {
+function FormCategories({ handleSubmit, categoryData, buttonText, refreshFunction }) {
     const [category, setCategory] = useState(categoryData)
+
     const submit = (e) => {
         e.preventDefault()
         handleSubmit(category)
+    }
+
+    const refresh = (e) => {
+        e.preventDefault()
+        refreshFunction()
     }
 
     useEffect(() => {
@@ -16,10 +22,14 @@ function FormCategories({ handleSubmit, categoryData }) {
     }, [categoryData])
 
     function handleChange(e) {
-        setCategory({ ...category, [e.target.id]: e.target.value })
+        if (['name','tax'].includes(e.target.id)) {
+            setCategory({ ...category, [e.target.id]: e.target.value })
+        } else {
+            setCategory({ ...category, ['error']: e.target.value })
+        }
     }
 
-    return (
+    return (<>
         <form onSubmit={submit}>
             <Input
                 type="text"
@@ -50,10 +60,19 @@ function FormCategories({ handleSubmit, categoryData }) {
             <Input
                 type="submit"
                 className = {(`${styles.bluebold} ${styles.full}`)}
-                value='Add Category'
+                value={buttonText}
             />
         </form>
-    )
+        {((refreshFunction) && (<>
+            <form onSubmit={refresh}>
+                <Input
+                    type = "submit"
+                    className = {(`${styles.bluebold} ${styles.full}`)}
+                    value='Return to add category'
+                />
+            </form>
+        </>))}
+    </>)
 }
 
 export default FormCategories

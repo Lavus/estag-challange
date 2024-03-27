@@ -26,8 +26,8 @@
                 $sql = "SELECT ".$stringCampsSql." FROM ".$stringTablesSql." WHERE ".$table.".".$foreignKey." = ".$innerTables[0].".code AND ".$innerTables[0].".code = ".$code."  ORDER BY ".$table.".code;";
             } else if ($type[0] == "SimpleWhere"){
                 $sql = "SELECT ".$stringCampsSql." FROM ".$stringTablesSql." WHERE ".$where;
-            } else if ($type[0] == "SingleSimple"){
-                $sql = "SELECT ".$stringCampsSql." FROM ".$table." Where code = ".$code." ORDER BY ".$table.".code;";
+            } else if ( ($type[0] == "SingleSimple") || ($type[0] == "SingleSimpleNone") ) {
+                $sql = "SELECT ".$stringCampsSql." FROM ".$table." Where ".$table.".code = ".$code." ORDER BY ".$table.".code;";
             } else if ($type[0] == "SimpleForeign"){
                 $sql = "SELECT ".$stringCampsSql." FROM ".$stringTablesSql." WHERE ".$table.".".$foreignKey." = ".$innerTables[0].".code ORDER BY ".$table.".code;";
             } else if ( ($type[0] == "FullCases") || ($type[0] == "FullCasesHome") ){            

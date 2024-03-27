@@ -1,0 +1,102 @@
+.alert {
+    position: absolute;
+    top : 6vh;
+    left : 2vw;
+    background-color: grey;
+    padding: 0;
+    opacity: 0.9;
+    height: 93vh;
+    width: 96vw;
+    font-size: 5vh;
+    z-index: 4;
+}
+
+.alert .textalert {
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    height: 68vh;
+    width: 92vw;
+    padding: 2vh 2vw;
+    box-sizing: content-box;
+    overflow: hidden;
+    overflow-y: scroll;
+    word-break: break-all;
+}
+
+.alert .textalert.alertremovefortable {
+    width: 96vw;
+    height: 72vh;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: none;
+}
+
+.alert .textalert .dividetext {
+    padding: 1vh 2vw;
+    height: 20vh;
+    box-sizing: content-box;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.alert .textalert .dividetable {
+    padding: 1vh 2vw;
+    height: 48vh;
+    box-sizing: content-box;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.alert .textalert table {
+    text-align: center;
+    border-collapse: collapse;
+    height: 100%;
+}
+
+.alert .textalert table th:nth-child(1), .alert .textalert table td:nth-child(1) {
+    max-width: 44vw;
+    min-width: 44vw;
+}
+
+.alert .textalert table th, .alert .textalert table td {
+    max-width: 15vw;
+    min-width: 15vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.alert .textalert table tr.last {
+    height: 100%;
+}
+
+.alert .yesbutton{
+    height: 5vh;
+    width: 18vw;
+    float: left;
+    box-sizing: content-box;
+    padding: 5vh 5vw;
+    margin: 2vh 2vw;
+    font-size: 5vh;
+    opacity: 0.6;
+    background-color: green;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.alert .nobutton{
+    height: 5vh;
+    width: 18vw;
+    float: right;
+    box-sizing: content-box;
+    padding: 5vh 5vw;
+    margin: 2vh 2vw;
+    font-size: 5vh;
+    opacity: 0.6;
+    background-color: red;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -43,9 +43,9 @@
         </div>
         <div class="main">
             <?php
-                echo (safeEncrypt(codifyhtml('InsertKey'),getkey()));
+                echo (safeEncrypt(codifyhtml('UpdateKey'),getkey()));
                 echo ('<br>');
-                echo (safeEncrypt(codifyhtml('InsertKeyValue'),getkey()));
+                echo (safeEncrypt(codifyhtml('UpdateKeyValue'),getkey()));
                 if ($viewkey){
                     echo ("<div class='textdropleft'><div title='View Purchase History'>View Purchase History</div><div class='icon'>&#9776;</div></div>");
                     echo ("<div class='textdropright'><div title='View Purchase info'>View Purchase info</div><div class='icon hidden'>&#9776;</div></div>");

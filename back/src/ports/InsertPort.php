@@ -17,24 +17,26 @@
                 $regexnumbersprice = "/^[0-9]{1,10}([.]+[0-9]{1,2}){0,1}$/";
                 if ( !empty($data['type']) ) {
                     if( ($data['type'] == "categories") && ( !empty($data['name']) ) && ( !empty($data['tax']) ) ){
-                        if ( (preg_match($regexname, $data['name'])) && (preg_match($regexnumberstax, $data['tax'])) && (CheckNameAvaliable($data['name'],"categories")) ) {
+                        $name = html_entity_decode($data['name']);
+                        $tax = html_entity_decode($data['tax']);
+                        if ( (preg_match($regexname, $name)) && (preg_match($regexnumberstax, $tax)) && (CheckNameAvaliable($name,"categories")) ) {
                             echo( json_encode ( InsertSql( 'categories', ['name','tax'], [$data['name'],$data['tax']] ) ) );
                         } else {
-                            echo(json_encode(array("broken"=>"broken")));
+                            echo(json_encode(false));
                         }
                     } else {
-                        echo(json_encode(array()));
+                        echo(json_encode(false));
                     }
                 } else {
-                    echo(json_encode(array('result'=>false)));
+                    echo(json_encode(false));
                 }
             } else {
-                echo(json_encode(array()));
+                echo(json_encode(false));
             }
         } else {
-            echo(json_encode(array()));
+            echo(json_encode(false));
         }
     } else {
-        echo(json_encode(array()));
+        echo(json_encode(false));
     }
 ?>
