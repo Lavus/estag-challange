@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Loading from '../layout/Loading'
 import Button from '../form/Button'
 
-function AlertScreen( { selectValues, refreshFunction } ) {
+function AlertScreen( { selectValues, refreshFunction, yesFunction } ) {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [categoryItems, setCategoryItems] = useState([])
     const [refresh, setRefresh] = useState(false)
@@ -47,7 +47,7 @@ function AlertScreen( { selectValues, refreshFunction } ) {
 
     function executeDelete(e) {
         (e) => { e.preventDefault() }
-        alert("pressed yes")
+        yesFunction(selectValues.code)
     }
 
     useEffect(() => {

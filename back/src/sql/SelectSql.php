@@ -4,7 +4,7 @@
         require_once "ConnectLocalHost.php";
         require_once __DIR__."/../security/SafeCrypto.php";
         require_once __DIR__."/../security/CheckValidityCamp.php";
-        require_once "Delete.php";
+        require_once "DeleteSql.php";
         require_once "functions/GenerateStringCampsSql.php";
         require_once "functions/GenerateStringTablesSql.php";
         require_once "functions/GenerateFullCasesHome.php";

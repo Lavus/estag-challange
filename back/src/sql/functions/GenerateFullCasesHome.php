@@ -3,7 +3,7 @@ declare(strict_types=1);
     function GenerateFullCasesHome( array $row ): array {
         require_once __DIR__."/../../security/SafeCrypto.php";
         require_once __DIR__."/../../security/CheckValidityCamp.php";
-        require_once __DIR__."/../Delete.php";
+        require_once __DIR__."/../DeleteSql.php";
         $deleted = FALSE;
         $temporary = array();
         $name = SafeCrypto($row["product_name"],"Decrypt");
@@ -40,11 +40,11 @@ declare(strict_types=1);
                             $temporary['code'] = [$row["code"],"Good"];
                         }
                     } else {
-                        DeleteSql('DoubleForeign',$table,$row['code'],["products","categories"],["product_code","category_code"]);
+                        DeleteSql('DoubleForeign','order_item',$row['code'],["products","categories"],["product_code","category_code"]);
                         $deleted = TRUE;
                     }
                 } else {
-                    DeleteSql('SimpleForeign',$table,$row['code'],["products"],["product_code"]);
+                    DeleteSql('SimpleForeign','order_item',$row['code'],["products"],["product_code"]);
                     $deleted = TRUE;
                 }
             }
@@ -56,7 +56,7 @@ declare(strict_types=1);
                 $temporary['total'] = SafeCrypto("$".number_format($float_decoded_price*$int_decoded_amount, 2, '.', ''),'Html');
             }
         } else {
-            DeleteSql('Simple',$table,$row['code']);
+            DeleteSql('Simple','order_item',$row['code']);
             $deleted = TRUE;
         }
         return (array($deleted,$temporary));

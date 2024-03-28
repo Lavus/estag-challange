@@ -47,6 +47,38 @@ function Categories () {
         'caseVerificationAlias' : ['count_products_code']
     })
 
+    function triggerDelete(codeDelete){
+        setDeleteValues({ ...deleteValues, code:'0', where:`categories.code = '0';`})
+        fetch('http://localhost/ports/DeletePort.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json',
+                'DGKQPLCQX1IZAO0D7VD9SJYROFSBGSEOQXXHYIXQCQFT2XODQPE8FDRHHJDWY3L5WNBAU6JLA7U44HPXKJDOJ2JBQZCCEK7Y37CC0PILUUMHVTVDYZI5W' : 'eh63/uT/+iQqmpgn3lQWB8ehzIk6Pol+dBqmQhBubW+S1KkNsossNfJIqE+VIHR0w9qHsvgsuthTYR1LW0MsyhGoXUXCWhhE404j9B6yISSHgBRGWBpaY+vGgeEQaRkNiaZwRgJKFc94AX6CBAblSssXviFuO2k='
+            },
+            body: JSON.stringify({
+                'type' : 'Simple',
+                'table' : 'categories',
+                'code' : codeDelete
+            })
+        })
+        .then((resp) => resp.json())
+        .then((data) => {
+            if (data == true){
+                alert('Category deleted with success.')
+                setCode(0)
+                setRefresh(true)
+                setRefreshForm(true)
+                setRemoveLoadingForm(false)
+            } else {
+                alert("There's some problem with the request, please try again.")
+                setCode(0)
+                setRefresh(true)
+                setRefreshForm(true)
+                setRemoveLoadingForm(false)
+            }
+        })
+    }
+
     function AlterCategory(category){
         // alert(JSON.stringify(category))
         if ((category['name'])&&(category['tax'])&&(category['id'])) {
@@ -230,6 +262,7 @@ function Categories () {
             <AlertScreen
                 selectValues = {deleteValues}
                 refreshFunction = {triggerRefresh}
+                yesFunction = {triggerDelete}
             />
         </>)}
 
