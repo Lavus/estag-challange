@@ -4,10 +4,15 @@ import Loading from '../layout/Loading'
 import { useState, useEffect } from 'react'
 import styleHome from './css/Home.module.css'
 import styles from './css/Pages.module.css'
+import FetchSelect from './functions/FetchSelect'
+import FormHome from './forms/FormHome'
 
 function Home () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [orderItems, setOrderItems] = useState([])
+    const [removeLoadingForm, setRemoveLoadingForm] = useState(false)
+    const [refresh, setRefresh] = useState(false)
+    const [refreshForm, setRefreshForm] = useState(false)
     const selectValues = {
         'type' : ['FullCasesHome'],
         'table' : 'order_item',
@@ -32,24 +37,16 @@ function Home () {
         'caseVerificationAlias' : ['products_name','products_amount','products_price','categories_tax']
     }
 
-
-    
     useEffect(() => {
+        setRefresh(false)
         setRemoveLoading(false)
-        fetch('http://localhost/ports/SelectPort.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/json',
-                'I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT' : 'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='
-            },
-            body: JSON.stringify(selectValues)
-        })
-        .then((resp) => resp.json())
-        .then((data) => {
-            setOrderItems(data)
-            setRemoveLoading(true)
-        })
-    }, [])
+        FetchSelect(selectValues,FinishFunctionFetchSelect)
+    }, [refresh])
+
+    function FinishFunctionFetchSelect(data){
+        setOrderItems(data)
+        setRemoveLoading(true)
+    }
 
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Categories'
@@ -68,11 +65,39 @@ function Home () {
                     iconRight = {iconRightPage}
                 />
                 <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
-                    <form id='formcategories' action='addcategory.php' method='post'>
-                        <input type='text' id='categoryname' name='categoryname' placeholder='Category name' className = 'half' maxLength='255' title='Names must start with Upper case and need to have 3 or more letters at start, maximum number of characters aceepted is 255.' pattern='^[A-Z]+[a-zA-ZÀ-ú]{2}.{0,222}$' required/>
-                        <input type='number' id='tax' name='tax' step='0.01' min='0' max='9999.99' placeholder='Tax' className = 'half' required/>
-                        <input type='submit' value='Add Category' className = 'bluebold full'/>
-                    </form>
+                    {removeLoadingForm ? (<>
+                        {(code == 0) ? (<>
+                            <FormHome
+                                handleSubmit = {InsertItem}
+                                productData = {{
+                                    'name':'',
+                                    'price':'',
+                                    'amount':'',
+                                    'category':'',
+                                    'error':''
+                                }}
+                                categoriesData = {categories}
+                                buttonText = 'Add Product'
+                            />
+                        </>) : (<>
+                            <FormHome
+                                handleSubmit = {AlterProduct}
+                                productData = {{
+                                    'name':DecodeHtml(products[code]['name']),
+                                    'price':parseFloat((DecodeHtml(products[code]['price'])).slice(1)),
+                                    'amount':DecodeHtml(products[code]['amount']),
+                                    'category':products[code]['category_code'],
+                                    'id':code,
+                                    'error':''
+                                }}
+                                categoriesData = {categories}
+                                buttonText = 'Alter Product'
+                                refreshFunction = {TriggerRefresh}
+                                placeHolderAmount = 'Amount'
+                                maxAmount = '1'
+                            />
+                        </>)}
+                    </>) : ( <Loading/> ) }
                 </div>
                 <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
                     <div className={styles.scroll}>

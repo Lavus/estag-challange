@@ -1,6 +1,6 @@
 // import styles from './.module.css'
 
-function Input({ type, name, id, placeholder, onChange, value, className, maxLength, title, pattern, required, step, min, max }) {
+function Input({ type, name, id, placeholder, onChange, value, className, maxLength, title, pattern, required, disabled, step, min, max }) {
     return (
         <input
             type={type}
@@ -14,6 +14,7 @@ function Input({ type, name, id, placeholder, onChange, value, className, maxLen
             title={title}
             pattern={pattern}
             required={required}
+            disabled={disabled}
             step={step}
             min={min}
             max={max}
