@@ -11,6 +11,8 @@ import EncodeHtml from '../functions/EncodeHtml'
 import ValidateCamps from './functions/ValidateCamps'
 import FetchInsert from './functions/FetchInsert'
 import FetchUpdate from './functions/FetchUpdate'
+import FetchDelete from './functions/FetchDelete'
+import AlertScreen from '../View/AlertScreen'
 
 function Products () {
     const [removeLoading, setRemoveLoading] = useState(false)
@@ -20,6 +22,7 @@ function Products () {
     const [refresh, setRefresh] = useState(false)
     const [refreshForm, setRefreshForm] = useState(false)
     const [refreshCategories, setRefreshCategories] = useState(false)
+    const [deleteConfirm, setDeleteConfirm] = useState('0')
     const [code, setCode] = useState(0)
     const selectValues =  {
         'type':['SimpleForeign'],
@@ -54,12 +57,12 @@ function Products () {
                         'name':EncodeHtml(product['name']),
                         'amount':EncodeHtml(product['amount']),
                         'price':EncodeHtml(product['price']),
-                        'category':EncodeHtml(product['category']),
-                        'id':product['id'],
+                        'category':String(product['category']),
+                        'id':String(product['id']),
                         'oldName':EncodeHtml(oldName),
                         'oldAmount':EncodeHtml(oldAmount),
                         'oldPrice':EncodeHtml(oldPrice),
-                        'oldCategory':oldCategory
+                        'oldCategory':String(oldCategory)
                     }
                     FetchUpdate(updateValues,TriggerResponse)
                 } else if (validatedCampsAlter[0] == 'false'){
@@ -89,7 +92,7 @@ function Products () {
                             'name':EncodeHtml(product['name']),
                             'amount':EncodeHtml(product['amount']),
                             'price':EncodeHtml(product['price']),
-                            'category':product['category']
+                            'category':String(product['category'])
                         }
                         FetchInsert(insertValues,TriggerResponse)
                     } else if (validatedCampsInsert[0] == 'false'){
@@ -157,13 +160,13 @@ function Products () {
 
     function TriggerRefresh() {
         RefreshAll()
-        setDeleteValues({ ...deleteValues, code:'0', where:`categories.code = '0';`})
+        setDeleteConfirm('0')
     }
 
     function DeleteProduct(e) {
         (e) => { e.preventDefault() }
         if (products.hasOwnProperty(e.target.value)) {
-            setDeleteValues({ ...deleteValues, code:e.target.value, where:`categories.code = '${e.target.value}';`})
+            setDeleteConfirm(e.target.value)
         } else {
             RefreshAll()
         }
@@ -176,6 +179,16 @@ function Products () {
         setRemoveLoadingForm(false)
     }
 
+    function TriggerDelete(codeDelete){
+        setDeleteConfirm('0')
+        let deleteCamp = {
+            'type' : 'Simple',
+            'table' : 'products',
+            'code' : codeDelete
+        }
+        FetchDelete(deleteCamp,TriggerResponse)
+    }
+
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Categories'
     let iconLeftPage = ''
@@ -183,72 +196,79 @@ function Products () {
     let leftPage = ''
     let rightPage = 'show'
 
-    return (
-        <>
-            <div className = {styles.main}>
-                <TextDrop 
-                    leftDescription = {leftDescriptionPage}
-                    rightDescription = {rightDescriptionPage}
-                    iconLeft = {iconLeftPage}
-                    iconRight = {iconRightPage}
-                />
-                <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
-                    {removeLoadingForm ? (<>
-                        {(code == 0) ? (<>
-                            <FormProducts
-                                handleSubmit = {InsertProduct}
-                                productData = {{
-                                    'name':'',
-                                    'price':'',
-                                    'amount':'',
-                                    'category':'',
-                                    'error':''
-                                }}
-                                categoriesData = {categories}
-                                buttonText = 'Add Product'
+    return (<>
+        {((deleteConfirm != '0') && (<>
+            <AlertScreen
+                refreshFunction = {TriggerRefresh}
+                yesFunction = {TriggerDelete}
+                changeCode={deleteConfirm}
+                type='products'
+                table={products}
+            />
+        </>))}
+        <div className = {styles.main}>
+            <TextDrop 
+                leftDescription = {leftDescriptionPage}
+                rightDescription = {rightDescriptionPage}
+                iconLeft = {iconLeftPage}
+                iconRight = {iconRightPage}
+            />
+            <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
+                {removeLoadingForm ? (<>
+                    {(code == 0) ? (<>
+                        <FormProducts
+                            handleSubmit = {InsertProduct}
+                            productData = {{
+                                'name':'',
+                                'price':'',
+                                'amount':'',
+                                'category':'',
+                                'error':''
+                            }}
+                            categoriesData = {categories}
+                            buttonText = 'Add Product'
+                        />
+                    </>) : (<>
+                        <FormProducts
+                            handleSubmit = {AlterProduct}
+                            productData = {{
+                                'name':DecodeHtml(products[code]['name']),
+                                'price':parseFloat((DecodeHtml(products[code]['price'])).slice(1)),
+                                'amount':DecodeHtml(products[code]['amount']),
+                                'category':products[code]['category_code'],
+                                'id':code,
+                                'error':''
+                            }}
+                            categoriesData = {categories}
+                            buttonText = 'Alter Product'
+                            refreshFunction = {TriggerRefresh}
+                        />
+                    </>)}
+                </>) : ( <Loading/> ) }
+            </div>
+            <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
+                <div className={styles.scroll}>
+                    {removeLoading ? (
+                        <>
+                            <Table
+                                tableid = 'tableproducts'
+                                tableNames = {['Code','Product','Amount','Price','Category']}
+                                campsNames = {['code','name','amount','price','category_name']}
+                                table = {products}
+                                first = 'alter'
+                                last = 'delete'
+                                firstButton = '&#9997;'
+                                lastButton = '&#128465;'
+                                firstButtonFunction = {ChangeInsert}
+                                lastButtonFunction = {DeleteProduct}
+                                tableStyle = {styleProducts.products}
                             />
-                        </>) : (<>
-                            <FormProducts
-                                handleSubmit = {AlterProduct}
-                                productData = {{
-                                    'name':DecodeHtml(products[code]['name']),
-                                    'price':parseFloat((DecodeHtml(products[code]['price'])).slice(1)),
-                                    'amount':DecodeHtml(products[code]['amount']),
-                                    'category':products[code]['category_code'],
-                                    'id':code,
-                                    'error':''
-                                }}
-                                categoriesData = {categories}
-                                buttonText = 'Alter Product'
-                                refreshFunction = {TriggerRefresh}
-                            />
-                        </>)}
-                    </>) : ( <Loading/> ) }
-                </div>
-                <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
-                    <div className={styles.scroll}>
-                        {removeLoading ? (
-                            <>
-                                <Table
-                                    tableid = 'tableproducts'
-                                    tableNames = {['Code','Product','Amount','Price','Category']}
-                                    campsNames = {['code','name','amount','price','category_name']}
-                                    table = {products}
-                                    first = 'alter'
-                                    last = 'delete'
-                                    firstButton = '&#9997;'
-                                    lastButton = '&#128465;'
-                                    firstButtonFunction = {ChangeInsert}
-                                    lastButtonFunction = {DeleteProduct}
-                                    tableStyle = {styleProducts.products}
-                                />
-                            </>
-                        ) : ( <Loading/> ) }
-                    </div>
+                        </>
+                    ) : ( <Loading/> ) }
                 </div>
             </div>
-        </>
-    )
+        </div>
+    </>)
 }
   
 export default Products

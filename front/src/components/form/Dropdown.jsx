@@ -29,11 +29,11 @@ function DropDown({ defaultTextNone, defaultText, tableValues, valueFunction, si
             </div>
             <div className={styles.dropdownContent}>
                 {((Object.keys(tableValues).length > 0) && 
-                    Object.keys(tableValues).map(keyValue => (<>
-                        <div title={DecodeHtml(tableValues[keyValue]['name'])} onClick={ChangeTextPlusValue} id={tableValues[keyValue]['code']} className={styles.object}>
+                    Object.keys(tableValues).map(keyValue => (
+                        <div title={DecodeHtml(tableValues[keyValue]['name'])} onClick={ChangeTextPlusValue} key={tableValues[keyValue]['code']} id={tableValues[keyValue]['code']} className={styles.object}>
                             {DecodeHtml(tableValues[keyValue]['name'])}
                         </div>
-                    </>))
+                    ))
                 )}
             </div>
         </div>

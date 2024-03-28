@@ -89,7 +89,7 @@ function Categories () {
                     'type':'categories',
                     'name':EncodeHtml(category['name']),
                     'tax':EncodeHtml(category['tax']),
-                    'id':category['id'],
+                    'id':String(category['id']),
                     'oldName':EncodeHtml(oldName),
                     'oldTax':EncodeHtml(oldTax)
                 }
@@ -175,13 +175,15 @@ function Categories () {
     let rightPage = 'show'
 
     return (<>
-        {deleteValues.code != '0' && (<>
+        {((deleteValues.code != '0') && (<>
             <AlertScreen
                 selectValues = {deleteValues}
                 refreshFunction = {TriggerRefresh}
                 yesFunction = {TriggerDelete}
+                changeCode = {deleteValues.code}
+                type = 'categories'
             />
-        </>)}
+        </>))}
 
         <div className = {styles.main}>
             <TextDrop

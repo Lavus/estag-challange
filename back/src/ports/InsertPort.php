@@ -26,7 +26,6 @@
                             echo(json_encode(false));
                         }
                     } else if( ($data['type'] == "products") && ( !empty($data['name']) ) && ( !empty($data['amount']) ) && ( !empty($data['price']) ) && ( !empty($data['category']) ) ){
-                        error_log("entrou");
                         $name = html_entity_decode($data['name']);
                         $price = html_entity_decode($data['price']);
                         $amount = html_entity_decode($data['amount']);

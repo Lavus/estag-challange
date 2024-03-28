@@ -10,7 +10,7 @@
             } else if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) ) {
                 $regex = "/^[0-9]{1,}([.]+[0-9]{1,2}){0,1}$/";
                 if ( ( $type == "none" ) && ( $camp == "value_total" ) ) {
-                    $min = "0.1";
+                    $min = "0.01";
                 } else {
                     $min = "0";
                 }
@@ -26,7 +26,7 @@
                 $min = "0";
             } else if ( str_contains($camp,"price") ) {
                 $regex = "/^[0-9]{1,10}([.]+[0-9]{1,2}){0,1}$/";
-                $min = "0.1";
+                $min = "0.01";
             } else {
                 return (FALSE);
             }

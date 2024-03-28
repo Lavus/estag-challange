@@ -78,7 +78,7 @@ function FormProducts({ handleSubmit, productData, categoriesData, buttonText, r
                 name="amount"
                 id="amount"
                 step='1'
-                min='1'
+                min={((refreshFunction) ? ('0') : ('1'))}
                 placeholder='Amount'
                 className = {styles.quarter}
                 required = {true}

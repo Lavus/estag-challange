@@ -5,7 +5,7 @@ import Loading from '../layout/Loading'
 import Button from '../form/Button'
 import FetchSelect from '../pages/functions/FetchSelect'
 
-function AlertScreen( { selectValues, refreshFunction, yesFunction } ) {
+function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, type, table } ) {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [categoryItems, setCategoryItems] = useState([])
     const [refresh, setRefresh] = useState(false)
@@ -29,9 +29,14 @@ function AlertScreen( { selectValues, refreshFunction, yesFunction } ) {
     }, [refresh])
 
     useEffect(() => {
-        setRefresh(false)
-        setRemoveLoading(false)
-        FetchSelect(selectValues,FinishFunctionFetchSelect)
+        ((selectValues) ? (
+            setRefresh(false),
+            setRemoveLoading(false),
+            FetchSelect(selectValues,FinishFunctionFetchSelect)
+        ):(
+            setRefresh(false),
+            setRemoveLoading(true)
+        ))
     }, [refresh])
 
     function FinishFunctionFetchSelect(data){
@@ -41,37 +46,47 @@ function AlertScreen( { selectValues, refreshFunction, yesFunction } ) {
 
     function executeDelete(e) {
         (e) => { e.preventDefault() }
-        yesFunction(selectValues.code)
+        yesFunction(changeCode)
     }
 
     useEffect(() => {
         setRefresh(true)
-    }, [selectValues])
+    }, [changeCode])
 
     return (<>
         <div className={styles.alert}>
             {removeLoading ? (<>
-                {( ((categoryItems['broken']) || (categoryItems.length == 0)) ? (<>
-                    {alert("There's some problem with the request, please try again.")}
-                    {refreshFunction()}
+                {((type == 'categories') ? (<>
+                    {(((categoryItems['broken']) || (categoryItems.length == 0)) ? (<>
+                        {alert("There's some problem with the request, please try again.")}
+                        {refreshFunction()}
+                    </>):(<>
+                        {/* {alert(JSON.stringify(categoryItems))} */}
+                        <div className={styles.textalert}>
+                            Do you really want to delete the category '{DecodeHtml(categoryItems[changeCode]['name'])}' ?<br/>
+                            {((categoryItems[changeCode]['count_products_code'] != 0) && (<>
+                                There's {categoryItems[changeCode]['count_products_code']} product(s) within this category '{DecodeHtml(categoryItems[changeCode]['name'])}', by deleting the category, those products will be deleted together, do you really want to continue?
+                            </>))}
+                        </div>
+                    </>))}
                 </>):(<>
-                    {/* {alert(JSON.stringify(categoryItems))} */}
-                    <div className={styles.textalert}>Do you really want to delete the category '{DecodeHtml(categoryItems[selectValues.code]['name'])}' ?<br/>
-                        {((categoryItems[selectValues.code]['count_products_code'] != 0) && (<>
-                            There's {categoryItems[selectValues.code]['count_products_code']} product(s) within this category '{DecodeHtml(categoryItems[selectValues.code]['name'])}', by deleting the category, those products will be deleted together, do you really want to continue?
-                        </>))}
-                    </div>
-                    <Button
-                        text='YES'
-                        className={styles.yesbutton}
-                        onClick={executeDelete}
-                    />
-                    <Button
-                        text={noButtonText}
-                        className={styles.nobutton}
-                        onClick={refreshFunction}
-                    />
+                    {((type == 'products') ? (<>
+                        <div className={styles.textalert}>
+                            Do you really want to delete the product '{DecodeHtml(table[changeCode].name)}' ?<br/>
+                        </div>
+                    </>):(<>
+                    </>))}
                 </>))}
+                <Button
+                    text='YES'
+                    className={styles.yesbutton}
+                    onClick={executeDelete}
+                />
+                <Button
+                    text={noButtonText}
+                    className={styles.nobutton}
+                    onClick={refreshFunction}
+                />
             </>) : ( <Loading/> ) }
         </div>
     </>)

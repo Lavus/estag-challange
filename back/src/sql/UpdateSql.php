@@ -14,7 +14,11 @@
                 if ($row != $oldValues[$index]){
                     $continue = FALSE;
                 } else if ($row != $values[$index]){
-                    $setValue = SafeCrypto($values[$index],'Encrypt');
+                    if ( str_contains($indexRow,"code") ){
+                        $setValue = $values[$index];
+                    } else {
+                        $setValue = SafeCrypto($values[$index],'Encrypt');
+                    }
                     $sql .= $campsAlias[$index+1]." = '".$setValue."',";
                 }
                 $index ++;

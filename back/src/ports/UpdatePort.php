@@ -18,7 +18,7 @@
                 $regexnumbersamount = "/^[0-9]{0,}$/";
                 $regexnumberscode = "/^[1-9]{1}[0-9]{0,}$/";
                 if ( ( !empty($data['type']) ) && ( !empty($data['id']) ) ) {
-                    if (preg_match($regexnumberscode, $data['id'])){
+                    if (!(preg_match($regexnumberscode, $data['id']))){
                         echo(json_encode(false));
                     } else if ( CheckValidityCode($data['id'],$data['type']) ){
                         if( ($data['type'] == "categories") && ( !empty($data['name']) ) && ( !empty($data['tax']) ) && ( !empty($data['oldName']) ) && ( !empty($data['oldTax']) ) ){
@@ -29,11 +29,17 @@
                             } else {
                                 echo(json_encode(false));
                             }
-                        } else if( ($data['type'] == "products") && ( !empty($data['name']) ) && ( !empty($data['amount']) ) && ( !empty($data['oldName']) ) && ( !empty($data['oldTax']) ) ){
+                        } else if( ($data['type'] == "products") && ( !empty($data['name']) ) && ( !empty($data['oldName']) ) && ( !empty($data['amount']) ) && ( !empty($data['oldAmount']) ) && ( !empty($data['price']) ) && ( !empty($data['oldPrice']) ) && ( !empty($data['category']) ) && ( !empty($data['oldCategory']) ) ){
                             $name = html_entity_decode($data['name']);
-                            $tax = html_entity_decode($data['tax']);
-                            if ( (preg_match($regexname, $name)) && (preg_match($regexnumberstax, $tax)) && (CheckNameAvaliable($name,"categories",$data['id'])) ) {
-                                echo( json_encode ( UpdateSql( 'categories', [['code'],['name'],['tax']], ['code','name','tax'], [$data['name'],$data['tax']], [$data['oldName'],$data['oldTax']], $data['id'] ) ) );
+                            $amount = html_entity_decode($data['amount']);
+                            $price = html_entity_decode($data['price']);
+                            $category = $data['category'];
+                            if ( (preg_match($regexname, $name)) && (preg_match($regexnumbersamount, $amount)) && (preg_match($regexnumbersprice, $price)) && (preg_match($regexnumberscode, $category)) && (CheckNameAvaliable($name,"products",$data['id'])) ) {
+                                if (CheckValidityCode($category,"categories")) {
+                                    echo( json_encode ( UpdateSql( 'products', [['code'],['name'],['amount'],['price'],['category_code']], ['code','name','amount','price','category_code'], [$data['name'],$data['amount'],$data['price'],$data['category']], [$data['oldName'],$data['oldAmount'],$data['oldPrice'],$data['oldCategory']], $data['id'] ) ) );
+                                } else {
+                                    echo(json_encode(false));
+                                }
                             } else {
                                 echo(json_encode(false));
                             }
