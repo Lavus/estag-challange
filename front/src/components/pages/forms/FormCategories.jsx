@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import Input from '../../form/Input'
 import styles from '../css/Pages.module.css'
 
-// import styles from './ProjectForm.module.css'
-
 function FormCategories({ handleSubmit, categoryData, buttonText, refreshFunction }) {
     const [category, setCategory] = useState(categoryData)
 

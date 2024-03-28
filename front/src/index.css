@@ -19,17 +19,6 @@ table,input,select,button,div{
   border: none;
 }
 
-.quarter {
-  width: 10.475vw;
-  padding: 1vh 1vw;
-  margin: 1vh 0.5vw;
-  float: right;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis;
-  box-sizing: border-box;
-}
-
 .cancel {
   background-color: #C5C5C5;
   font-weight: bold;
@@ -56,9 +45,6 @@ input.quarter{
   }
   div.left.show, div.right.show {
       display: block;
-  }
-  .quarter {
-      width: 23vw;
   }
 }
 

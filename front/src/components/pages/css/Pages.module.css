@@ -86,6 +86,17 @@ div.main div.right div.ten{
     box-sizing: border-box;
 }
 
+.quarter {
+    width: 10.475vw;
+    padding: 1vh 1vw;
+    margin: 1vh 0.5vw;
+    float: right;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
 @media screen and (max-width: 800px) {
 
     div.left, div.right {
@@ -135,6 +146,10 @@ div.main div.right div.ten{
 
     .half {
         width: 47vw;
+    }
+
+    .quarter {
+        width: 23vw;
     }
 
 }

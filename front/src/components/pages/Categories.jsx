@@ -195,13 +195,22 @@ function Categories () {
                     {(code == 0) ? (<>
                         <FormCategories
                             handleSubmit = {InsertCategory}
-                            categoryData = {{'name':'','tax':'','error':''}}
+                            categoryData = {{
+                                'name':'',
+                                'tax':'',
+                                'error':''
+                            }}
                             buttonText = 'Add Category'
                         />
                     </>) : (<>
                         <FormCategories
                             handleSubmit = {AlterCategory}
-                            categoryData = {{'name':DecodeHtml(categories[code]['name']),'tax':(DecodeHtml(categories[code]['tax'])).slice(0, -1),'id':code,'error':''}}
+                            categoryData = {{
+                                'name':DecodeHtml(categories[code]['name']),
+                                'tax':(DecodeHtml(categories[code]['tax'])).slice(0, -1),
+                                'id':code,
+                                'error':''
+                            }}
                             buttonText = 'Alter Category'
                             refreshFunction = {TriggerRefresh}
                         />

@@ -1,74 +1,91 @@
 import { useState, useEffect } from 'react'
 import Input from '../../form/Input'
-import SubmitButton from '../../form/SubmitButton'
+import styles from '../css/Pages.module.css'
+import DropDown from '../../form/Dropdown'
 
-// import styles from './ProjectForm.module.css'
+function FormProducts({ handleSubmit, productData, categoriesData, buttonText, refreshFunction }) {
+    const [product, setProduct] = useState(productData)
 
-function FormProducts({ handleSubmit, btnText, projectData }) {
-  const [project, setProject] = useState(projectData || {})
-  const [categories, setCategories] = useState([])
+    const submit = (e) => {
+        e.preventDefault()
+        handleSubmit(product)
+    }
 
-  useEffect(() => {
-    fetch('http://localhost:5000/categories', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        setCategories(data)
-      })
-  }, [])
+    const refresh = (e) => {
+        e.preventDefault()
+        refreshFunction()
+    }
 
-  const submit = (e) => {
-    e.preventDefault()
-    handleSubmit(project)
-  }
+    useEffect(() => {
+        setProduct(productData)
+    }, [productData])
 
-  function handleChange(e) {
-    setProject({ ...project, [e.target.name]: e.target.value })
-  }
+    function handleChange(e) {
+        if (['name','tax'].includes(e.target.id)) {
+            setProduct({ ...product, [e.target.id]: e.target.value })
+        } else {
+            setProduct({ ...product, ['error']: e.target.value })
+        }
+    }
 
-  function handleCategory(e) {
-    setProject({
-      ...project,
-      category: {
-        id: e.target.value,
-        name: e.target.options[e.target.selectedIndex].text,
-      },
-    })
-  }
-
-  return (
-    <form onSubmit={submit} className={styles.form}>
-      <Input
-        type="text"
-        text="Nome do projeto"
-        name="name"
-        placeholder="Insira o nome do projeto"
-        handleOnChange={handleChange}
-        value={project.name}
-      />
-      <Input
-        type="number"
-        text="Orçamento do projeto"
-        name="budget"
-        placeholder="Insira o orçamento total"
-        handleOnChange={handleChange}
-        value={project.budget}
-      />
-      <Select
-        name="category_id"
-        text="Selecione a categoria"
-        options={categories}
-        handleOnChange={handleCategory}
-        value={project.category ? project.category.id : ''}
-      />
-      <SubmitButton text={btnText} />
-    </form>
-  )
+    return (<>
+        <form onSubmit={submit}>
+            <Input
+                type="text"
+                name="productName"
+                id="name"
+                placeholder="Product name"
+                className = {styles.full}
+                maxLength = '255'
+                title = 'Names must start with Upper case and need to have 3 or more letters at start, maximum number of characters aceepted is 255.'
+                pattern = '^[A-Z]+[a-zA-ZÀ-ú]{2}.{0,222}$'
+                required = {true}
+                onChange={handleChange}
+                value={product.name}
+            />
+            <DropDown
+            />
+            <Input
+                type="number"
+                name="unitPrice"
+                id="price"
+                step='0.01'
+                min='0.01'
+                max='9999999999.99'
+                placeholder='Price'
+                className = {styles.quarter}
+                required = {true}
+                onChange={handleChange}
+                value={product.price}
+            />
+            <Input
+                type="number"
+                name="amount"
+                id="amount"
+                step='1'
+                min='1'
+                placeholder='Amount'
+                className = {styles.quarter}
+                required = {true}
+                onChange={handleChange}
+                value={product.amount}
+            />
+            <Input
+                type="submit"
+                className = {(`${styles.bluebold} ${styles.full}`)}
+                value={buttonText}
+            />
+        </form>
+        {((refreshFunction) && (<>
+            <form onSubmit={refresh}>
+                <Input
+                    type = "submit"
+                    className = {(`${styles.bluebold} ${styles.full}`)}
+                    value='Return to add product'
+                />
+            </form>
+        </>))}
+    </>)
 }
 
 export default FormProducts
-

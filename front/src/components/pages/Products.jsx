@@ -4,37 +4,61 @@ import Loading from '../layout/Loading'
 import { useState, useEffect } from 'react'
 import styleProducts from './css/Products.module.css'
 import styles from './css/Pages.module.css'
+import FetchSelect from './functions/FetchSelect'
+import FormProducts from './forms/FormProducts'
 
 function Products () {
     const [removeLoading, setRemoveLoading] = useState(false)
+    const [removeLoadingForm, setRemoveLoadingForm] = useState(false)
     const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([])
+    const [refresh, setRefresh] = useState(false)
+    const [refreshForm, setRefreshForm] = useState(false)
+    const [refreshCategories, setRefreshCategories] = useState(false)
+    const [code, setCode] = useState(0)
     const selectValues =  {
         'type':['SimpleForeign'],
         'table':'products',
         'code':'0',
         'camps':[['code'],['name'],['amount'],['price']],
         'campsAlias':['code','name','amount','price'],
-        'innerCamps':[[['name']]],
-        'innerCampsAlias':[['category_name']],
+        'innerCamps':[[['code'],['name']]],
+        'innerCampsAlias':[['category_code','category_name']],
         'innerTables':['categories'],
         'foreignKey':'category_code'
     }
+    const selectValuesCategories =  {
+        'type':['FullSimple'],
+        'table':'categories',
+        'code':'0',
+        'camps':[['code'],['name']],
+        'campsAlias':['code','name']
+    }
+
+    function FinishFunctionFetchSelectCategories(data){
+        setCategories(data)
+    }
+
     useEffect(() => {
+        setRefreshCategories(false)
+        FetchSelect(selectValuesCategories,FinishFunctionFetchSelectCategories)
+    }, [refreshCategories])
+
+    function FinishFunctionFetchSelect(data){
+        setProducts(data)
+        setRemoveLoading(true)
+    }
+
+    useEffect(() => {
+        setRefresh(false)
         setRemoveLoading(false)
-        fetch('http://localhost/ports/SelectPort.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/json',
-                'I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT' : 'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='
-            },
-            body: JSON.stringify(selectValues)
-        })
-        .then((resp) => resp.json())
-        .then((data) => {
-            setProducts(data)
-            setRemoveLoading(true)
-        })
-    }, [])
+        FetchSelect(selectValues,FinishFunctionFetchSelect)
+    }, [refresh])
+
+    useEffect(() => {
+        setRefreshForm(false)
+        setRemoveLoadingForm(true)
+    }, [refreshForm])
 
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Categories'
@@ -53,11 +77,34 @@ function Products () {
                     iconRight = {iconRightPage}
                 />
                 <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
-                    <form id='formcategories' action='addcategory.php' method='post'>
-                        <input type='text' id='categoryname' name='categoryname' placeholder='Category name' className = 'half' maxLength='255' title='Names must start with Upper case and need to have 3 or more letters at start, maximum number of characters aceepted is 255.' pattern='^[A-Z]+[a-zA-ZÀ-ú]{2}.{0,222}$' required/>
-                        <input type='number' id='tax' name='tax' step='0.01' min='0' max='9999.99' placeholder='Tax' className = 'half' required/>
-                        <input type='submit' value='Add Category' className = 'bluebold full'/>
-                    </form>
+                    {removeLoadingForm ? (<>
+                        {(code == 0) ? (<>
+                            <FormProducts
+                                productData = {{
+                                    'name':'',
+                                    'price':'',
+                                    'amount':'',
+                                    'category':'',
+                                    'error':''
+                                }}
+                                categoriesData = {categories}
+                                buttonText = 'Add Category'
+                            />
+                        </>) : (<>
+                            <FormProducts
+                                productData = {{
+                                    'name':DecodeHtml(products[code]['name']),
+                                    'price':(DecodeHtml(products[code]['price'])).slice(0, 1),
+                                    'amount':DecodeHtml(products[code]['amount']),
+                                    'category':products[code]['category_code'],
+                                    'id':code,
+                                    'error':''
+                                }}
+                                categoriesData = {categories}
+                                buttonText = 'Alter Category'
+                            />
+                        </>)}
+                    </>) : ( <Loading/> ) }
                 </div>
                 <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
                     <div className={styles.scroll}>
