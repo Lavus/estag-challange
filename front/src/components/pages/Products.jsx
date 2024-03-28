@@ -6,6 +6,11 @@ import styleProducts from './css/Products.module.css'
 import styles from './css/Pages.module.css'
 import FetchSelect from './functions/FetchSelect'
 import FormProducts from './forms/FormProducts'
+import DecodeHtml from '../functions/DecodeHtml'
+import EncodeHtml from '../functions/EncodeHtml'
+import ValidateCamps from './functions/ValidateCamps'
+import FetchInsert from './functions/FetchInsert'
+import FetchUpdate from './functions/FetchUpdate'
 
 function Products () {
     const [removeLoading, setRemoveLoading] = useState(false)
@@ -35,6 +40,87 @@ function Products () {
         'campsAlias':['code','name']
     }
 
+    function AlterProduct(product){
+        if ((product['name'])&&(product['amount'])&&(product['price'])&&(product['category'])&&(product['id'])) {
+            if (categories.hasOwnProperty(product['category'])) {
+                let validatedCampsAlter = ValidateCamps('Alter',product,['name','amount','price'],products)
+                if ( (validatedCampsAlter[0] == 'true') || ((validatedCampsAlter[0] == 'none') && (product['category'] != products[product['id']]['category_code'])) ) {
+                    let oldName = DecodeHtml(products[product['id']]['name'])
+                    let oldAmount = DecodeHtml(products[product['id']]['amount'])
+                    let oldPrice = parseFloat((DecodeHtml(products[product['id']]['price'])).slice(1))
+                    let oldCategory = products[product['id']]['category_code']
+                    let updateValues = {
+                        'type':'products',
+                        'name':EncodeHtml(product['name']),
+                        'amount':EncodeHtml(product['amount']),
+                        'price':EncodeHtml(product['price']),
+                        'category':EncodeHtml(product['category']),
+                        'id':product['id'],
+                        'oldName':EncodeHtml(oldName),
+                        'oldAmount':EncodeHtml(oldAmount),
+                        'oldPrice':EncodeHtml(oldPrice),
+                        'oldCategory':oldCategory
+                    }
+                    FetchUpdate(updateValues,TriggerResponse)
+                } else if (validatedCampsAlter[0] == 'false'){
+                    alert(validatedCampsAlter[1])
+                    RefreshAll()
+                } else if ( (validatedCampsAlter[0] == 'check') || (validatedCampsAlter[0] == 'none') ){
+                    alert(validatedCampsAlter[1])
+                }
+            }else{
+                alert("There's some problem with the request, please try again.")
+                RefreshAll()
+            }
+        }else{
+            alert("There's some problem with the request, please try again.")
+            RefreshAll()
+        }
+    }
+
+    function InsertProduct(product){
+        if (product['category']) {
+            if ((product['name'])&&(product['amount'])&&(product['price'])) {
+                if (categories.hasOwnProperty(product['category'])) {
+                    let validatedCampsInsert = ValidateCamps('Insert',product,['name','amount','price'],products)
+                    if (validatedCampsInsert[0] == 'true'){
+                        let insertValues = {
+                            'type':'products',
+                            'name':EncodeHtml(product['name']),
+                            'amount':EncodeHtml(product['amount']),
+                            'price':EncodeHtml(product['price']),
+                            'category':product['category']
+                        }
+                        FetchInsert(insertValues,TriggerResponse)
+                    } else if (validatedCampsInsert[0] == 'false'){
+                        alert(validatedCampsInsert[1])
+                        RefreshAll()
+                    } else if ( (validatedCampsInsert[0] == 'check') || (validatedCampsInsert[0] == 'none') ){
+                        alert(validatedCampsInsert[1])
+                    }
+                }else{
+                    alert("There's some problem with the request, please try again.")
+                    RefreshAll()
+                }
+            }else{
+                alert("There's some problem with the request, please try again.")
+                RefreshAll()
+            }
+        } else {
+            alert("Before adding the product, please select a category.")
+        }
+    }
+
+    function TriggerResponse(verification,message){
+        if (verification == true){
+            alert(`Product ${message}, executed with success.`)
+            RefreshAll()
+        } else {
+            alert(`There's some problem with the request of ${message}, please try again.`)
+            RefreshAll()
+        }
+    }
+
     function FinishFunctionFetchSelectCategories(data){
         setCategories(data)
     }
@@ -60,6 +146,36 @@ function Products () {
         setRemoveLoadingForm(true)
     }, [refreshForm])
 
+    function ChangeInsert(e) {
+        (e) => { e.preventDefault() }
+        if (products.hasOwnProperty(e.target.value)) {
+            setCode(e.target.value)
+        } else {
+            RefreshAll()
+        }
+    }
+
+    function TriggerRefresh() {
+        RefreshAll()
+        setDeleteValues({ ...deleteValues, code:'0', where:`categories.code = '0';`})
+    }
+
+    function DeleteProduct(e) {
+        (e) => { e.preventDefault() }
+        if (products.hasOwnProperty(e.target.value)) {
+            setDeleteValues({ ...deleteValues, code:e.target.value, where:`categories.code = '${e.target.value}';`})
+        } else {
+            RefreshAll()
+        }
+    }
+
+    function RefreshAll(){
+        setCode(0)
+        setRefresh(true)
+        setRefreshForm(true)
+        setRemoveLoadingForm(false)
+    }
+
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Categories'
     let iconLeftPage = ''
@@ -80,6 +196,7 @@ function Products () {
                     {removeLoadingForm ? (<>
                         {(code == 0) ? (<>
                             <FormProducts
+                                handleSubmit = {InsertProduct}
                                 productData = {{
                                     'name':'',
                                     'price':'',
@@ -88,20 +205,22 @@ function Products () {
                                     'error':''
                                 }}
                                 categoriesData = {categories}
-                                buttonText = 'Add Category'
+                                buttonText = 'Add Product'
                             />
                         </>) : (<>
                             <FormProducts
+                                handleSubmit = {AlterProduct}
                                 productData = {{
                                     'name':DecodeHtml(products[code]['name']),
-                                    'price':(DecodeHtml(products[code]['price'])).slice(0, 1),
+                                    'price':parseFloat((DecodeHtml(products[code]['price'])).slice(1)),
                                     'amount':DecodeHtml(products[code]['amount']),
                                     'category':products[code]['category_code'],
                                     'id':code,
                                     'error':''
                                 }}
                                 categoriesData = {categories}
-                                buttonText = 'Alter Category'
+                                buttonText = 'Alter Product'
+                                refreshFunction = {TriggerRefresh}
                             />
                         </>)}
                     </>) : ( <Loading/> ) }
@@ -119,6 +238,8 @@ function Products () {
                                     last = 'delete'
                                     firstButton = '&#9997;'
                                     lastButton = '&#128465;'
+                                    firstButtonFunction = {ChangeInsert}
+                                    lastButtonFunction = {DeleteProduct}
                                     tableStyle = {styleProducts.products}
                                 />
                             </>

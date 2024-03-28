@@ -5,6 +5,7 @@ import DropDown from '../../form/Dropdown'
 
 function FormProducts({ handleSubmit, productData, categoriesData, buttonText, refreshFunction }) {
     const [product, setProduct] = useState(productData)
+    const [categories, setCategories] = useState(categoriesData)
 
     const submit = (e) => {
         e.preventDefault()
@@ -20,8 +21,16 @@ function FormProducts({ handleSubmit, productData, categoriesData, buttonText, r
         setProduct(productData)
     }, [productData])
 
+    useEffect(() => {
+        setCategories(categoriesData)
+    }, [categoriesData])
+
+    function handleChangeDropdown(value) {
+        setProduct({ ...product, ['category']: value })
+    }
+
     function handleChange(e) {
-        if (['name','tax'].includes(e.target.id)) {
+        if (['name','price','amount'].includes(e.target.id)) {
             setProduct({ ...product, [e.target.id]: e.target.value })
         } else {
             setProduct({ ...product, ['error']: e.target.value })
@@ -44,6 +53,12 @@ function FormProducts({ handleSubmit, productData, categoriesData, buttonText, r
                 value={product.name}
             />
             <DropDown
+                defaultTextNone = 'No categories avaliable'
+                defaultText = 'Category'
+                tableValues = {categories}
+                valueFunction = {handleChangeDropdown}
+                sizeStyle = 'half'
+                code={product.category}
             />
             <Input
                 type="number"

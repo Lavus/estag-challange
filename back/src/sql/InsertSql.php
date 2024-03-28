@@ -7,7 +7,11 @@
         $stringValues = "";
         foreach($camps as $indexCamp => $camp) {
             $stringCamps .= $camp.",";
-            $stringValues .= "'".SafeCrypto($values[$indexCamp],'Encrypt')."',";
+            if ( str_contains($camp,"code") ){
+                $stringValues .= "'".$values[$indexCamp]."',";
+            } else {
+                $stringValues .= "'".SafeCrypto($values[$indexCamp],'Encrypt')."',";
+            }
         }
         $stringCamps = rtrim($stringCamps, ",");
         $stringValues = rtrim($stringValues, ",");

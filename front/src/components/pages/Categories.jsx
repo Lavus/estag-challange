@@ -97,7 +97,7 @@ function Categories () {
             } else if (validatedCampsAlter[0] == 'false'){
                 alert(validatedCampsAlter[1])
                 RefreshAll()
-            } else if (validatedCampsAlter[0] == 'check'){
+            } else if ( (validatedCampsAlter[0] == 'check') || (validatedCampsAlter[0] == 'none') ){
                 alert(validatedCampsAlter[1])
             }
         }else{
@@ -108,7 +108,7 @@ function Categories () {
 
     function InsertCategory(category){
         if ((category['name'])&&(category['tax'])) {
-            let validatedCampsInsert = ValidateCamps('Insert',category,['name','tax'])
+            let validatedCampsInsert = ValidateCamps('Insert',category,['name','tax'],categories)
             if (validatedCampsInsert[0] == 'true'){
                 let insertValues = {
                     'type':'categories',
@@ -119,7 +119,7 @@ function Categories () {
             } else if (validatedCampsInsert[0] == 'false'){
                 alert(validatedCampsInsert[1])
                 RefreshAll()
-            } else if (validatedCampsInsert[0] == 'check'){
+            } else if ( (validatedCampsInsert[0] == 'check') || (validatedCampsInsert[0] == 'none') ){
                 alert(validatedCampsInsert[1])
             }
         }else{

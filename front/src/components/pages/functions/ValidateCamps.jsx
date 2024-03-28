@@ -1,13 +1,13 @@
 import DecodeHtml from "../../functions/DecodeHtml";
 
-function ValidateCamps(type, data, camps, table = []){
+function ValidateCamps(type, data, camps, table){
     let validated = 'true'
     let message = ''
 
 
     function CheckName(name,excludeName){
         let returnCheck = true
-        Object.keys(table).map(keyValue => { 
+        Object.keys(table).map(keyValue => {
             if ( ( table[keyValue]['name'] != excludeName ) && ( DecodeHtml(table[keyValue]['name']) == name ) ){
                 returnCheck = false
             }
@@ -31,7 +31,7 @@ function ValidateCamps(type, data, camps, table = []){
                             countIgual++
                         }
                     } else if (type == 'Insert'){
-                        if (!(CheckName(data[camps[index]],''))){
+                        if (!(CheckName(data[camps[index]],'none'))){
                             return("There's already a category within this name, please add more information with the name or change the name.")
                         }
                     }
@@ -65,7 +65,7 @@ function ValidateCamps(type, data, camps, table = []){
             } else if (camps[index] == 'price'){
                 if (regexPrice.test(data[camps[index]])){
                     if (type == 'Alter'){
-                        if (data[camps[index]] == (DecodeHtml(table[data['id']][camps[index]])).slice(0, 1) ){
+                        if (data[camps[index]] == parseFloat((DecodeHtml(table[data['id']][camps[index]])).slice(1)) ){
                             countIgual++
                         }
                     }
@@ -77,7 +77,7 @@ function ValidateCamps(type, data, camps, table = []){
             }
         }
         if (countIgual == camps.length){
-            return('Nothing was changed.')
+            return('none')
         }
         return ('true')
     }
@@ -90,6 +90,9 @@ function ValidateCamps(type, data, camps, table = []){
             } else if (checkAlter == 'false'){
                 validated = 'false'
                 message = "There's some problem with the request, please try again."
+            } else if (checkAlter == 'none'){
+                validated = 'none'
+                message = "Nothing was changed."
             } else {
                 validated = 'check'
                 message = checkAlter
@@ -105,6 +108,9 @@ function ValidateCamps(type, data, camps, table = []){
         } else if (checkInsert == 'false'){
             validated = 'false'
             message = "There's some problem with the request, please try again."
+        } else if (checkInsert == 'none'){
+            validated = 'none'
+            message = "Nothing was changed."
         } else {
             validated = 'check'
             message = checkInsert

@@ -15,12 +15,28 @@
                 $regexnumbers = "/^[0-9]{1,}([.]+[0-9]{1,2}){0,1}$/";
                 $regexnumberstax = "/^[0-9]{1,4}([.]+[0-9]{1,2}){0,1}$/";
                 $regexnumbersprice = "/^[0-9]{1,10}([.]+[0-9]{1,2}){0,1}$/";
+                $regexnumbersamountvalue = "/^[1-9]{1}[0-9]{0,}$/";
                 if ( !empty($data['type']) ) {
                     if( ($data['type'] == "categories") && ( !empty($data['name']) ) && ( !empty($data['tax']) ) ){
                         $name = html_entity_decode($data['name']);
                         $tax = html_entity_decode($data['tax']);
                         if ( (preg_match($regexname, $name)) && (preg_match($regexnumberstax, $tax)) && (CheckNameAvaliable($name,"categories")) ) {
                             echo( json_encode ( InsertSql( 'categories', ['name','tax'], [$data['name'],$data['tax']] ) ) );
+                        } else {
+                            echo(json_encode(false));
+                        }
+                    } else if( ($data['type'] == "products") && ( !empty($data['name']) ) && ( !empty($data['amount']) ) && ( !empty($data['price']) ) && ( !empty($data['category']) ) ){
+                        error_log("entrou");
+                        $name = html_entity_decode($data['name']);
+                        $price = html_entity_decode($data['price']);
+                        $amount = html_entity_decode($data['amount']);
+                        $category = $data['category'];
+                        if ( (preg_match($regexname, $name)) && (preg_match($regexnumbersprice, $price)) && (preg_match($regexnumbersamountvalue, $amount)) && (preg_match($regexnumbersamountvalue, $category)) && (CheckNameAvaliable($name,"products")) ) {
+                            if (CheckValidityCode($category,"categories")) {
+                                echo( json_encode ( InsertSql( 'products', ['name','amount','price','category_code'], [$data['name'],$data['amount'],$data['price'],$data['category']] ) ) );
+                            } else {
+                                echo(json_encode(false));
+                            }
                         } else {
                             echo(json_encode(false));
                         }

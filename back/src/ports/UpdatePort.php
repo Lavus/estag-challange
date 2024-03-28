@@ -15,11 +15,21 @@
                 $regexnumbers = "/^[0-9]{1,}([.]+[0-9]{1,2}){0,1}$/";
                 $regexnumberstax = "/^[0-9]{1,4}([.]+[0-9]{1,2}){0,1}$/";
                 $regexnumbersprice = "/^[0-9]{1,10}([.]+[0-9]{1,2}){0,1}$/";
+                $regexnumbersamount = "/^[0-9]{0,}$/";
+                $regexnumberscode = "/^[1-9]{1}[0-9]{0,}$/";
                 if ( ( !empty($data['type']) ) && ( !empty($data['id']) ) ) {
-                    if ( (strval($data['id']) !== '0') && (intval($data['id']) === 0) ){
+                    if (preg_match($regexnumberscode, $data['id'])){
                         echo(json_encode(false));
                     } else if ( CheckValidityCode($data['id'],$data['type']) ){
                         if( ($data['type'] == "categories") && ( !empty($data['name']) ) && ( !empty($data['tax']) ) && ( !empty($data['oldName']) ) && ( !empty($data['oldTax']) ) ){
+                            $name = html_entity_decode($data['name']);
+                            $tax = html_entity_decode($data['tax']);
+                            if ( (preg_match($regexname, $name)) && (preg_match($regexnumberstax, $tax)) && (CheckNameAvaliable($name,"categories",$data['id'])) ) {
+                                echo( json_encode ( UpdateSql( 'categories', [['code'],['name'],['tax']], ['code','name','tax'], [$data['name'],$data['tax']], [$data['oldName'],$data['oldTax']], $data['id'] ) ) );
+                            } else {
+                                echo(json_encode(false));
+                            }
+                        } else if( ($data['type'] == "products") && ( !empty($data['name']) ) && ( !empty($data['amount']) ) && ( !empty($data['oldName']) ) && ( !empty($data['oldTax']) ) ){
                             $name = html_entity_decode($data['name']);
                             $tax = html_entity_decode($data['tax']);
                             if ( (preg_match($regexname, $name)) && (preg_match($regexnumberstax, $tax)) && (CheckNameAvaliable($name,"categories",$data['id'])) ) {

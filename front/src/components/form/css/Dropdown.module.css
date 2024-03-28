@@ -23,7 +23,7 @@
 .dropdown.full .dropbtn .dropdowntext {
     width: 41.9vw;
 }
-.dropdown.full .dropdown-content, .dropdown.full .dropdown-content div {
+.dropdown.full .dropdownContent, .dropdown.full .dropdownContent .object {
     max-width: 44.9vw;
     width: 44.9vw;
 }
@@ -32,7 +32,7 @@
     width: 18.95vw;
 }
 
-.dropdown.half .dropdown-content, .dropdown.half .dropdown-content div {
+.dropdown.half .dropdownContent, .dropdown.half .dropdownContent .object {
     max-width: 21.95vw;
     width: 21.95vw;
 }
@@ -65,7 +65,7 @@
     color: black;
 }
 
-.dropdown-content {
+.dropdownContent {
     max-height: 50vh;
     display: none;
     position: absolute;
@@ -79,7 +79,7 @@
     overflow-y: scroll;
 }
 
-.dropdown-content div {
+.dropdownContent .object {
     padding: 1vh 1vw;
     box-sizing: border-box;
     white-space: nowrap;
@@ -98,18 +98,17 @@
     color: white;
 }
 
-.dropdown:hover .dropbtn div div{
+.dropdown:hover .dropbtn .positiondropright .arrow{
     border-color: white;
 }
 
-
-.dropdown-content div:hover {
+.dropdownContent .object:hover {
     background-color: #ddd;
     cursor: pointer;
     color: black;
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown:hover .dropdownContent {
     display: block;
     box-sizing: border-box;
 }
@@ -141,13 +140,35 @@
     -webkit-transform: rotate(45deg);
 }
 
+.full {
+    width: 44.9vw;
+    padding: 1vh 1vw;
+    margin: 1vh 0.5vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+.half {
+    width: 21.95vw;
+    padding: 1vh 1vw;
+    margin: 1vh 0.5vw;
+    float: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+
 @media screen and (max-width: 800px) {
 
     .dropdown.full .dropbtn .dropdowntext {
         width: 90vw;
     }
 
-    .dropdown.full .dropdown-content, .dropdown.full .dropdown-content div {
+    .dropdown.full .dropdownContent, .dropdown.full .dropdownContent .object {
         max-width: 95vw;
         width: 95vw;
     }
@@ -156,7 +177,7 @@
         width: 42vw;
     }
 
-    .dropdown.half .dropdown-content, .dropdown.half .dropdown-content div {
+    .dropdown.half .dropdownContent, .dropdown.half .dropdownContent .object {
         max-width: 47vw;
         width: 47vw;
     }
@@ -164,6 +185,14 @@
     .positiondropright {
         width: 2vw;
         padding: 0.65vh 4vw 0.65vh 1vw;
+    }
+
+    .full {
+        width: 95vw;
+    }
+
+    .half {
+        width: 47vw;
     }
 
 }

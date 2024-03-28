@@ -48,7 +48,7 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
                                         ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),first,DecodeHtml(firstButton),table[keyvalue]["code"],firstButtonFunction)
                                     )
                                 :
-                                    ((last!='none' && indexcamp==((Object.keys(table[keyvalue]).length)-1)) ?
+                                    ((last!='none' && indexcamp==((campsNames.length)-1)) ?
                                         ((tableid == 'tablecart') ?
                                             ShowSingleTd(indexcamp,DecodeHtml(table[keyvalue][camp]),last,DecodeHtml(lastButton),table[keyvalue]["code"][0],lastButtonFunction)
                                         :
