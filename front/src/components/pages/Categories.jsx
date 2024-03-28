@@ -8,6 +8,11 @@ import FormCategories from './forms/FormCategories'
 import DecodeHtml from '../functions/DecodeHtml'
 import EncodeHtml from '../functions/EncodeHtml'
 import AlertScreen from '../View/AlertScreen'
+import FetchSelect from './functions/FetchSelect'
+import FetchDelete from './functions/FetchDelete'
+import FetchUpdate from './functions/FetchUpdate'
+import FetchInsert from './functions/FetchInsert'
+import ValidateCamps from './functions/ValidateCamps'
 
 function Categories () {
     const [removeLoading, setRemoveLoading] = useState(false)
@@ -47,148 +52,79 @@ function Categories () {
         'caseVerificationAlias' : ['count_products_code']
     })
 
-    function triggerDelete(codeDelete){
+    function TriggerResponse(verification,message){
+        if (verification == true){
+            alert(`Category ${message}, executed with success.`)
+            RefreshAll()
+        } else {
+            alert(`There's some problem with the request of ${message}, please try again.`)
+            RefreshAll()
+        }
+    }
+
+    function TriggerDelete(codeDelete){
         setDeleteValues({ ...deleteValues, code:'0', where:`categories.code = '0';`})
-        fetch('http://localhost/ports/DeletePort.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/json',
-                'DGKQPLCQX1IZAO0D7VD9SJYROFSBGSEOQXXHYIXQCQFT2XODQPE8FDRHHJDWY3L5WNBAU6JLA7U44HPXKJDOJ2JBQZCCEK7Y37CC0PILUUMHVTVDYZI5W' : 'eh63/uT/+iQqmpgn3lQWB8ehzIk6Pol+dBqmQhBubW+S1KkNsossNfJIqE+VIHR0w9qHsvgsuthTYR1LW0MsyhGoXUXCWhhE404j9B6yISSHgBRGWBpaY+vGgeEQaRkNiaZwRgJKFc94AX6CBAblSssXviFuO2k='
-            },
-            body: JSON.stringify({
-                'type' : 'Simple',
-                'table' : 'categories',
-                'code' : codeDelete
-            })
-        })
-        .then((resp) => resp.json())
-        .then((data) => {
-            if (data == true){
-                alert('Category deleted with success.')
-                setCode(0)
-                setRefresh(true)
-                setRefreshForm(true)
-                setRemoveLoadingForm(false)
-            } else {
-                alert("There's some problem with the request, please try again.")
-                setCode(0)
-                setRefresh(true)
-                setRefreshForm(true)
-                setRemoveLoadingForm(false)
-            }
-        })
+        let deleteCamp = {
+            'type' : 'Simple',
+            'table' : 'categories',
+            'code' : codeDelete
+        }
+        FetchDelete(deleteCamp,TriggerResponse)
+    }
+
+    function RefreshAll(){
+        setCode(0)
+        setRefresh(true)
+        setRefreshForm(true)
+        setRemoveLoadingForm(false)
     }
 
     function AlterCategory(category){
-        // alert(JSON.stringify(category))
         if ((category['name'])&&(category['tax'])&&(category['id'])) {
-            if (categories.hasOwnProperty(category['id'])) {
+            let validatedCampsAlter = ValidateCamps('Alter',category,['name','tax'],categories)
+            if (validatedCampsAlter[0] == 'true'){
                 let oldName = DecodeHtml(categories[category['id']]['name'])
                 let oldTax = (DecodeHtml(categories[category['id']]['tax'])).slice(0, -1)
-                if ( (category['name'] != oldName) || (category['tax'] != oldTax) ){
-                    let regexName = new RegExp("^[A-Z]+[a-zA-ZÀ-ú]{2}.{0,222}$")
-                    let regexTax = new RegExp("^[0-9]{1,4}([.]+[0-9]{1,2}){0,1}$")
-                    if ( (regexName.test(category['name'])) && (regexTax.test(category['tax']) ) ) {
-                        alert('crime')
-                        if ( ( (category['name'] != oldName) && ( (document.getElementById('tableCategories').innerHTML).indexOf('"'+category['name']+'"') == -1 ) ) || (category['name'] == oldName) ){
-                            let updateValues = {'type':'categories','name':EncodeHtml(category['name']),'tax':EncodeHtml(category['tax']),'id':category['id'],'oldName':EncodeHtml(oldName),'oldTax':EncodeHtml(oldTax)}
-                            fetch('http://localhost/ports/UpdatePort.php', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type' : 'application/json',
-                                    'JPIZGRPSNRMFNYUWVPZ7RKFWLNMVUCNXSGO3FEQEVAOQUJRHEAONY4FGWEICD9KARVOKHHZYOC3PAQNZNRN6LDSMGNRMDNCAR0PPOPG6CCJ2UVRUBAQ' : 'SlCo/rpvAFCWsfljh2VGhCCrt4CnBCuoZf5gobtIh7KFLH1Z+ZteqDc+ARImfH9M9B1cdlMje7UkqUXjpIKhazGkKyBD3Xebzr1yLsk4O6RGK0CRDMWgz9dmhZ77tNlr2oiwAyXVb8PX4EV+vi/VSD1Vj8SgE6I='
-                                },
-                                body: JSON.stringify(updateValues)
-                            })
-                            .then((resp) => resp.json())
-                            .then((data) => {
-                                if (data == true){
-                                    alert('Category inserted with success.')
-                                    setCode(0)
-                                    setRefresh(true)
-                                    setRefreshForm(true)
-                                    setRemoveLoadingForm(false)
-                                } else {
-                                    alert("There's some problem with the request, please try again.")
-                                    setCode(0)
-                                    setRefresh(true)
-                                    setRefreshForm(true)
-                                    setRemoveLoadingForm(false)
-                                }
-                            })
-                        } else {
-                            alert("There's already another category within this name, please add more information with the name or change the name or return the name to the same as before.");
-                        }
-                    } else {
-                        alert("There's some problem with the request, please try again.")
-                        setCode(0)
-                        setRefresh(true)
-                        setRefreshForm(true)
-                        setRemoveLoadingForm(false)
-                    }
-                } else {
-                    alert("Nothing was changed.")
+                let updateValues = {
+                    'type':'categories',
+                    'name':EncodeHtml(category['name']),
+                    'tax':EncodeHtml(category['tax']),
+                    'id':category['id'],
+                    'oldName':EncodeHtml(oldName),
+                    'oldTax':EncodeHtml(oldTax)
                 }
-            }else{
-                alert("There's some problem with the request, please try again.")
-                setCode(0)
-                setRefresh(true)
-                setRefreshForm(true)
-                setRemoveLoadingForm(false)
-            }     
+                FetchUpdate(updateValues,TriggerResponse)
+            } else if (validatedCampsAlter[0] == 'false'){
+                alert(validatedCampsAlter[1])
+                RefreshAll()
+            } else if (validatedCampsAlter[0] == 'check'){
+                alert(validatedCampsAlter[1])
+            }
         }else{
             alert("There's some problem with the request, please try again.")
-            setCode(0)
-            setRefresh(true)
-            setRefreshForm(true)
-            setRemoveLoadingForm(false)
+            RefreshAll()
         }
     }
 
     function InsertCategory(category){
         if ((category['name'])&&(category['tax'])) {
-            let regexName = new RegExp("^[A-Z]+[a-zA-ZÀ-ú]{2}.{0,222}$")
-            let regexTax = new RegExp("^[0-9]{1,4}([.]+[0-9]{1,2}){0,1}$")
-            if ( (regexName.test(category['name'])) && (regexTax.test(category['tax']) ) ) {
-                alert('crime')
-                if ( (document.getElementById('tableCategories').innerHTML).indexOf('"'+category['name']+'"') == -1 ){
-                    let insertValues = {'type':'categories','name':EncodeHtml(category['name']),'tax':EncodeHtml(category['tax'])}
-                    fetch('http://localhost/ports/InsertPort.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type' : 'application/json',
-                            'FJUYJDJMHYG1WAKXKANHDHA8WU9FCDS8M6YG2ZNLJHWXFSQSEHFCTVOIXTQ78B5JSECDPWF8XMTSHIZYV4IYONXBWFIUIE2ZUAJRQQ7RDLGJM3H7C8CA44' : 'Falw1qKPKZYufBz0r2S1avMZ16BeNHPn3/nqJzg2IyDHF+XtM4x9cBMTOvG++LTO3wCbTEJXEocIO+xfjPCEunNGKu8DvjQzXG29DSSiuQsPnwVV+/cHwnNh6MFLg3KvNC4k3v9uhXZkRMBaRIglt2FnKt3gLssn'
-                        },
-                        body: JSON.stringify(insertValues)
-                    })
-                    .then((resp) => resp.json())
-                    .then((data) => {
-                        if (data == true){
-                            alert('Category inserted with success.')
-                            setRefresh(true)
-                            setRefreshForm(true)
-                            setRemoveLoadingForm(false)
-                        } else {
-                            alert("There's some problem with the request, please try again.")
-                            setRefresh(true)
-                            setRefreshForm(true)
-                            setRemoveLoadingForm(false)
-                        }
-                    })
-                } else {
-                    alert("There's already a category within this name, please add more information with the name or change the name.")
+            let validatedCampsInsert = ValidateCamps('Insert',category,['name','tax'])
+            if (validatedCampsInsert[0] == 'true'){
+                let insertValues = {
+                    'type':'categories',
+                    'name':EncodeHtml(category['name']),
+                    'tax':EncodeHtml(category['tax'])
                 }
-            } else {
-                alert("There's some problem with the request, please try again.")
-                setRefresh(true)
-                setRefreshForm(true)
-                setRemoveLoadingForm(false)
+                FetchInsert(insertValues,TriggerResponse)
+            } else if (validatedCampsInsert[0] == 'false'){
+                alert(validatedCampsInsert[1])
+                RefreshAll()
+            } else if (validatedCampsInsert[0] == 'check'){
+                alert(validatedCampsInsert[1])
             }
         }else{
             alert("There's some problem with the request, please try again.")
-            setRefresh(true)
-            setRefreshForm(true)
-            setRemoveLoadingForm(false)
+            RefreshAll()
         }
     }
 
@@ -197,17 +133,12 @@ function Categories () {
         if (categories.hasOwnProperty(e.target.value)) {
             setCode(e.target.value)
         } else {
-            setCode(0)
-            setRefresh(true)
-            setRefreshForm(true)
-            setRemoveLoadingForm(false)
+            RefreshAll()
         }
     }
 
-    function triggerRefresh() {
-        setCode(0)
-        setRefreshForm(true)
-        setRemoveLoadingForm(false)
+    function TriggerRefresh() {
+        RefreshAll()
         setDeleteValues({ ...deleteValues, code:'0', where:`categories.code = '0';`})
     }
 
@@ -216,16 +147,9 @@ function Categories () {
         if (categories.hasOwnProperty(e.target.value)) {
             setDeleteValues({ ...deleteValues, code:e.target.value, where:`categories.code = '${e.target.value}';`})
         } else {
-            setCode(0)
-            setRefresh(true)
-            setRefreshForm(true)
-            setRemoveLoadingForm(false)
+            RefreshAll()
         }
     }
-    
-    // useEffect(() => {
-    //     alert(JSON.stringify(deleteValues))
-    // }, [deleteValues])
 
     useEffect(() => {
         setRefreshForm(false)
@@ -235,20 +159,13 @@ function Categories () {
     useEffect(() => {
         setRefresh(false)
         setRemoveLoading(false)
-        fetch('http://localhost/ports/SelectPort.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/json',
-                'I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT' : 'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='
-            },
-            body: JSON.stringify(selectValues)
-        })
-        .then((resp) => resp.json())
-        .then((data) => {
-            setCategories(data)
-            setRemoveLoading(true)
-        })
+        FetchSelect(selectValues,FinishFunctionFetchSelect)
     }, [refresh])
+
+    function FinishFunctionFetchSelect(data){
+        setCategories(data)
+        setRemoveLoading(true)
+    }
 
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Categories'
@@ -261,8 +178,8 @@ function Categories () {
         {deleteValues.code != '0' && (<>
             <AlertScreen
                 selectValues = {deleteValues}
-                refreshFunction = {triggerRefresh}
-                yesFunction = {triggerDelete}
+                refreshFunction = {TriggerRefresh}
+                yesFunction = {TriggerDelete}
             />
         </>)}
 
@@ -286,7 +203,7 @@ function Categories () {
                             handleSubmit = {AlterCategory}
                             categoryData = {{'name':DecodeHtml(categories[code]['name']),'tax':(DecodeHtml(categories[code]['tax'])).slice(0, -1),'id':code,'error':''}}
                             buttonText = 'Alter Category'
-                            refreshFunction = {triggerRefresh}
+                            refreshFunction = {TriggerRefresh}
                         />
                     </>)}
                 </>) : ( <Loading/> ) }

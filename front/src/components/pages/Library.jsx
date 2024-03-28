@@ -4,11 +4,14 @@ import Loading from '../layout/Loading'
 import { useState, useEffect } from 'react'
 import styleLibrary from './css/Library.module.css'
 import styles from './css/Pages.module.css'
+import FetchSelect from './functions/FetchSelect'
 
 function Library () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [library, setLibrary] = useState([])
     const [refresh, setRefresh] = useState(false)
+    const [removeLoadingView, setRemoveLoadingView] = useState(false)
+    const [libraryView, setLibraryView] = useState([])
     const [selectValues, setSelectValues] =  useState({
         'type':['SimpleWhere'],
         'table':'orders',
@@ -21,26 +24,6 @@ function Library () {
         'foreignKey':'none',
         'where':'orders.code NOT IN ( SELECT MAX( orders1.code ) FROM orders AS orders1 ) ORDER BY orders.code;'
     })
-    useEffect(() => {
-        setRemoveLoading(false)
-        setRefresh(false)
-        fetch('http://localhost/ports/SelectPort.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/json',
-                'I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT' : 'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='
-            },
-            body: JSON.stringify(selectValues)
-        })
-        .then((resp) => resp.json())
-        .then((data) => {
-            setLibrary(data)
-            setRemoveLoading(true)
-        })
-    }, [refresh])
-
-    const [removeLoadingView, setRemoveLoadingView] = useState(false)
-    const [libraryView, setLibraryView] = useState([])
     const [selectValuesView, setSelectValuesView] =  useState({
         'type':['SimpleWhere','tableview'],
         'table':'order_item',
@@ -54,21 +37,25 @@ function Library () {
         'where':'order_item.order_code = orders.code and order_item.order_code IN ( SELECT CASE WHEN ( SELECT MIN( orders1.code ) FROM orders AS orders1 ) <>( SELECT MAX( orders2.code ) FROM orders AS orders2 ) THEN ( SELECT MIN( orders1.code ) FROM orders AS orders1 ) ELSE 0 END AS codeverified ) ORDER BY order_item.code;'
     })
 
+    function FinishFunctionFetchSelect(data){
+        setLibrary(data)
+        setRemoveLoading(true)
+    }
+
     useEffect(() => {
-        setRemoveLoadingView(false) 
-        fetch('http://localhost/ports/SelectPort.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/json',
-                'I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT' : 'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='
-            },
-            body: JSON.stringify(selectValuesView)
-        })
-        .then((resp) => resp.json())
-        .then((data) => {
-            setLibraryView(data)
-            setRemoveLoadingView(true)
-        })
+        setRefresh(false)
+        setRemoveLoading(false)
+        FetchSelect(selectValues,FinishFunctionFetchSelect)
+    }, [refresh])
+
+    function FinishFunctionFetchSelectView(data){
+        setLibraryView(data)
+        setRemoveLoadingView(true)
+    }
+
+    useEffect(() => {
+        setRemoveLoadingView(false)
+        FetchSelect(selectValuesView,FinishFunctionFetchSelectView)
     }, [selectValuesView])
 
     function ChangeView(e) {

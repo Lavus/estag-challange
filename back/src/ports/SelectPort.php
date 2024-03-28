@@ -6,8 +6,8 @@
     require_once __DIR__."/../security/CheckValidityCode.php";
     $method = $_SERVER['REQUEST_METHOD'];
     if ($method == 'POST'){
-        if (!empty($_SERVER['HTTP_I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT'])) {
-            if ($_SERVER['HTTP_I2S2ZUZHGSBPSSKJMYN1DOO8T678WI6ZBKPE4OWTWN7VJPQGJZFBLS5H3WY950O9K6NT'] == 'OekKPZNxf0YW0HHZULncSinkaM1cjEif6bbp7ETHRu2TtxCRFSlND6rSHkpb4I1bWPm4CS3wDAk='){
+        if (!empty($_SERVER['HTTP_VZFUYQREU2LGC3GNSGG6OMHPIZDTCMRBO4U6K6TL34OFPETOJUHICKGI2VC0IFESXISM3CO2U4JQIWFIHLGWH1H2PQYOZYY47VXPS31GRJETRKJJRXIT4WA'])) {
+            if ($_SERVER['HTTP_VZFUYQREU2LGC3GNSGG6OMHPIZDTCMRBO4U6K6TL34OFPETOJUHICKGI2VC0IFESXISM3CO2U4JQIWFIHLGWH1H2PQYOZYY47VXPS31GRJETRKJJRXIT4WA'] == '7YsnXD6n7DYWfqhrh0laPlOQ9KDNUJewxyvURCrI5mL1foDtPWsjRTxdBKgf3wT5QaJYo8D8hpqftMbcTtPdDQpiUwDDZg0O5E0GulikcL7ncvzfYYYlutIkqaNHTOsAvyTYsHHuuUN4Fl2qHEkoC5D1qY+OMWE='){
                 $json = trim(file_get_contents('php://input'));
                 $data = json_decode($json,true);
                 if ( (!empty($data['type'])) && (!empty($data['table'])) && (isset($data['code'])) && (!empty($data['camps'])) && (!empty($data['campsAlias'])) ) {
