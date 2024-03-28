@@ -32,6 +32,8 @@ function Home () {
         'caseVerificationAlias' : ['products_name','products_amount','products_price','categories_tax']
     }
 
+
+    
     useEffect(() => {
         setRemoveLoading(false)
         fetch('http://localhost/ports/SelectPort.php', {
