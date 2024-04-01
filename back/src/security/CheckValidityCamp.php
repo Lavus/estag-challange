@@ -7,13 +7,9 @@
             if ( str_contains($camp,"name") ) {
                 $regex = "/^[A-Z]+[a-zA-ZÀ-ú]{2}.{0,222}$/";
                 $min = "not";
-            } else if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) ) {
+            } else if ( ( str_contains($camp,"value_total") ) || ( str_contains($camp,"value_tax") ) ) {
                 $regex = "/^[0-9]{1,}([.]+[0-9]{1,2}){0,1}$/";
-                if ( ( $type == "none" ) && ( $camp == "value_total" ) ) {
-                    $min = "0.01";
-                } else {
-                    $min = "0";
-                }
+                $min = "0";
             } else if ( str_contains($camp,"amount") ) {
                 $regex = "/^[0-9]{1,}$/";
                 if ( $type == "none" ) {

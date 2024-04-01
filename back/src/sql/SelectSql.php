@@ -84,11 +84,13 @@
                                 $item = SafeCrypto($row[$camp],"Decrypt");
                                 $decoded_item = html_entity_decode($item);
                                 if ( CheckValidityCamp($item,$decoded_item,$camp) ){
-                                    if ( ($type[0] == "FullSimple") || ($type[0] == "SingleSimple") || ($type[0] == "SimpleForeign") || ($type[0] == "FullCases") || ($type[0] == "SimpleWhere") ) {
-                                        if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) || ( str_contains($camp,"price") ) ) {
-                                            $item = SafeCrypto("$".number_format(floatval($decoded_item), 2, '.', ''),'Html');
-                                        } else if ( str_contains($camp,"tax") ) {
-                                            $item = $item.'%';
+                                    if ( !(str_contains($camp,"_nope")) ) {
+                                        if ( ($type[0] == "FullSimple") || ($type[0] == "SingleSimple") || ($type[0] == "SimpleForeign") || ($type[0] == "FullCases") || ($type[0] == "SimpleWhere") ) {
+                                            if ( ( $camp == "value_total" ) || ( $camp == "value_tax" ) || ( str_contains($camp,"price") ) ) {
+                                                $item = SafeCrypto("$".number_format(floatval($decoded_item), 2, '.', ''),'Html');
+                                            } else if ( str_contains($camp,"tax") ) {
+                                                $item = $item.'%';
+                                            }
                                         }
                                     }
                                     if ( ( (count($type) == 2) && ($type[0] == "SimpleWhere") && ($type[1] == "tableview") ) && ( ($camp == 'order_code') || ($camp == 'value_total') || ($camp == 'value_tax') ) ){

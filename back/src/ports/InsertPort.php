@@ -6,6 +6,7 @@
     require_once __DIR__."/../sql/SelectSql.php";
     require_once __DIR__."/../security/CheckValidityCode.php";
     require_once __DIR__."/../security/CheckNameAvaliable.php";
+    require_once __DIR__."/../security/SafeCrypto.php";
     $method = $_SERVER['REQUEST_METHOD'];
     if ($method == 'POST'){
         if (!empty($_SERVER['HTTP_FJUYJDJMHYG1WAKXKANHDHA8WU9FCDS8M6YG2ZNLJHWXFSQSEHFCTVOIXTQ78B5JSECDPWF8XMTSHIZYV4IYONXBWFIUIE2ZUAJRQQ7RDLGJM3H7C8CA44'])) {
@@ -45,40 +46,57 @@
                         $product = $data['product'];
                         if ( (preg_match($regexnumbersamountvalue, $amount)) && (preg_match($regexnumbersamountvalue, $product))) {
                             if (CheckValidityCode($product,"products")) {
-
-
-                                'caseVerificationValueWheres' : ['order_item2.product_code = products.code AND order_item2.order_code IN ( SELECT MAX( orders2.code ) FROM orders as orders2 )'],
-                                'caseVerificationElse' : ['0'],
-                                'caseVerificationAlias' : ['products_amount']
-
-
-
-
                                 $productSelectValues = SelectSql(
                                     ['FullCases'],
                                     'products',
                                     $product,
                                     [['code'],['name'],['amount'],['price']],
-                                    ['code','name','amount','price'],
+                                    ['code','name','amount','price_nope'],
                                     [[['tax']]],
-                                    [['tax']],
+                                    [['tax_nope']],
                                     ['categories'],
-                                    'category_code'
-                                    'products.category_code = categories.code;',
-                                    [[['code']],[['code']],[['code']]],
-                                    [['orders'],['orders'],['orders']],
-                                    [['orders1'],['orders2'],['orders3']],
-                                    ['orders1.code IN ( SELECT MAX( orders4.code ) FROM orders as orders4 )','orders2.code IN ( SELECT MAX( orders5.code ) FROM orders as orders5 )','orders3.code IN ( SELECT MAX( orders6.code ) FROM orders as orders6 )'],
-                                    ['IS NOT NULL','IS NOT NULL','IS NOT NULL'],
-                                    [[['code']],[['value_total']],[['value_tax']]],
-                                    [['orders'],['orders'],['orders']],
-                                    [['orders7'],['orders8'],['orders9']],
-
+                                    'category_code',
+                                    'products.category_code = categories.code AND products.code = '.$product.';',
+                                    [[['code']],[['code']],[['code']],[['code']],[['code']]],
+                                    [['orders'],['orders'],['orders'],['order_item'],['order_item']],
+                                    [['orders1'],['orders2'],['orders3'],['order_item1'],['order_item3']],
+                                    ['orders1.code IN ( SELECT MAX( orders4.code ) FROM orders as orders4 )','orders2.code IN ( SELECT MAX( orders5.code ) FROM orders as orders5 )','orders3.code IN ( SELECT MAX( orders6.code ) FROM orders as orders6 )','order_item1.product_code = products.code AND order_item1.order_code IN ( SELECT MAX( orders13.code ) FROM orders as orders13 )','order_item3.product_code = products.code AND order_item3.order_code IN ( SELECT MAX( orders15.code ) FROM orders as orders15 )'],
+                                    ['IS NOT NULL','IS NOT NULL','IS NOT NULL','IS NOT NULL','IS NOT NULL'],
+                                    [[['code']],[['value_total']],[['value_tax']],[['amount']],[['code']]],
+                                    [['orders'],['orders'],['orders'],['order_item'],['order_item']],
+                                    [['orders7'],['orders8'],['orders9'],['order_item2'],['order_item4']],
+                                    ['orders7.code IN ( SELECT MAX( orders10.code ) FROM orders as orders10 )','orders8.code IN ( SELECT MAX( orders11.code ) FROM orders as orders11 )','orders9.code IN ( SELECT MAX( orders12.code ) FROM orders as orders12 )','order_item2.product_code = products.code AND order_item2.order_code IN ( SELECT MAX( orders14.code ) FROM orders as orders14 )','order_item4.product_code = products.code AND order_item4.order_code IN ( SELECT MAX( orders16.code ) FROM orders as orders16 )'],
+                                    [0,'False','False','0','0'],
+                                    ['order_code','value_total_nope','value_tax_nope','order_amount','order_item_code']
                                 );
-                                error_log(print_r($productSelectValues,true));
-                                // $orderCode = $productSelectValues[$product]['order_code'];
-                                // echo( json_encode ( InsertSql( 'order_item', ['order_code','product_code','product_name','amount','price','tax'], [$orderCode,$data['product'],$productSelectValues[$product]['name'],$data['amount'],$productSelectValues[$product]['price'],$productSelectValues[$product]['tax']] ) ) );
-                                echo(json_encode(false));
+                                if ($productSelectValues[$product]['order_code'] == 0){
+                                    $resultInsert = InsertSql( 'orders', ['value_total','value_tax'], [SafeCrypto('0','Html'),SafeCrypto('0','Html')] );
+                                    if (!($resultInsert)){
+                                        echo(json_encode(false));
+                                    }
+                                    $orderSelectValues = SelectSql(
+                                        ['SimpleWhere'],
+                                        'orders',
+                                        '0',
+                                        [['code'],['value_total'],['value_tax']],
+                                        ['code','value_total_nope','value_tax_nope'],
+                                        [],
+                                        [],
+                                        [],
+                                        'none',
+                                        'orders.code IN ( SELECT MAX( orders1.code ) FROM orders as orders1 );'
+                                    );
+                                    $orderCode = array_keys($orderSelectValues)[0];
+                                    $valueTotal = $orderSelectValues[$orderCode]['value_total_nope'];
+                                    $valueTax = $orderSelectValues[$orderCode]['value_tax_nope'];
+                                } else {
+                                    $orderCode = $productSelectValues[$product]['order_code'];
+                                    $valueTotal = $productSelectValues[$product]['value_total_nope'];
+                                    $valueTax = $productSelectValues[$product]['value_tax_nope'];
+                                }
+                                $cartAmount = $productSelectValues[$product]['order_amount'];
+                                $orderItemId = $productSelectValues[$product]['order_item_code'];
+                                echo( json_encode ( InsertSql( 'order_item', ['order_code','product_code','product_name','amount','price','tax'], [$orderCode,$data['product'],$productSelectValues[$product]['name'],$data['amount'],$productSelectValues[$product]['price_nope'],$productSelectValues[$product]['tax_nope']], [$valueTotal,$valueTax,$cartAmount, $orderItemId] ) ) );
                             } else {
                                 echo(json_encode(false));
                             }

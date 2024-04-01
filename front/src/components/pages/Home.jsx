@@ -68,7 +68,7 @@ function Home () {
     }
 
     function InsertOrderItem(orderItem){
-        if (products){
+        if (products != 0){
             if (orderItem['product']) {
                 if (orderItem['amount']) {
                     if (orderItem['amount'] != 'False') {

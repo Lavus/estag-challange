@@ -82,35 +82,39 @@ function Products () {
     }
 
     function InsertProduct(product){
-        if (product['category']) {
-            if ((product['name'])&&(product['amount'])&&(product['price'])) {
-                if (categories.hasOwnProperty(product['category'])) {
-                    let validatedCampsInsert = ValidateCamps('Insert',product,['name','amount','price'],products)
-                    if (validatedCampsInsert[0] == 'true'){
-                        let insertValues = {
-                            'type':'products',
-                            'name':EncodeHtml(product['name']),
-                            'amount':EncodeHtml(product['amount']),
-                            'price':EncodeHtml(product['price']),
-                            'category':String(product['category'])
+        if (categories != 0){
+            if (product['category']) {
+                if ((product['name'])&&(product['amount'])&&(product['price'])) {
+                    if (categories.hasOwnProperty(product['category'])) {
+                        let validatedCampsInsert = ValidateCamps('Insert',product,['name','amount','price'],products)
+                        if (validatedCampsInsert[0] == 'true'){
+                            let insertValues = {
+                                'type':'products',
+                                'name':EncodeHtml(product['name']),
+                                'amount':EncodeHtml(product['amount']),
+                                'price':EncodeHtml(product['price']),
+                                'category':String(product['category'])
+                            }
+                            FetchInsert(insertValues,TriggerResponse)
+                        } else if (validatedCampsInsert[0] == 'false'){
+                            alert(validatedCampsInsert[1])
+                            RefreshAll()
+                        } else if ( (validatedCampsInsert[0] == 'check') || (validatedCampsInsert[0] == 'none') ){
+                            alert(validatedCampsInsert[1])
                         }
-                        FetchInsert(insertValues,TriggerResponse)
-                    } else if (validatedCampsInsert[0] == 'false'){
-                        alert(validatedCampsInsert[1])
+                    }else{
+                        alert("There's some problem with the request, please try again.")
                         RefreshAll()
-                    } else if ( (validatedCampsInsert[0] == 'check') || (validatedCampsInsert[0] == 'none') ){
-                        alert(validatedCampsInsert[1])
                     }
                 }else{
                     alert("There's some problem with the request, please try again.")
                     RefreshAll()
                 }
-            }else{
-                alert("There's some problem with the request, please try again.")
-                RefreshAll()
+            } else {
+                alert("Before adding the product, please select a category.")
             }
         } else {
-            alert("Before adding the product, please select a category.")
+            alert("Please add a category, before trying to register a product.")
         }
     }
 
