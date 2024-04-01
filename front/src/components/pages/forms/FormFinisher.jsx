@@ -3,25 +3,25 @@ import styles from '../css/Pages.module.css'
 
 function FormFinisher({ handleFinish, handleCancel }) {
 
-    const submit = (e) => {
+    const finish = (e) => {
         e.preventDefault()
-        handleSubmit(cartItem)
+        handleFinish()
     }
 
-    const refresh = (e) => {
+    const cancel = (e) => {
         e.preventDefault()
-        refreshFunction()
+        handleCancel()
     }
 
     return (<>
-        <form onSubmit={handleFinish}>
+        <form onSubmit={finish}>
             <Input
                 type="submit"
                 className = {(`${styles.bluebold} ${styles.quarter}`)}
                 value="Finish"
             />
         </form>
-        <form onSubmit={handleCancel}>
+        <form onSubmit={cancel}>
             <Input
                 type="submit"
                 className = {(`${styles.cancel} ${styles.quarter}`)}

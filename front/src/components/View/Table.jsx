@@ -16,7 +16,7 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
     function ShowSingleTd(simpleKey,value,type = 'none',buttonText = 'none',id = 'none', buttonFunction = undefined){
         return (
             ((type == 'none') ? (
-                <td key={simpleKey} title={value} className={(tableid == 'tableValues') && ((table[0]['broken'] == "TRUE") ? (styles.redtext) : undefined)}>
+                <td key={simpleKey} title={value} className={((tableid == 'tableValues') ? ((table[0]['broken'] == "TRUE") ? (styles.redtext) : undefined) : undefined)}>
                     {value}
                 </td>
             ) : (

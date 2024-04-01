@@ -44,14 +44,20 @@ function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, 
         setRemoveLoading(true)
     }
 
-    function executeDelete(e) {
+    function executeCommand(e) {
         (e) => { e.preventDefault() }
-        yesFunction(changeCode)
+        ((changeCode)?(yesFunction(changeCode)):yesFunction())
     }
 
-    useEffect(() => {
-        setRefresh(true)
-    }, [changeCode])
+    if (changeCode){
+        useEffect(() => {
+            setRefresh(true)
+        }, [changeCode])
+    } else {
+        useEffect(() => {
+            setRefresh(true)
+        }, [type])
+    }
 
     return (<>
         <div className={styles.alert}>
@@ -75,12 +81,18 @@ function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, 
                             Do you really want to delete the product '{DecodeHtml(table[changeCode].name)}' ?<br/>
                         </div>
                     </>):(<>
+                        {((type == 'Cancel') ? (<>
+                            <div className={styles.textalert}>
+                                Do you really want to empty your cart ?<br/>
+                            </div>
+                        </>):(<>
+                        </>))}
                     </>))}
                 </>))}
                 <Button
                     text='YES'
                     className={styles.yesbutton}
-                    onClick={executeDelete}
+                    onClick={executeCommand}
                 />
                 <Button
                     text={noButtonText}

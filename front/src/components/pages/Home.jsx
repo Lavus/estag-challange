@@ -11,6 +11,7 @@ import ValidateCamps from './functions/ValidateCamps'
 import FetchInsert from './functions/FetchInsert'
 import EncodeHtml from '../functions/EncodeHtml'
 import FormFinisher from './forms/FormFinisher'
+import AlertScreen from '../View/AlertScreen'
 
 function Home () {
     const [removeLoading, setRemoveLoading] = useState(false)
@@ -20,6 +21,7 @@ function Home () {
     const [refresh, setRefresh] = useState(false)
     const [refreshForm, setRefreshForm] = useState(false)
     const [refreshProducts, setRefreshProducts] = useState(false)
+    const [formConfirm, setFormConfirm] = useState('0')
     const [code, setCode] = useState(0)
     const selectValues = {
         'type' : ['FullCasesHome'],
@@ -153,14 +155,28 @@ function Home () {
 
     function TriggerRefresh() {
         RefreshAll()
+        setFormConfirm('0')
     }
 
     function TriggerFinish() {
-        RefreshAll()
+        setFormConfirm('Finish')
     }
 
     function TriggerCancel() {
-        RefreshAll()
+        setFormConfirm('Cancel')
+    }
+
+    function TriggerEmptyCart(){
+        setFormConfirm('0')
+        let deleteCamp = {
+            'type' : 'SimpleWhere',
+            'table' : 'order_item',
+            'code' : '0',
+            'foreignTables' : [],
+            'foreignKeys' : [],
+            'where' : 'order_item.order_code IN (SELECT MAX(orders1.code) FROM orders AS orders1);'
+        }
+        FetchDelete(deleteCamp,TriggerResponse)
     }
 
     function DeleteProduct(e) {
@@ -185,6 +201,7 @@ function Home () {
         setRemoveLoadingForm(false)
     }
     // set array, to make functions of css
+    // need to fix delete, to auto update cart
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Products'
     let iconLeftPage = ''
@@ -192,103 +209,100 @@ function Home () {
     let leftPage = ''
     let rightPage = 'show'
 
-    return (
-        <>
-            <div className = {styles.main}>
-                <TextDrop 
-                    leftDescription = {leftDescriptionPage}
-                    rightDescription = {rightDescriptionPage}
-                    iconLeft = {iconLeftPage}
-                    iconRight = {iconRightPage}
+    return (<>
+        {((formConfirm == 'Cancel') ? (<>
+            <AlertScreen
+                refreshFunction = {TriggerRefresh}
+                yesFunction = {TriggerEmptyCart}
+                type='Cancel'
+            />
+        </>) : (<>
+            {((formConfirm == 'Finish') && (<>
+                <AlertScreen
+                    refreshFunction = {TriggerRefresh}
+                    yesFunction = {TriggerDelete}
+                    changeCode={deleteConfirm}
+                    type='products'
+                    table={orderItems['rows']}
                 />
-                <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
-                    {removeLoadingForm ? (<>
-                        {(code == 0) ? (<>
-                            <FormHome
-                                handleSubmit = {InsertOrderItem}
-                                cartItemData = {{
-                                    'product':'',
-                                    'amount':'',
-                                    'error':''
-                                }}
-                                productsData = {products}
-                                buttonText = 'Add Product'
-                                refreshFunction = {TriggerRefresh}
-                            />
-                        </>) : (<>
-                            {/* <FormHome
-                                handleSubmit = {AlterProduct}
-                                productData = {{
-                                    'name':DecodeHtml(products[code]['name']),
-                                    'price':parseFloat((DecodeHtml(products[code]['price'])).slice(1)),
-                                    'amount':DecodeHtml(products[code]['amount']),
-                                    'category':products[code]['category_code'],
-                                    'id':code,
-                                    'error':''
-                                }}
-                                buttonText = 'Alter Product'
-                                refreshFunction = {TriggerRefresh}
-                                refreshTriggerFunction = {true}
-                                placeHolderAmount = 'Amount'
-                                maxAmount = '1'
-                            /> */}
-                        </>)}
-                    </>) : ( <Loading/> ) }
-                </div>
-                <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
-                    {removeLoading ? (<>
-                        <div className={styles.eighty}>
-                            <div className={styles.scroll}>
-                                <Table 
-                                    tableid = 'tablecart'
-                                    tableNames = {['Product','Price','Amount','Total']}
-                                    campsNames = {['product_name','price','amount','total']}
-                                    table = {orderItems['rows']}
-                                    last = 'delete'
-                                    lastButton = '&#128465;'
-                                    lastButtonFunction = {DeleteProduct}
-                                    tableStyle = {styleHome.home}
-                                />
-                            </div>
-                        </div>
-                        <div className={styles.ten}>
+            </>))}
+        </>))}
+        <div className = {styles.main}>
+            <TextDrop 
+                leftDescription = {leftDescriptionPage}
+                rightDescription = {rightDescriptionPage}
+                iconLeft = {iconLeftPage}
+                iconRight = {iconRightPage}
+            />
+            <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
+                {removeLoadingForm ? (<>
+                    {(code == 0) ? (<>
+                        <FormHome
+                            handleSubmit = {InsertOrderItem}
+                            cartItemData = {{
+                                'product':'',
+                                'amount':'',
+                                'error':''
+                            }}
+                            productsData = {products}
+                            buttonText = 'Add Product'
+                            refreshFunction = {TriggerRefresh}
+                        />
+                    </>) : (<>
+                        {/* <FormHome
+                            handleSubmit = {AlterProduct}
+                            productData = {{
+                                'name':DecodeHtml(products[code]['name']),
+                                'price':parseFloat((DecodeHtml(products[code]['price'])).slice(1)),
+                                'amount':DecodeHtml(products[code]['amount']),
+                                'category':products[code]['category_code'],
+                                'id':code,
+                                'error':''
+                            }}
+                            buttonText = 'Alter Product'
+                            refreshFunction = {TriggerRefresh}
+                            refreshTriggerFunction = {true}
+                            placeHolderAmount = 'Amount'
+                            maxAmount = '1'
+                        /> */}
+                    </>)}
+                </>) : ( <Loading/> ) }
+            </div>
+            <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
+                {removeLoading ? (<>
+                    <div className={styles.eighty}>
+                        <div className={styles.scroll}>
                             <Table 
-                                tableid = 'tableValues'
-                                tableNames = {['Tax : ','Total : ']}
-                                campsNames = {['value_tax','value_total']}
-                                table = {orderItems['totalValues']}
+                                tableid = 'tablecart'
+                                tableNames = {['Product','Price','Amount','Total']}
+                                campsNames = {['product_name','price','amount','total']}
+                                table = {orderItems['rows']}
+                                last = 'delete'
+                                lastButton = '&#128465;'
+                                lastButtonFunction = {DeleteProduct}
                                 tableStyle = {styleHome.home}
                             />
-                            {/* <table class="lefttext floatright">
-                                <tr>
-                                    <th>
-                                        Tax:
-                                    </th>
-                                    <td>
-                                        {orderItems['totalValues'][0]['value_tax']}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        Total:
-                                    </th>
-                                    <td>
-                                        {orderItems['totalValues'][0]['value_total']}
-                                    </td>
-                                </tr>
-                            </table> */}
                         </div>
-                        <div className={styles.ten}>
-                            <FormFinisher
-                                handleFinish = {TriggerFinish}
-                                handleCancel = {TriggerCancel}
-                            />
-                        </div>
-                    </>) : ( <Loading/> ) }
-                </div>
+                    </div>
+                    <div className={styles.ten}>
+                        <Table 
+                            tableid = 'tableValues'
+                            tableNames = {['Tax: ','Total: ']}
+                            campsNames = {['value_tax','value_total']}
+                            table = {orderItems['totalValues']}
+                            tableStyle = {styleHome.home}
+                        />
+                    </div>
+                    <div className={styles.ten}>
+                        <FormFinisher
+                            handleFinish = {TriggerFinish}
+                            handleCancel = {TriggerCancel}
+                        />
+                    </div>
+                </>) : ( <Loading/> ) }
             </div>
-        </>
-    )
+        </div>
+    </>)
 }
   
 export default Home
