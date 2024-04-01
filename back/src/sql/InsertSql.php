@@ -16,18 +16,18 @@
         $stringCamps = rtrim($stringCamps, ",");
         $stringValues = rtrim($stringValues, ",");
         $sql = "INSERT INTO ".$table." ( ".$stringCamps." ) VALUES ( ".$stringValues." );";
-        // error_log($sql);
+        error_log($sql);
         $connection  = ConnectLocalHost();
-        try {
-            $connection->beginTransaction();
-            $connection->exec($sql);
-            $connection->commit();
-        } catch(PDOException $e) {
-            $connection->rollback();
-            error_log("Error: " . $e->getMessage() . "<br><br>");
-            $connection = null;
-            return (FALSE);
-        }
+        // try {
+        //     $connection->beginTransaction();
+        //     $connection->exec($sql);
+        //     $connection->commit();
+        // } catch(PDOException $e) {
+        //     $connection->rollback();
+        //     error_log("Error: " . $e->getMessage() . "<br><br>");
+        //     $connection = null;
+        //     return (FALSE);
+        // }
         $connection = null;
         return (TRUE);
     }

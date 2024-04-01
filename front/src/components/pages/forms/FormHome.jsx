@@ -35,24 +35,20 @@ function FormHome({ handleSubmit, cartItemData, productsData, buttonText, refres
 
     function handleChangeDropdown(value) {
         if (products.hasOwnProperty(value)) {
-            setCartItem({ ...cartItem, ['product']: value })
             setPrice(DecodeHtml(products[value].price))
             setTax(DecodeHtml(products[value].tax))
-            let maxAmountAvaliable = 0
-            if ( products[value].products_amount == 'False' ){
-                maxAmountAvaliable = (DecodeHtml(products[value].amount))
-            } else {
-                maxAmountAvaliable = ((DecodeHtml(products[value].amount)) - (DecodeHtml(products[value].products_amount)))
-            }
+            let maxAmountAvaliable = ((DecodeHtml(products[value].amount)) - (DecodeHtml(products[value].products_amount)))
             setMaxAmount(maxAmountAvaliable)
             if (maxAmountAvaliable > 0){
                 setPlaceHolderAmount('Amount')
                 setDisabledAmount(false)
                 setAmountValue('')
+                setCartItem({ ...cartItem, ['product'] : value })
             } else {
                 setPlaceHolderAmount('No stock left')
                 setDisabledAmount(true)
                 setAmountValue('')
+                setCartItem({ ...cartItem, ['amount']: 'False', ['product'] : value  })
             }
         } else {
             refreshFunction()

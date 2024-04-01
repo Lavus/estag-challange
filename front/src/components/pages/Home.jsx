@@ -7,6 +7,9 @@ import styles from './css/Pages.module.css'
 import FetchSelect from './functions/FetchSelect'
 import FormHome from './forms/FormHome'
 import FetchDelete from './functions/FetchDelete'
+import ValidateCamps from './functions/ValidateCamps'
+import FetchInsert from './functions/FetchInsert'
+import EncodeHtml from '../functions/EncodeHtml'
 
 function Home () {
     const [removeLoading, setRemoveLoading] = useState(false)
@@ -60,8 +63,47 @@ function Home () {
         'caseVerificationValueTables' : [['order_item']],
         'caseVerificationValueTablesAlias' : [['order_item2']],
         'caseVerificationValueWheres' : ['order_item2.product_code = products.code AND order_item2.order_code IN ( SELECT MAX( orders2.code ) FROM orders as orders2 )'],
-        'caseVerificationElse' : ['False'],
+        'caseVerificationElse' : ['0'],
         'caseVerificationAlias' : ['products_amount']
+    }
+
+    function InsertOrderItem(orderItem){
+        if (products){
+            if (orderItem['product']) {
+                if (orderItem['amount']) {
+                    if (orderItem['amount'] != 'False') {
+                        if (products.hasOwnProperty(orderItem['product'])) {
+                            let validatedCampsInsert = ValidateCamps('Insert',orderItem,['amount'],orderItems)
+                            if (validatedCampsInsert[0] == 'true'){
+                                let insertValues = {
+                                    'type':'order_item',
+                                    'amount':EncodeHtml(orderItem['amount']),
+                                    'product':String(orderItem['product'])
+                                }
+                                FetchInsert(insertValues,TriggerResponse)
+                            } else if (validatedCampsInsert[0] == 'false'){
+                                alert(validatedCampsInsert[1])
+                                RefreshAll()
+                            } else if ( (validatedCampsInsert[0] == 'check') || (validatedCampsInsert[0] == 'none') ){
+                                alert(validatedCampsInsert[1])
+                            }
+                        }else{
+                            alert("There's some problem with the request, please try again.")
+                            RefreshAll()
+                        }
+                    } else {
+                        alert("There's no stock left for the product, please select another product, or wait until the product is avaliable.")
+                    }
+                }else{
+                    alert("There's some problem with the request, please try again.")
+                    RefreshAll()
+                }
+            } else {
+                alert("Please select a product and the amount.")
+            }
+        } else {
+            alert("Please wait for a product to be avaliable.")
+        }
     }
 
     function TriggerResponse(verification,message){
@@ -154,6 +196,7 @@ function Home () {
                     {removeLoadingForm ? (<>
                         {(code == 0) ? (<>
                             <FormHome
+                                handleSubmit = {InsertOrderItem}
                                 cartItemData = {{
                                     'product':'',
                                     'amount':'',
