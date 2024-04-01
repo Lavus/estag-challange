@@ -227,6 +227,7 @@ function Products () {
                             }}
                             categoriesData = {categories}
                             buttonText = 'Add Product'
+                            refreshFunction = {TriggerRefresh}
                         />
                     </>) : (<>
                         <FormProducts
@@ -242,6 +243,7 @@ function Products () {
                             categoriesData = {categories}
                             buttonText = 'Alter Product'
                             refreshFunction = {TriggerRefresh}
+                            refreshTriggerFunction = {true}
                         />
                     </>)}
                 </>) : ( <Loading/> ) }

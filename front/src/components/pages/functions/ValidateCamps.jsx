@@ -64,6 +64,9 @@ function ValidateCamps(type, data, camps, table){
                 }
             } else if (camps[index] == 'price'){
                 if (regexPrice.test(data[camps[index]])){
+                    if (data[camps[index]] < 0.01) {
+                        return('false')
+                    }
                     if (type == 'Alter'){
                         if (data[camps[index]] == parseFloat((DecodeHtml(table[data['id']][camps[index]])).slice(1)) ){
                             countIgual++

@@ -2,14 +2,21 @@ import { useState, useEffect } from 'react'
 import Input from '../../form/Input'
 import styles from '../css/Pages.module.css'
 import DropDown from '../../form/Dropdown'
+import DecodeHtml from '../../functions/DecodeHtml'
 
-function FormHome({ handleSubmit, productData, categoriesData, buttonText, refreshFunction, placeHolderAmount, maxAmount }) {
-    const [product, setProduct] = useState(productData)
-    const [categories, setCategories] = useState(categoriesData)
+function FormHome({ handleSubmit, cartItemData, productsData, buttonText, refreshFunction, refreshTriggerFunction }) {
+    const [cartItem, setCartItem] = useState(cartItemData)
+    const [products, setProducts] = useState(productsData)
+    const [placeHolderAmount,setPlaceHolderAmount] = useState('Amount')
+    const [maxAmount,setMaxAmount] = useState('')
+    const [amountValue,setAmountValue] = useState('')
+    const [disabledAmount,setDisabledAmount] = useState(true)
+    const [price,setPrice] = useState('')
+    const [tax,setTax] = useState('')
 
     const submit = (e) => {
         e.preventDefault()
-        handleSubmit(product)
+        handleSubmit(cartItem)
     }
 
     const refresh = (e) => {
@@ -18,34 +25,58 @@ function FormHome({ handleSubmit, productData, categoriesData, buttonText, refre
     }
 
     useEffect(() => {
-        setProduct(productData)
-    }, [productData])
+        setCartItem(cartItemData)
+    }, [cartItemData])
 
     useEffect(() => {
-        setCategories(categoriesData)
-    }, [categoriesData])
+        setProducts(productsData)
+    }, [productsData])
+
 
     function handleChangeDropdown(value) {
-        setProduct({ ...product, ['category']: value })
+        if (products.hasOwnProperty(value)) {
+            setCartItem({ ...cartItem, ['product']: value })
+            setPrice(DecodeHtml(products[value].price))
+            setTax(DecodeHtml(products[value].tax))
+            let maxAmountAvaliable = 0
+            if ( products[value].products_amount == 'False' ){
+                maxAmountAvaliable = (DecodeHtml(products[value].amount))
+            } else {
+                maxAmountAvaliable = ((DecodeHtml(products[value].amount)) - (DecodeHtml(products[value].products_amount)))
+            }
+            setMaxAmount(maxAmountAvaliable)
+            if (maxAmountAvaliable > 0){
+                setPlaceHolderAmount('Amount')
+                setDisabledAmount(false)
+                setAmountValue('')
+            } else {
+                setPlaceHolderAmount('No stock left')
+                setDisabledAmount(true)
+                setAmountValue('')
+            }
+        } else {
+            refreshFunction()
+        }
     }
 
     function handleChange(e) {
         if (['amount'].includes(e.target.id)) {
-            setProduct({ ...product, [e.target.id]: e.target.value })
+            setCartItem({ ...cartItem, [e.target.id]: e.target.value })
+            setAmountValue(e.target.value)
         } else {
-            setProduct({ ...product, ['error']: e.target.value })
+            setCartItem({ ...cartItem, ['error']: e.target.value })
         }
     }
 
     return (<>
         <form onSubmit={submit}>
             <DropDown
-                defaultTextNone = 'No categories avaliable'
-                defaultText = 'Product'
-                tableValues = {categories}
+                defaultTextNone = 'No products avaliable'
+                defaultText = 'Products'
+                tableValues = {products}
                 valueFunction = {handleChangeDropdown}
                 sizeStyle = 'full'
-                code={product.category}
+                code={cartItem.product}
             />
             <Input
                 type="number"
@@ -56,10 +87,9 @@ function FormHome({ handleSubmit, productData, categoriesData, buttonText, refre
                 min='1'
                 max = {maxAmount}
                 required = {true}
-                disabled = {true}
+                disabled = {disabledAmount}
                 onChange={handleChange}
-                title = {product.amount}
-                value = {product.amount}
+                value = {amountValue}
             />
             <Input
                 type="text"
@@ -68,9 +98,8 @@ function FormHome({ handleSubmit, productData, categoriesData, buttonText, refre
                 placeholder="Tax"
                 className = {styles.quarter}
                 disabled = {true}
-                onChange={handleChange}
-                title = {product.tax}
-                value = {product.tax}
+                title = {tax}
+                value = {tax}
             />
             <Input
                 type="text"
@@ -79,8 +108,8 @@ function FormHome({ handleSubmit, productData, categoriesData, buttonText, refre
                 placeholder="Unit price"
                 className = {styles.quarter}
                 disabled = {true}
-                onChange={handleChange}
-                value={product.price}
+                title={price}
+                value={price}
             />
             <Input
                 type="submit"
@@ -88,12 +117,12 @@ function FormHome({ handleSubmit, productData, categoriesData, buttonText, refre
                 value={buttonText}
             />
         </form>
-        {((refreshFunction) && (<>
+        {((refreshTriggerFunction) && (<>
             <form onSubmit={refresh}>
                 <Input
                     type = "submit"
                     className = {(`${styles.bluebold} ${styles.full}`)}
-                    value='Return to add product'
+                    value='Return to add cartItem'
                 />
             </form>
         </>))}

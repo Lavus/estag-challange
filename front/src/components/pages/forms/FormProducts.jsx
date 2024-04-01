@@ -3,7 +3,7 @@ import Input from '../../form/Input'
 import styles from '../css/Pages.module.css'
 import DropDown from '../../form/Dropdown'
 
-function FormProducts({ handleSubmit, productData, categoriesData, buttonText, refreshFunction }) {
+function FormProducts({ handleSubmit, productData, categoriesData, buttonText, refreshFunction, refreshTriggerFunction  }) {
     const [product, setProduct] = useState(productData)
     const [categories, setCategories] = useState(categoriesData)
 
@@ -26,7 +26,11 @@ function FormProducts({ handleSubmit, productData, categoriesData, buttonText, r
     }, [categoriesData])
 
     function handleChangeDropdown(value) {
-        setProduct({ ...product, ['category']: value })
+        if (categories.hasOwnProperty(value)) {
+            setProduct({ ...product, ['category']: value })
+        } else {
+            refreshFunction()
+        }
     }
 
     function handleChange(e) {
@@ -91,7 +95,7 @@ function FormProducts({ handleSubmit, productData, categoriesData, buttonText, r
                 value={buttonText}
             />
         </form>
-        {((refreshFunction) && (<>
+        {((refreshTriggerFunction) && (<>
             <form onSubmit={refresh}>
                 <Input
                     type = "submit"

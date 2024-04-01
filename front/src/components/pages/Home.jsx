@@ -6,13 +6,17 @@ import styleHome from './css/Home.module.css'
 import styles from './css/Pages.module.css'
 import FetchSelect from './functions/FetchSelect'
 import FormHome from './forms/FormHome'
+import FetchDelete from './functions/FetchDelete'
 
 function Home () {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [orderItems, setOrderItems] = useState([])
+    const [products, setProducts] = useState([])
     const [removeLoadingForm, setRemoveLoadingForm] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const [refreshForm, setRefreshForm] = useState(false)
+    const [refreshProducts, setRefreshProducts] = useState(false)
+    const [code, setCode] = useState(0)
     const selectValues = {
         'type' : ['FullCasesHome'],
         'table' : 'order_item',
@@ -36,6 +40,48 @@ function Home () {
         'caseVerificationElse' : ['False','False','False','False'],
         'caseVerificationAlias' : ['products_name','products_amount','products_price','categories_tax']
     }
+    const selectValuesProducts =  {
+        'type':['FullCases'],
+        'table':'products',
+        'code':'0',
+        'camps':[['code'],['name'],['amount'],['price']],
+        'campsAlias':['code','name','amount','price'],
+        'innerCamps':[[['tax']]],
+        'innerCampsAlias':[['tax']],
+        'innerTables':['categories'],
+        'foreignKey':'category_code',
+        'where' : 'products.category_code = categories.code;',
+        'caseVerifications' : [[['code']]],
+        'caseVerificationTables' : [['order_item']],
+        'caseVerificationTablesAlias' : [['order_item1']],
+        'caseVerificationWheres' : ['order_item1.product_code = products.code AND order_item1.order_code IN ( SELECT MAX( orders1.code ) FROM orders as orders1 )'],
+        'caseVerificationParameters' : ['IS NOT NULL'],
+        'caseVerificationValues' : [[['amount']]],
+        'caseVerificationValueTables' : [['order_item']],
+        'caseVerificationValueTablesAlias' : [['order_item2']],
+        'caseVerificationValueWheres' : ['order_item2.product_code = products.code AND order_item2.order_code IN ( SELECT MAX( orders2.code ) FROM orders as orders2 )'],
+        'caseVerificationElse' : ['False'],
+        'caseVerificationAlias' : ['products_amount']
+    }
+
+    function TriggerResponse(verification,message){
+        if (verification == true){
+            alert(`Cart product ${message}, executed with success.`)
+            RefreshAll()
+        } else {
+            alert(`There's some problem with the request of ${message}, please try again.`)
+            RefreshAll()
+        }
+    }
+
+    function FinishFunctionFetchSelectProducts(data){
+        setProducts(data)
+    }
+
+    useEffect(() => {
+        setRefreshProducts(false)
+        FetchSelect(selectValuesProducts,FinishFunctionFetchSelectProducts)
+    }, [refreshProducts])
 
     useEffect(() => {
         setRefresh(false)
@@ -48,8 +94,48 @@ function Home () {
         setRemoveLoading(true)
     }
 
+    useEffect(() => {
+        setRefreshForm(false)
+        setRemoveLoadingForm(true)
+    }, [refreshForm])
+
+    function ChangeInsert(e) {
+        (e) => { e.preventDefault() }
+        if (orderItems.hasOwnProperty(e.target.value)) {
+            setCode(e.target.value)
+        } else {
+            RefreshAll()
+        }
+    }
+
+    function TriggerRefresh() {
+        RefreshAll()
+    }
+
+    function DeleteProduct(e) {
+        (e) => { e.preventDefault() }
+        if (orderItems.hasOwnProperty(e.target.value)) {
+            let deleteCamp = {
+                'type' : 'Simple',
+                'table' : 'order_item',
+                'code' : e.target.value
+            }
+            FetchDelete(deleteCamp,TriggerResponse)
+        } else {
+            RefreshAll()
+        }
+    }
+
+    function RefreshAll(){
+        setCode(0)
+        setRefresh(true)
+        setRefreshProducts(true)
+        setRefreshForm(true)
+        setRemoveLoadingForm(false)
+    }
+
     let leftDescriptionPage = 'View insert category'
-    let rightDescriptionPage = 'View Categories'
+    let rightDescriptionPage = 'View Products'
     let iconLeftPage = ''
     let iconRightPage = 'hidden'
     let leftPage = ''
@@ -68,19 +154,17 @@ function Home () {
                     {removeLoadingForm ? (<>
                         {(code == 0) ? (<>
                             <FormHome
-                                handleSubmit = {InsertItem}
-                                productData = {{
-                                    'name':'',
-                                    'price':'',
+                                cartItemData = {{
+                                    'product':'',
                                     'amount':'',
-                                    'category':'',
                                     'error':''
                                 }}
-                                categoriesData = {categories}
+                                productsData = {products}
                                 buttonText = 'Add Product'
+                                refreshFunction = {TriggerRefresh}
                             />
                         </>) : (<>
-                            <FormHome
+                            {/* <FormHome
                                 handleSubmit = {AlterProduct}
                                 productData = {{
                                     'name':DecodeHtml(products[code]['name']),
@@ -90,12 +174,12 @@ function Home () {
                                     'id':code,
                                     'error':''
                                 }}
-                                categoriesData = {categories}
                                 buttonText = 'Alter Product'
                                 refreshFunction = {TriggerRefresh}
+                                refreshTriggerFunction = {true}
                                 placeHolderAmount = 'Amount'
                                 maxAmount = '1'
-                            />
+                            /> */}
                         </>)}
                     </>) : ( <Loading/> ) }
                 </div>
@@ -110,6 +194,7 @@ function Home () {
                                     table = {orderItems}
                                     last = 'delete'
                                     lastButton = '&#128465;'
+                                    lastButtonFunction = {DeleteProduct}
                                     tableStyle = {styleHome.home}
                                 />
                             </>

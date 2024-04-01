@@ -56,6 +56,7 @@
             $sql = $type[1];
         }
         $data = array();
+        $cases = array('False','0',0);
         // error_log($sql);
         try {
             $prepare = $connection ->prepare($sql);
@@ -79,7 +80,7 @@
                                 } else {
                                     $temporary[$camp] = $row[$camp];
                                 }
-                            } else {
+                            } else if (!in_array($row[$camp],$cases)) {
                                 $item = SafeCrypto($row[$camp],"Decrypt");
                                 $decoded_item = html_entity_decode($item);
                                 if ( CheckValidityCamp($item,$decoded_item,$camp) ){
@@ -101,6 +102,8 @@
                                     DeleteSql('simple',$table,$row['code']);//need work
                                     $deleted = TRUE;
                                 }
+                            } else {
+                                $temporary[$camp] = $row[$camp];
                             }
                         }
                     }
