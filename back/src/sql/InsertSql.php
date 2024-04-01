@@ -1,11 +1,9 @@
 <?php
     declare(strict_types=1);
-    function InsertSql(string $table = 'none', array $campsInsert = [], array $valuesInsert = [], array $secondaryValues = [] ): bool {
+    function InsertSql(string $table = 'none', array $camps = [], array $values = [], array $secondaryValues = [] ): bool {
         require_once "ConnectLocalHost.php";
         require_once "UpdateSql.php";
         require_once __DIR__."/../security/SafeCrypto.php";
-        $camps = $campsInsert;
-        $values = $valuesInsert;
         $continue = TRUE;
         if ($table == 'order_item'){
             $orderId = strval($values[0]);
@@ -37,6 +35,23 @@
             if (!($resultOrders)){
                 $continue = FALSE;
             }
+            if ($continue){
+                if ($cartAmount > 0){
+                    $resultItem =  UpdateSql(
+                        'order_item',
+                        [['code'],['order_code'],['product_code'],['product_name'],['amount'],['price'],['tax']],
+                        ['code','order_code','product_code','product_name','amount','price','tax'],
+                        [$orderId,strval($values[1]),$values[2],$totalAmount,$values[4],$values[5]],
+                        [$orderId,strval($values[1]),$values[2],$secondaryValues[2],$values[4],$values[5]],
+                        $orderItemId
+                    );
+                    if ($resultItem){
+                        return (TRUE);
+                    } else {
+                        return (FALSE);
+                    }
+                }
+            }
         }
         $stringCamps = "";
         $stringValues = "";
@@ -53,35 +68,19 @@
         $sql = "INSERT INTO ".$table." ( ".$stringCamps." ) VALUES ( ".$stringValues." );";
         // error_log($sql);
         if ($continue){
-            if ($cartAmount > 0){
-                $resultItem =  UpdateSql(
-                    'order_item',
-                    [['code'],['order_code'],['product_code'],['product_name'],['amount'],['price'],['tax']],
-                    ['code','order_code','product_code','product_name','amount','price','tax'],
-                    [$orderId,strval($values[1]),$values[2],$totalAmount,$values[4],$values[5]],
-                    [$orderId,strval($values[1]),$values[2],$secondaryValues[2],$values[4],$values[5]],
-                    $orderItemId
-                );
-                if ($resultItem){
-                    return (TRUE);
-                } else {
-                    return (FALSE);
-                }
-            } else {
-                $connection  = ConnectLocalHost();
-                try {
-                    $connection->beginTransaction();
-                    $connection->exec($sql);
-                    $connection->commit();
-                } catch(PDOException $e) {
-                    $connection->rollback();
-                    error_log("Error: " . $e->getMessage() . "<br><br>");
-                    $connection = null;
-                    return (FALSE);
-                }
+            $connection  = ConnectLocalHost();
+            try {
+                $connection->beginTransaction();
+                $connection->exec($sql);
+                $connection->commit();
+            } catch(PDOException $e) {
+                $connection->rollback();
+                error_log("Error: " . $e->getMessage() . "<br><br>");
                 $connection = null;
-                return (TRUE);
+                return (FALSE);
             }
+            $connection = null;
+            return (TRUE);
         }
         return (FALSE);
     }

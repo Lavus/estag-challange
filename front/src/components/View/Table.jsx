@@ -15,20 +15,26 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
 
     function ShowSingleTd(simpleKey,value,type = 'none',buttonText = 'none',id = 'none', buttonFunction = undefined){
         return (
-            ((type == 'none') ?
-                <td key={simpleKey} title={value}>
+            ((type == 'none') ? (
+                <td key={simpleKey} title={value} className={(tableid == 'tableValues') && ((table[0]['broken'] == "TRUE") ? (styles.redtext) : undefined)}>
                     {value}
                 </td>
-            :
-                <td key={simpleKey}>
-                    <div title={value}>
+            ) : (
+                ((type == 'Th') ? (
+                    <th key={simpleKey} title={value}>
                         {value}
-                    </div>
-                    <button type='button' name={type+'key'} className={(`${styles.extrabt} ${styles[type]}`)} value={id} onClick={buttonFunction}>
-                        {buttonText}
-                    </button>
-                </td>
-            )
+                    </th>
+                ):(
+                    <td key={simpleKey}>
+                        <div title={value}>
+                            {value}
+                        </div>
+                        <button type='button' name={type+'key'} className={(`${styles.extrabt} ${styles[type]}`)} value={id} onClick={buttonFunction}>
+                            {buttonText}
+                        </button>
+                    </td>
+                ))
+            ))
         )
     }
 
@@ -66,6 +72,17 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
         )
     }
 
+    function ShowContentValues(){
+        return (<>
+            {campsNames.map((camp, indexcamp) => (
+                <tr key={indexcamp}>
+                    {ShowSingleTd('th'+indexcamp,DecodeHtml(tableNames[indexcamp]),'Th')}
+                    {ShowSingleTd(indexcamp,DecodeHtml(table[0][camp]))}
+                </tr>
+            ))}
+        </>)
+    }
+
     function ShowEmptyTd(empty){
         return (
             <tr key='last' className={!(empty) ? styles.last : undefined}>
@@ -76,8 +93,14 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
         )
     }
 
-    return (
-        <>
+    return (<>
+        {(tableid == 'tableValues') ? (<>
+            <table id={tableid} className = {(`${styles.lefttext} ${styles.floatright}`)}>
+                <tbody>
+                    {ShowContentValues()}
+                </tbody>
+            </table>
+        </>) : (<>
             <table id={tableid} className = {tableSize ? (`${styles.collapse} ${styles.half} ${tableStyle}`) : (`${styles.collapse} ${styles.lefttext} ${tableStyle}`)}>
                 <tbody>
                     {ShowTh()}
@@ -85,8 +108,8 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
                     {((table.length == 0)&&(tableid == 'tableviewid')) ? (ShowEmptyTd('True')) : (!(tableid == 'tableviewid')  &&  ShowEmptyTd())}
                 </tbody>
             </table>
-        </>
-    )
+        </>)}
+    </>)
 }
 
 Table.propsTypes = {

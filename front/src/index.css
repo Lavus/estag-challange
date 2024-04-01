@@ -19,19 +19,10 @@ table,input,select,button,div{
   border: none;
 }
 
-.cancel {
-  background-color: #C5C5C5;
-  font-weight: bold;
-}
-
 select, option, input {
   background-color: #F4F4F4;
   border: none;
   outline: none;
-}
-
-.floatright {
-  float: right;
 }
 
 input.quarter{

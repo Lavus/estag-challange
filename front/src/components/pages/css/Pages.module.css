@@ -97,6 +97,11 @@ div.main div.right div.ten{
     box-sizing: border-box;
 }
 
+.cancel {
+    background-color: #C5C5C5;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 800px) {
 
     div.left, div.right {

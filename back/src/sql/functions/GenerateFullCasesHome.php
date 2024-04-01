@@ -6,6 +6,7 @@ declare(strict_types=1);
         require_once __DIR__."/../DeleteSql.php";
         $deleted = FALSE;
         $temporary = array();
+        $totalValues = array();
         $name = SafeCrypto($row["product_name"],"Decrypt");
         $decoded_name = html_entity_decode($name);
         $amount = SafeCrypto($row["amount"],"Decrypt");
@@ -54,11 +55,16 @@ declare(strict_types=1);
                 $temporary['amount'] = $amount;
                 $temporary['tax'] = $tax.'%';
                 $temporary['total'] = SafeCrypto("$".number_format($float_decoded_price*$int_decoded_amount, 2, '.', ''),'Html');
+                $totalValues['value_total'] = round((($float_decoded_price * (1+($float_decoded_tax/100))) * $int_decoded_amount),2);
+                $totalValues['value_tax'] = round((($float_decoded_price * ($float_decoded_tax/100)) * $int_decoded_amount),2);
+                if ( ($temporary['code'][1] == "Broken") || ($temporary['code'][1] == "BrokenAmount") ){
+                    $totalValues['broken'] = 'TRUE';
+                }
             }
         } else {
             DeleteSql('Simple','order_item',$row['code']);
             $deleted = TRUE;
         }
-        return (array($deleted,$temporary));
+        return (array($deleted,$temporary,$totalValues));
     }
 ?>

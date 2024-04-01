@@ -5,6 +5,7 @@
         require_once __DIR__."/../security/SafeCrypto.php";
         require_once __DIR__."/../security/CheckValidityCamp.php";
         require_once "DeleteSql.php";
+        require_once "UpdateSql.php";
         require_once "functions/GenerateStringCampsSql.php";
         require_once "functions/GenerateStringTablesSql.php";
         require_once "functions/GenerateFullCasesHome.php";
@@ -70,6 +71,7 @@
                         $resultTemporary = GenerateFullCasesHome($row);
                         $deleted = $resultTemporary[0];
                         $temporary = $resultTemporary[1];
+                        $totalValues = $resultTemporary[2];
                     } else {
                         foreach($campsSql as $camp) {
                             if ( str_contains($camp,"code") ){
@@ -115,6 +117,17 @@
                             $temporary['order_item']['total'] = SafeCrypto("$".number_format(floatval($temporary['order_item']['total']), 2, '.', ''),'Html');
                             $data['orders'][0] = $temporary['orders'];
                             $data['rows'][$row['code']] = $temporary['order_item'];
+                        } else if ( $type[0] == "FullCasesHome" ) {
+                            if (!(isset($data['totalValues'][0]))){
+                                $data['totalValues'][0] = $totalValues;
+                            } else {
+                                $data['totalValues'][0]['value_total'] += $totalValues['value_total'];
+                                $data['totalValues'][0]['value_tax'] += $totalValues['value_tax'];
+                                if (isset($totalValues['broken'])){
+                                    $data['totalValues'][0]['broken'] = 'TRUE';
+                                }
+                            }
+                            $data['rows'][$row['code']] = $temporary;
                         } else {
                             $data[$row['code']] = $temporary;
                         }
@@ -123,6 +136,42 @@
             }
         } catch(PDOException $e) {
             error_log($sql . "<br>" . $e->getMessage());
+        }
+        if ( $type[0] == "FullCasesHome" ) {
+            $data['totalValues'][0]['value_total'] = round(($data['totalValues'][0]['value_total']),2);
+            $data['totalValues'][0]['value_tax'] = round(($data['totalValues'][0]['value_tax']),2);
+            if (!(isset($data['totalValues'][0]['broken']))){
+                $data['totalValues'][0]['broken'] = 'FALSE';
+            }
+            $orderSelectValues = SelectSql(
+                ['SimpleWhere'],
+                'orders',
+                '0',
+                [['code'],['value_total'],['value_tax']],
+                ['code','value_total_nope','value_tax_nope'],
+                [],
+                [],
+                [],
+                'none',
+                'orders.code IN ( SELECT MAX( orders1.code ) FROM orders as orders1 );'
+            );
+            $orderCode = strval(array_keys($orderSelectValues)[0]);
+            $valueTotal = $orderSelectValues[$orderCode]['value_total_nope'];
+            $valueTax = $orderSelectValues[$orderCode]['value_tax_nope'];
+            $decodeValueTotal = html_entity_decode($valueTotal);
+            $decodeValueTax = html_entity_decode($valueTax);
+            if ( ( round(floatval($data['totalValues'][0]['value_total']),2) != round(floatval($decodeValueTotal),2) ) || ( round(floatval($data['totalValues'][0]['value_tax']),2) != round(floatval($decodeValueTax),2) ) ) {
+                UpdateSql(
+                    'orders',
+                    [['code'],['value_total'],['value_tax']],
+                    ['code','value_total','value_tax'],
+                    [SafeCrypto(strval($data['totalValues'][0]['value_total']),'Html'),SafeCrypto(strval($data['totalValues'][0]['value_tax']),'Html')],
+                    [$valueTotal,$valueTax],
+                    $orderCode
+                );
+            }
+            $data['totalValues'][0]['value_total'] = SafeCrypto("$".number_format(($data['totalValues'][0]['value_total']), 2, '.', ''),'Html');;
+            $data['totalValues'][0]['value_tax'] = SafeCrypto("$".number_format(($data['totalValues'][0]['value_tax']), 2, '.', ''),'Html');;
         }
         return ($data);
     }

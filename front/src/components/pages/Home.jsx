@@ -10,6 +10,7 @@ import FetchDelete from './functions/FetchDelete'
 import ValidateCamps from './functions/ValidateCamps'
 import FetchInsert from './functions/FetchInsert'
 import EncodeHtml from '../functions/EncodeHtml'
+import FormFinisher from './forms/FormFinisher'
 
 function Home () {
     const [removeLoading, setRemoveLoading] = useState(false)
@@ -154,9 +155,17 @@ function Home () {
         RefreshAll()
     }
 
+    function TriggerFinish() {
+        RefreshAll()
+    }
+
+    function TriggerCancel() {
+        RefreshAll()
+    }
+
     function DeleteProduct(e) {
         (e) => { e.preventDefault() }
-        if (orderItems.hasOwnProperty(e.target.value)) {
+        if (orderItems['rows'].hasOwnProperty(e.target.value)) {
             let deleteCamp = {
                 'type' : 'Simple',
                 'table' : 'order_item',
@@ -175,7 +184,7 @@ function Home () {
         setRefreshForm(true)
         setRemoveLoadingForm(false)
     }
-
+    // set array, to make functions of css
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Products'
     let iconLeftPage = ''
@@ -227,22 +236,55 @@ function Home () {
                     </>) : ( <Loading/> ) }
                 </div>
                 <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
-                    <div className={styles.scroll}>
-                        {removeLoading ? (
-                            <>
+                    {removeLoading ? (<>
+                        <div className={styles.eighty}>
+                            <div className={styles.scroll}>
                                 <Table 
                                     tableid = 'tablecart'
                                     tableNames = {['Product','Price','Amount','Total']}
                                     campsNames = {['product_name','price','amount','total']}
-                                    table = {orderItems}
+                                    table = {orderItems['rows']}
                                     last = 'delete'
                                     lastButton = '&#128465;'
                                     lastButtonFunction = {DeleteProduct}
                                     tableStyle = {styleHome.home}
                                 />
-                            </>
-                        ) : ( <Loading/> ) }
-                    </div>
+                            </div>
+                        </div>
+                        <div className={styles.ten}>
+                            <Table 
+                                tableid = 'tableValues'
+                                tableNames = {['Tax : ','Total : ']}
+                                campsNames = {['value_tax','value_total']}
+                                table = {orderItems['totalValues']}
+                                tableStyle = {styleHome.home}
+                            />
+                            {/* <table class="lefttext floatright">
+                                <tr>
+                                    <th>
+                                        Tax:
+                                    </th>
+                                    <td>
+                                        {orderItems['totalValues'][0]['value_tax']}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Total:
+                                    </th>
+                                    <td>
+                                        {orderItems['totalValues'][0]['value_total']}
+                                    </td>
+                                </tr>
+                            </table> */}
+                        </div>
+                        <div className={styles.ten}>
+                            <FormFinisher
+                                handleFinish = {TriggerFinish}
+                                handleCancel = {TriggerCancel}
+                            />
+                        </div>
+                    </>) : ( <Loading/> ) }
                 </div>
             </div>
         </>
