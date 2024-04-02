@@ -5,6 +5,7 @@ import Loading from '../layout/Loading'
 import Button from '../form/Button'
 import FetchSelect from '../pages/functions/FetchSelect'
 import Table from './Table'
+import CheckSafe from '../pages/functions/CheckSafe'
 
 function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, type, table } ) {
     const [removeLoading, setRemoveLoading] = useState(false)
@@ -52,6 +53,11 @@ function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, 
         ((changeCode)?(yesFunction(changeCode)):yesFunction())
     }
 
+    function executeRefresh(e) {
+        (e) => { e.preventDefault() }
+        refreshFunction()
+    }
+
     if (changeCode){
         useEffect(() => {
             setRefresh(true)
@@ -89,19 +95,23 @@ function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, 
                             </div>
                         </>):(<>
                             {((type == 'Finish') ? (<>
-                            <div className={(`${styles.textalert} ${styles.alertremovefortable}`)}>
-                                <div className={styles.dividetext}>
-                                    The total price value of the products is ${(parseFloat((DecodeHtml(table['totalValues'][0]['value_total'])).slice(1)) - parseFloat((DecodeHtml(table['totalValues'][0]['value_tax'])).slice(1))).toFixed(2)}, the tax of the purchase is {DecodeHtml(table['totalValues'][0]['value_tax'])}, totalizing {DecodeHtml(table['totalValues'][0]['value_total'])}, do you want to confirm the purchase ?<br/>Down bellow is the list of all products being purchased :
+                                {((!(CheckSafe(table['rows'])))&&(<>
+                                    {alert("There's some problem with the request, please try again.")}
+                                    {executeRefresh()}
+                                </>))}
+                                <div className={(`${styles.textalert} ${styles.alertremovefortable}`)}>
+                                    <div className={styles.dividetext}>
+                                        The total price value of the products is ${(parseFloat((DecodeHtml(table['totalValues'][0]['value_total'])).slice(1)) - parseFloat((DecodeHtml(table['totalValues'][0]['value_tax'])).slice(1))).toFixed(2)}, the tax of the purchase is {DecodeHtml(table['totalValues'][0]['value_tax'])}, totalizing {DecodeHtml(table['totalValues'][0]['value_total'])}, do you want to confirm the purchase ?<br/>Down bellow is the list of all products being purchased :
+                                    </div>
+                                    <div className={styles.dividetable}>
+                                        <Table 
+                                            tableid = 'tableFinish'
+                                            tableNames = {['Product','Price','Amount','Total']}
+                                            campsNames = {['product_name','price','amount','total']}
+                                            table = {table['rows']}
+                                        />
+                                    </div>
                                 </div>
-                                <div className={styles.dividetable}>
-                                    <Table 
-                                        tableid = 'tableFinish'
-                                        tableNames = {['Product','Price','Amount','Total']}
-                                        campsNames = {['product_name','price','amount','total']}
-                                        table = {table['rows']}
-                                    />
-                                </div>
-                            </div>
                             </>):(<>
                             </>))}
                         </>))}
@@ -115,7 +125,7 @@ function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, 
                 <Button
                     text={noButtonText}
                     className={styles.nobutton}
-                    onClick={refreshFunction}
+                    onClick={executeRefresh}
                 />
             </>) : ( <Loading/> ) }
         </div>

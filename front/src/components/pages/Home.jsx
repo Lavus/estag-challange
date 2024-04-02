@@ -12,6 +12,9 @@ import FetchInsert from './functions/FetchInsert'
 import EncodeHtml from '../functions/EncodeHtml'
 import FormFinisher from './forms/FormFinisher'
 import AlertScreen from '../View/AlertScreen'
+import CheckSafe from './functions/CheckSafe'
+import FetchFinish from './functions/FetchFinish'
+import DecodeHtml from '../functions/DecodeHtml'
 
 function Home () {
     const [removeLoading, setRemoveLoading] = useState(false)
@@ -119,6 +122,16 @@ function Home () {
         }
     }
 
+    function TriggerResponseFinish(verification){
+        if (verification == true){
+            alert(`Thank you for the purchase.`)
+            RefreshAll()
+        } else {
+            alert(`There's some problem with the request of purchase, please try again.`)
+            RefreshAll()
+        }
+    }
+
     function FinishFunctionFetchSelectProducts(data){
         setProducts(data)
     }
@@ -181,7 +194,11 @@ function Home () {
 
     function TriggerCompletePurchase(){
         setFormConfirm('0')
-        alert('Finish yes pressed')
+        let finishCamp = {
+            'value_total' : parseFloat((DecodeHtml(orderItems['totalValues'][0]['value_total'])).slice(1)),
+            'value_tax' : parseFloat((DecodeHtml(orderItems['totalValues'][0]['value_tax'])).slice(1))
+        }
+        FetchFinish(finishCamp,TriggerResponseFinish)
     }
 
     function DeleteProduct(e) {
@@ -222,14 +239,19 @@ function Home () {
                 type='Cancel'
             />
         </>) : (<>
-            {(((formConfirm == 'Finish')&&(orderItems['rows'])) && (<>
-                <AlertScreen
-                    refreshFunction = {TriggerRefresh}
-                    yesFunction = {TriggerCompletePurchase}
-                    type='Finish'
-                    table={orderItems}
-                />
-            </>))}
+            {(((formConfirm == 'Finish')&&(orderItems['rows'])) && (
+                ((CheckSafe(orderItems['rows']))?(<>
+                    <AlertScreen
+                        refreshFunction = {TriggerRefresh}
+                        yesFunction = {TriggerCompletePurchase}
+                        type='Finish'
+                        table={orderItems}
+                    />
+                </>):(
+                    alert("There's some product(s) not avaliable in your cart, please remove then, before finishing your purchase, the line of the product not avaliable is bold and red."),
+                    TriggerRefresh()
+                ))
+            ))}
         </>))}
         <div className = {styles.main}>
             <TextDrop 

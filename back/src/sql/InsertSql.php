@@ -4,7 +4,6 @@
         require_once "ConnectLocalHost.php";
         require_once "UpdateSql.php";
         require_once __DIR__."/../security/SafeCrypto.php";
-        $continue = TRUE;
         if ($table[0] == 'order_item'){
             $orderId = strval($values[0]);
             $orderItemId = strval($secondaryValues[3]);
@@ -33,27 +32,25 @@
                 $orderId
             );
             if (!($resultOrders[0])){
-                $continue = FALSE;
+                return ([FALSE]);
             }
-            if ($continue){
-                if ($cartAmount > 0){
-                    $resultItem =  UpdateSql(
-                        ['order_item'],
-                        [['code'],['order_code'],['product_code'],['product_name'],['amount'],['price'],['tax']],
-                        ['code','order_code','product_code','product_name','amount','price','tax'],
-                        [$orderId,strval($values[1]),$values[2],$totalAmount,$values[4],$values[5]],
-                        [$orderId,strval($values[1]),$values[2],$secondaryValues[2],$values[4],$values[5]],
-                        $orderItemId
-                    );
-                    if ($resultItem[0]){
-                        $resultOrders[1]->commit();
-                        $resultOrders[1] = null;
-                        return ([TRUE]);
-                    } else {
-                        $resultOrders[1]->rollback();
-                        $resultOrders[1] = null;
-                        return ([FALSE]);
-                    }
+            if ($cartAmount > 0){
+                $resultItem =  UpdateSql(
+                    ['order_item'],
+                    [['code'],['order_code'],['product_code'],['product_name'],['amount'],['price'],['tax']],
+                    ['code','order_code','product_code','product_name','amount','price','tax'],
+                    [$orderId,strval($values[1]),$values[2],$totalAmount,$values[4],$values[5]],
+                    [$orderId,strval($values[1]),$values[2],$secondaryValues[2],$values[4],$values[5]],
+                    $orderItemId
+                );
+                if ($resultItem[0]){
+                    $resultOrders[1]->commit();
+                    $resultOrders[1] = null;
+                    return ([TRUE]);
+                } else {
+                    $resultOrders[1]->rollback();
+                    $resultOrders[1] = null;
+                    return ([FALSE]);
                 }
             }
         }
@@ -71,32 +68,29 @@
         $stringValues = rtrim($stringValues, ",");
         $sql = "INSERT INTO ".$table[0]." ( ".$stringCamps." ) VALUES ( ".$stringValues." );";
         // error_log($sql);
-        if ($continue){
-            $connection  = ConnectLocalHost();
-            try {
-                $connection->beginTransaction();
-                $connection->exec($sql);
-                if (count($table) == 2){
-                    return ([TRUE,$connection]);
-                }
-                $connection->commit();
-            } catch(PDOException $e) {
-                $connection->rollback();
-                error_log("Error: " . $e->getMessage() . "<br><br>");
-                $connection = null;
-                if ($table[0] == 'order_item'){
-                    $resultOrders[1]->rollback();
-                    $resultOrders[1] = null;
-                }
-                return ([FALSE]);
+        $connection  = ConnectLocalHost();
+        try {
+            $connection->beginTransaction();
+            $connection->exec($sql);
+            if (count($table) == 2){
+                return ([TRUE,$connection]);
             }
+            $connection->commit();
+        } catch(PDOException $e) {
+            $connection->rollback();
+            error_log("Error: " . $e->getMessage() . "<br><br>");
             $connection = null;
             if ($table[0] == 'order_item'){
-                $resultOrders[1]->commit();
+                $resultOrders[1]->rollback();
                 $resultOrders[1] = null;
             }
-            return ([TRUE]);
+            return ([FALSE]);
         }
-        return ([FALSE]);
+        $connection = null;
+        if ($table[0] == 'order_item'){
+            $resultOrders[1]->commit();
+            $resultOrders[1] = null;
+        }
+        return ([TRUE]);
     }
 ?>
