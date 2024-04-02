@@ -169,7 +169,7 @@ function Home () {
     function TriggerEmptyCart(){
         setFormConfirm('0')
         let deleteCamp = {
-            'type' : 'SimpleWhere',
+            'type' : ['SimpleWhere'],
             'table' : 'order_item',
             'code' : '0',
             'foreignTables' : [],
@@ -183,7 +183,7 @@ function Home () {
         (e) => { e.preventDefault() }
         if (orderItems['rows'].hasOwnProperty(e.target.value)) {
             let deleteCamp = {
-                'type' : 'Simple',
+                'type' : ['Simple'],
                 'table' : 'order_item',
                 'code' : e.target.value
             }

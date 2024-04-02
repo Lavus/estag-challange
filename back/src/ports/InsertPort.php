@@ -23,7 +23,7 @@
                         $name = html_entity_decode($data['name']);
                         $tax = html_entity_decode($data['tax']);
                         if ( (preg_match($regexname, $name)) && (preg_match($regexnumberstax, $tax)) && (CheckNameAvaliable($name,"categories")) ) {
-                            echo( json_encode ( InsertSql( 'categories', ['name','tax'], [$data['name'],$data['tax']] ) ) );
+                            echo( json_encode ( InsertSql( ['categories'], ['name','tax'], [$data['name'],$data['tax']] )[0] ) );
                         } else {
                             echo(json_encode(false));
                         }
@@ -34,7 +34,7 @@
                         $category = $data['category'];
                         if ( (preg_match($regexname, $name)) && (preg_match($regexnumbersprice, $price)) && (preg_match($regexnumbersamountvalue, $amount)) && (preg_match($regexnumbersamountvalue, $category)) && (CheckNameAvaliable($name,"products")) ) {
                             if (CheckValidityCode($category,"categories")) {
-                                echo( json_encode ( InsertSql( 'products', ['name','amount','price','category_code'], [$data['name'],$data['amount'],$data['price'],$data['category']] ) ) );
+                                echo( json_encode ( InsertSql( ['products'], ['name','amount','price','category_code'], [$data['name'],$data['amount'],$data['price'],$data['category']] )[0] ) );
                             } else {
                                 echo(json_encode(false));
                             }
@@ -70,7 +70,7 @@
                                     ['order_code','value_total_nope','value_tax_nope','order_amount','order_item_code']
                                 );
                                 if ($productSelectValues[$product]['order_code'] == 0){
-                                    $resultInsert = InsertSql( 'orders', ['value_total','value_tax'], [SafeCrypto('0','Html'),SafeCrypto('0','Html')] );
+                                    $resultInsert = InsertSql( ['orders'], ['value_total','value_tax'], [SafeCrypto('0','Html'),SafeCrypto('0','Html')] )[0];
                                     if (!($resultInsert)){
                                         echo(json_encode(false));
                                     }
@@ -86,7 +86,7 @@
                                         'none',
                                         'orders.code IN ( SELECT MAX( orders1.code ) FROM orders as orders1 );'
                                     );
-                                    $orderCode = array_keys($orderSelectValues)[0];
+                                    $orderCode = strval(array_keys($orderSelectValues)[0]);
                                     $valueTotal = $orderSelectValues[$orderCode]['value_total_nope'];
                                     $valueTax = $orderSelectValues[$orderCode]['value_tax_nope'];
                                 } else {
@@ -96,7 +96,7 @@
                                 }
                                 $cartAmount = $productSelectValues[$product]['order_amount'];
                                 $orderItemId = $productSelectValues[$product]['order_item_code'];
-                                echo( json_encode ( InsertSql( 'order_item', ['order_code','product_code','product_name','amount','price','tax'], [$orderCode,$data['product'],$productSelectValues[$product]['name'],$data['amount'],$productSelectValues[$product]['price_nope'],$productSelectValues[$product]['tax_nope']], [$valueTotal,$valueTax,$cartAmount, $orderItemId] ) ) );
+                                echo( json_encode ( InsertSql( ['order_item'], ['order_code','product_code','product_name','amount','price','tax'], [$orderCode,$data['product'],$productSelectValues[$product]['name'],$data['amount'],$productSelectValues[$product]['price_nope'],$productSelectValues[$product]['tax_nope']], [$valueTotal,$valueTax,$cartAmount, $orderItemId] )[0] ) );
                             } else {
                                 echo(json_encode(false));
                             }

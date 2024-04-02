@@ -65,7 +65,7 @@ function Categories () {
     function TriggerDelete(codeDelete){
         setDeleteValues({ ...deleteValues, code:'0', where:`categories.code = '0';`})
         let deleteCamp = {
-            'type' : 'Simple',
+            'type' : ['Simple'],
             'table' : 'categories',
             'code' : codeDelete
         }

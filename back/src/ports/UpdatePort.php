@@ -25,7 +25,7 @@
                             $name = html_entity_decode($data['name']);
                             $tax = html_entity_decode($data['tax']);
                             if ( (preg_match($regexname, $name)) && (preg_match($regexnumberstax, $tax)) && (CheckNameAvaliable($name,"categories",$data['id'])) ) {
-                                echo( json_encode ( UpdateSql( 'categories', [['code'],['name'],['tax']], ['code','name','tax'], [$data['name'],$data['tax']], [$data['oldName'],$data['oldTax']], $data['id'] ) ) );
+                                echo( json_encode ( UpdateSql( ['categories'], [['code'],['name'],['tax']], ['code','name','tax'], [$data['name'],$data['tax']], [$data['oldName'],$data['oldTax']], $data['id'] )[0] ) );
                             } else {
                                 echo(json_encode(false));
                             }
@@ -36,7 +36,7 @@
                             $category = $data['category'];
                             if ( (preg_match($regexname, $name)) && (preg_match($regexnumbersamount, $amount)) && (preg_match($regexnumbersprice, $price)) && (preg_match($regexnumberscode, $category)) && (CheckNameAvaliable($name,"products",$data['id'])) ) {
                                 if (CheckValidityCode($category,"categories")) {
-                                    echo( json_encode ( UpdateSql( 'products', [['code'],['name'],['amount'],['price'],['category_code']], ['code','name','amount','price','category_code'], [$data['name'],$data['amount'],$data['price'],$data['category']], [$data['oldName'],$data['oldAmount'],$data['oldPrice'],$data['oldCategory']], $data['id'] ) ) );
+                                    echo( json_encode ( UpdateSql( ['products'], [['code'],['name'],['amount'],['price'],['category_code']], ['code','name','amount','price','category_code'], [$data['name'],$data['amount'],$data['price'],$data['category']], [$data['oldName'],$data['oldAmount'],$data['oldPrice'],$data['oldCategory']], $data['id'] )[0] ) );
                                 } else {
                                     echo(json_encode(false));
                                 }

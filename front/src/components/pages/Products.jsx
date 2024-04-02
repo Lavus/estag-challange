@@ -186,7 +186,7 @@ function Products () {
     function TriggerDelete(codeDelete){
         setDeleteConfirm('0')
         let deleteCamp = {
-            'type' : 'Simple',
+            'type' : ['Simple'],
             'table' : 'products',
             'code' : codeDelete
         }

@@ -13,7 +13,7 @@
                 $data = json_decode($json,true);
                 $regexnumberscode = "/^[1-9]{1}[0-9]{0,}$/";
                 if ( ( !empty($data['type']) ) && ( isset($data['code']) ) && ( !empty($data['table']) ) ) {
-                    if ($data['type'] == "Simple") {
+                    if ($data['type'][0] == "Simple") {
                         if (!(preg_match($regexnumberscode, $data['code']))){
                             echo(json_encode(false));
                         } else if ( CheckValidityCode($data['code'],$data['table']) ){
@@ -21,7 +21,7 @@
                         } else {
                             echo(json_encode(false));
                         }
-                    } else if ( ($data['type'] == "SimpleWhere") && (isset($data['foreignTables'])) && (isset($data['foreignKeys'])) && (!empty($data['where'])) ) {
+                    } else if ( ($data['type'][0] == "SimpleWhere") && (isset($data['foreignTables'])) && (isset($data['foreignKeys'])) && (!empty($data['where'])) ) {
                         echo( json_encode ( DeleteSql( $data['type'], $data['table'], $data['code'], $data['foreignTables'], $data['foreignKeys'], $data['where'] ) ) );
                     } else {
                         echo(json_encode(false));

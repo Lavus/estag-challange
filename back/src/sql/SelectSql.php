@@ -161,8 +161,9 @@
             $decodeValueTotal = html_entity_decode($valueTotal);
             $decodeValueTax = html_entity_decode($valueTax);
             if ( ( round(floatval($data['totalValues'][0]['value_total']),2) != round(floatval($decodeValueTotal),2) ) || ( round(floatval($data['totalValues'][0]['value_tax']),2) != round(floatval($decodeValueTax),2) ) ) {
+                error_log('Ocorreu um erro no valor da orders, valor atualizado');
                 UpdateSql(
-                    'orders',
+                    ['orders'],
                     [['code'],['value_total'],['value_tax']],
                     ['code','value_total','value_tax'],
                     [SafeCrypto(strval($data['totalValues'][0]['value_total']),'Html'),SafeCrypto(strval($data['totalValues'][0]['value_tax']),'Html')],
