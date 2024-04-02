@@ -6,12 +6,13 @@ import styleLibrary from './css/Library.module.css'
 import styles from './css/Pages.module.css'
 import FetchSelect from './functions/FetchSelect'
 
-function Library () {
+function Library ({css, cssRightFunction, cssLeftFunction}) {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [library, setLibrary] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [removeLoadingView, setRemoveLoadingView] = useState(false)
     const [libraryView, setLibraryView] = useState([])
+    let leftDescriptionPage = 'View insert category'
     const [selectValues, setSelectValues] =  useState({
         'type':['SimpleWhere'],
         'table':'orders',
@@ -60,81 +61,83 @@ function Library () {
 
     function ChangeView(e) {
         (e) => { e.preventDefault() }
+        ExecuteRight()
         setSelectValuesView({...selectValuesView, code: e.target.value})
     }
 
-    let leftDescriptionPage = 'View insert category'
-    let rightDescriptionPage = 'View Categories'
-    let iconLeftPage = ''
-    let iconRightPage = 'hidden'
-    let leftPage = ''
-    let rightPage = 'show'
+    function ExecuteLeft(){
+        cssLeftFunction()
+    }
 
-    return (
-        <>
-            <div className = {styles.main}>
-                <TextDrop 
-                    leftDescription = {leftDescriptionPage}
-                    rightDescription = {rightDescriptionPage}
-                    iconLeft = {iconLeftPage}
-                    iconRight = {iconRightPage}
-                />
-                <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
-                    <div className={styles.scroll}>
-                        {removeLoading ? (<>
-                            {library['broken'] && (
-                                alert("There's some problem with the request, please try again."),
-                                setLibrary([]),
-                                setSelectValuesView({...selectValuesView, code: '0'}),
-                                setRefresh(true)
-                            )}
-                            <Table 
-                                tableid = 'tablehistory'
-                                tableNames = {['Code','Tax','Total']}
-                                campsNames = {['code','value_tax','value_total']}
-                                table = {library}
-                                last = 'view'
-                                lastButton = '&#128270;'
-                                lastButtonFunction = {ChangeView}
-                                tableStyle = {styleLibrary.library}
-                            />
-                        </>) : ( <Loading/> ) }
-                    </div>
-                </div>
-                <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
-                    {removeLoadingView ? (<>
-                        {libraryView['broken'] && (
+    function ExecuteRight(){
+        cssRightFunction()
+    }
+
+    return (<>
+        <div className = {styles.main}>
+            <TextDrop 
+                leftDescription = 'View Purchase History'
+                rightDescription = 'View Purchase Info'
+                iconLeft = {css.iconLeftPage}
+                iconRight = {css.iconRightPage}
+                functionLeft = {ExecuteLeft}
+                functionRight = {ExecuteRight}
+            />
+            <div className = {css.leftPage ? (`${styles.left} ${styles[css.leftPage]}`) : styles.left}>
+                <div className={styles.scroll}>
+                    {removeLoading ? (<>
+                        {library['broken'] && (
                             alert("There's some problem with the request, please try again."),
-                            setLibraryView([]),
+                            setLibrary([]),
                             setSelectValuesView({...selectValuesView, code: '0'}),
                             setRefresh(true)
                         )}
-                        <div className={styles.twenty}>
-                            <Table 
-                                tableid = 'tableviewid'
-                                tableSize = 'half'
-                                tableNames = {['Code','Tax','Total']}
-                                campsNames = {['order_code','value_tax','value_total']}
-                                table = {libraryView['orders'] ? libraryView['orders'] : libraryView}
-                                tableStyle = {styleLibrary.libraryViewID}
-                            />
-                        </div>
-                        <div className={styles.eighty}>
-                            <div className={styles.scroll}>
-                                <Table 
-                                    tableid = 'tableview'
-                                    tableNames = {['Product','Price','Amount','Total']}
-                                    campsNames = {['product_name','price','amount','total']}
-                                    table = {libraryView['rows'] ? libraryView['rows'] : libraryView}
-                                    tableStyle = {styleLibrary.libraryView}
-                                />
-                            </div>
-                        </div>
-                    </> ) : ( <Loading/> ) }
+                        <Table 
+                            tableid = 'tablehistory'
+                            tableNames = {['Code','Tax','Total']}
+                            campsNames = {['code','value_tax','value_total']}
+                            table = {library}
+                            last = 'view'
+                            lastButton = '&#128270;'
+                            lastButtonFunction = {ChangeView}
+                            tableStyle = {styleLibrary.library}
+                        />
+                    </>) : ( <Loading/> ) }
                 </div>
             </div>
-        </>
-    )
+            <div className = {css.rightPage ? (`${styles.right} ${styles[css.rightPage]}`) : styles.right}>
+                {removeLoadingView ? (<>
+                    {libraryView['broken'] && (
+                        alert("There's some problem with the request, please try again."),
+                        setLibraryView([]),
+                        setSelectValuesView({...selectValuesView, code: '0'}),
+                        setRefresh(true)
+                    )}
+                    <div className={styles.twenty}>
+                        <Table 
+                            tableid = 'tableviewid'
+                            tableSize = 'half'
+                            tableNames = {['Code','Tax','Total']}
+                            campsNames = {['order_code','value_tax','value_total']}
+                            table = {libraryView['orders'] ? libraryView['orders'] : libraryView}
+                            tableStyle = {styleLibrary.libraryViewID}
+                        />
+                    </div>
+                    <div className={styles.eighty}>
+                        <div className={styles.scroll}>
+                            <Table 
+                                tableid = 'tableview'
+                                tableNames = {['Product','Price','Amount','Total']}
+                                campsNames = {['product_name','price','amount','total']}
+                                table = {libraryView['rows'] ? libraryView['rows'] : libraryView}
+                                tableStyle = {styleLibrary.libraryView}
+                            />
+                        </div>
+                    </div>
+                </> ) : ( <Loading/> ) }
+            </div>
+        </div>
+    </>)
 }
   
 export default Library

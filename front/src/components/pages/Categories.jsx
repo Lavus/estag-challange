@@ -14,13 +14,14 @@ import FetchUpdate from './functions/FetchUpdate'
 import FetchInsert from './functions/FetchInsert'
 import ValidateCamps from './functions/ValidateCamps'
 
-function Categories () {
+function Categories ({css, cssRightFunction, cssLeftFunction}) {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [removeLoadingForm, setRemoveLoadingForm] = useState(false)
     const [categories, setCategories] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [refreshForm, setRefreshForm] = useState(false)
     const [code, setCode] = useState(0)
+    const [leftDescriptionPage, setLeftDescriptionPage] = useState('View Insert Category')
     const selectValues =  {
         'type':['FullSimple'],
         'table':'categories',
@@ -60,6 +61,7 @@ function Categories () {
             alert(`There's some problem with the request of ${message}, please try again.`)
             RefreshAll()
         }
+        ExecuteRight()
     }
 
     function TriggerDelete(codeDelete){
@@ -73,6 +75,7 @@ function Categories () {
     }
 
     function RefreshAll(){
+        setLeftDescriptionPage('View Insert Category')
         setCode(0)
         setRefresh(true)
         setRefreshForm(true)
@@ -131,6 +134,8 @@ function Categories () {
     function ChangeInsert(e) {
         (e) => { e.preventDefault() }
         if (categories.hasOwnProperty(e.target.value)) {
+            ExecuteLeft()
+            setLeftDescriptionPage('View Alter Category')
             setCode(e.target.value)
         } else {
             RefreshAll()
@@ -167,12 +172,13 @@ function Categories () {
         setRemoveLoading(true)
     }
 
-    let leftDescriptionPage = 'View insert category'
-    let rightDescriptionPage = 'View Categories'
-    let iconLeftPage = ''
-    let iconRightPage = 'hidden'
-    let leftPage = ''
-    let rightPage = 'show'
+    function ExecuteLeft(){
+        cssLeftFunction()
+    }
+
+    function ExecuteRight(){
+        cssRightFunction()
+    }
 
     return (<>
         {((deleteValues.code != '0') && (<>
@@ -186,13 +192,15 @@ function Categories () {
         </>))}
 
         <div className = {styles.main}>
-            <TextDrop
+            <TextDrop 
                 leftDescription = {leftDescriptionPage}
-                rightDescription = {rightDescriptionPage}
-                iconLeft = {iconLeftPage}
-                iconRight = {iconRightPage}
+                rightDescription = 'View Categories'
+                iconLeft = {css.iconLeftPage}
+                iconRight = {css.iconRightPage}
+                functionLeft = {ExecuteLeft}
+                functionRight = {ExecuteRight}
             />
-            <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
+            <div className = {css.leftPage ? (`${styles.left} ${styles[css.leftPage]}`) : styles.left}>
                 {removeLoadingForm ? (<>
                     {(code == 0) ? (<>
                         <FormCategories
@@ -219,7 +227,7 @@ function Categories () {
                     </>)}
                 </>) : ( <Loading/> ) }
             </div>
-            <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
+            <div className = {css.rightPage ? (`${styles.right} ${styles[css.rightPage]}`) : styles.right}>
                 <div className={styles.scroll}>
                     {removeLoading ? (<>
                         <Table 

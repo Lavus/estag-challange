@@ -16,7 +16,7 @@ import CheckSafe from './functions/CheckSafe'
 import FetchFinish from './functions/FetchFinish'
 import DecodeHtml from '../functions/DecodeHtml'
 
-function Home () {
+function Home ({css, cssRightFunction, cssLeftFunction}) {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [orderItems, setOrderItems] = useState([])
     const [products, setProducts] = useState([])
@@ -25,7 +25,6 @@ function Home () {
     const [refreshForm, setRefreshForm] = useState(false)
     const [refreshProducts, setRefreshProducts] = useState(false)
     const [formConfirm, setFormConfirm] = useState('0')
-    const [code, setCode] = useState(0)
     const selectValues = {
         'type' : ['FullCasesHome'],
         'table' : 'order_item',
@@ -120,6 +119,7 @@ function Home () {
             alert(`There's some problem with the request of ${message}, please try again.`)
             RefreshAll()
         }
+        ExecuteRight()
     }
 
     function TriggerResponseFinish(verification){
@@ -156,15 +156,6 @@ function Home () {
         setRefreshForm(false)
         setRemoveLoadingForm(true)
     }, [refreshForm])
-
-    function ChangeInsert(e) {
-        (e) => { e.preventDefault() }
-        if (orderItems.hasOwnProperty(e.target.value)) {
-            setCode(e.target.value)
-        } else {
-            RefreshAll()
-        }
-    }
 
     function TriggerRefresh() {
         RefreshAll()
@@ -216,7 +207,6 @@ function Home () {
     }
 
     function RefreshAll(){
-        setCode(0)
         setRefresh(true)
         setRefreshProducts(true)
         setRefreshForm(true)
@@ -224,12 +214,14 @@ function Home () {
     }
     // set array, to make functions of css
     // need to fix delete on select
-    let leftDescriptionPage = 'View insert category'
-    let rightDescriptionPage = 'View Products'
-    let iconLeftPage = ''
-    let iconRightPage = 'hidden'
-    let leftPage = ''
-    let rightPage = 'show'
+
+    function ExecuteLeft(){
+        cssLeftFunction()
+    }
+
+    function ExecuteRight(){
+        cssRightFunction()
+    }
 
     return (<>
         {((formConfirm == 'Cancel') ? (<>
@@ -255,46 +247,29 @@ function Home () {
         </>))}
         <div className = {styles.main}>
             <TextDrop 
-                leftDescription = {leftDescriptionPage}
-                rightDescription = {rightDescriptionPage}
-                iconLeft = {iconLeftPage}
-                iconRight = {iconRightPage}
+                leftDescription = 'View Purchase'
+                rightDescription = 'View Cart'
+                iconLeft = {css.iconLeftPage}
+                iconRight = {css.iconRightPage}
+                functionLeft = {ExecuteLeft}
+                functionRight = {ExecuteRight}
             />
-            <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
+            <div className = {css.leftPage ? (`${styles.left} ${styles[css.leftPage]}`) : styles.left}>
                 {removeLoadingForm ? (<>
-                    {(code == 0) ? (<>
-                        <FormHome
-                            handleSubmit = {InsertOrderItem}
-                            cartItemData = {{
-                                'product':'',
-                                'amount':'',
-                                'error':''
-                            }}
-                            productsData = {products}
-                            buttonText = 'Add Product'
-                            refreshFunction = {TriggerRefresh}
-                        />
-                    </>) : (<>
-                        {/* <FormHome
-                            handleSubmit = {AlterProduct}
-                            productData = {{
-                                'name':DecodeHtml(products[code]['name']),
-                                'price':parseFloat((DecodeHtml(products[code]['price'])).slice(1)),
-                                'amount':DecodeHtml(products[code]['amount']),
-                                'category':products[code]['category_code'],
-                                'id':code,
-                                'error':''
-                            }}
-                            buttonText = 'Alter Product'
-                            refreshFunction = {TriggerRefresh}
-                            refreshTriggerFunction = {true}
-                            placeHolderAmount = 'Amount'
-                            maxAmount = '1'
-                        /> */}
-                    </>)}
+                    <FormHome
+                        handleSubmit = {InsertOrderItem}
+                        cartItemData = {{
+                            'product':'',
+                            'amount':'',
+                            'error':''
+                        }}
+                        productsData = {products}
+                        buttonText = 'Add Product'
+                        refreshFunction = {TriggerRefresh}
+                    />
                 </>) : ( <Loading/> ) }
             </div>
-            <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
+            <div className = {css.rightPage ? (`${styles.right} ${styles[css.rightPage]}`) : styles.right}>
                 {removeLoading ? (<>
                     <div className={styles.eighty}>
                         <div className={styles.scroll}>

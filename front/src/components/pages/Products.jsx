@@ -14,7 +14,7 @@ import FetchUpdate from './functions/FetchUpdate'
 import FetchDelete from './functions/FetchDelete'
 import AlertScreen from '../View/AlertScreen'
 
-function Products () {
+function Products ({css, cssRightFunction, cssLeftFunction}) {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [removeLoadingForm, setRemoveLoadingForm] = useState(false)
     const [products, setProducts] = useState([])
@@ -24,6 +24,7 @@ function Products () {
     const [refreshCategories, setRefreshCategories] = useState(false)
     const [deleteConfirm, setDeleteConfirm] = useState('0')
     const [code, setCode] = useState(0)
+    const [leftDescriptionPage, setLeftDescriptionPage] = useState('View Insert Product')
     const selectValues =  {
         'type':['SimpleForeign'],
         'table':'products',
@@ -126,6 +127,7 @@ function Products () {
             alert(`There's some problem with the request of ${message}, please try again.`)
             RefreshAll()
         }
+        ExecuteRight()
     }
 
     function FinishFunctionFetchSelectCategories(data){
@@ -156,6 +158,8 @@ function Products () {
     function ChangeInsert(e) {
         (e) => { e.preventDefault() }
         if (products.hasOwnProperty(e.target.value)) {
+            ExecuteLeft()
+            setLeftDescriptionPage('View Alter Product')
             setCode(e.target.value)
         } else {
             RefreshAll()
@@ -178,6 +182,7 @@ function Products () {
 
     function RefreshAll(){
         setCode(0)
+        setLeftDescriptionPage('View Insert Product')
         setRefresh(true)
         setRefreshForm(true)
         setRemoveLoadingForm(false)
@@ -193,12 +198,13 @@ function Products () {
         FetchDelete(deleteCamp,TriggerResponse)
     }
 
-    let leftDescriptionPage = 'View insert category'
-    let rightDescriptionPage = 'View Categories'
-    let iconLeftPage = ''
-    let iconRightPage = 'hidden'
-    let leftPage = ''
-    let rightPage = 'show'
+    function ExecuteLeft(){
+        cssLeftFunction()
+    }
+
+    function ExecuteRight(){
+        cssRightFunction()
+    }
 
     return (<>
         {((deleteConfirm != '0') && (<>
@@ -213,11 +219,13 @@ function Products () {
         <div className = {styles.main}>
             <TextDrop 
                 leftDescription = {leftDescriptionPage}
-                rightDescription = {rightDescriptionPage}
-                iconLeft = {iconLeftPage}
-                iconRight = {iconRightPage}
+                rightDescription = 'View Products'
+                iconLeft = {css.iconLeftPage}
+                iconRight = {css.iconRightPage}
+                functionLeft = {ExecuteLeft}
+                functionRight = {ExecuteRight}
             />
-            <div className = {leftPage ? (`${styles.left} ${styles[leftPage]}`) : styles.left}>
+            <div className = {css.leftPage ? (`${styles.left} ${styles[css.leftPage]}`) : styles.left}>
                 {removeLoadingForm ? (<>
                     {(code == 0) ? (<>
                         <FormProducts
@@ -252,7 +260,7 @@ function Products () {
                     </>)}
                 </>) : ( <Loading/> ) }
             </div>
-            <div className = {rightPage ? (`${styles.right} ${styles[rightPage]}`) : styles.right}>
+            <div className = {css.rightPage ? (`${styles.right} ${styles[css.rightPage]}`) : styles.right}>
                 <div className={styles.scroll}>
                     {removeLoading ? (
                         <>
