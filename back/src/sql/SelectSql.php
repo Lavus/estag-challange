@@ -137,7 +137,7 @@
         } catch(PDOException $e) {
             error_log($sql . "<br>" . $e->getMessage());
         }
-        if ( $type[0] == "FullCasesHome" ) {
+        if ( ( $type[0] == "FullCasesHome" ) && (isset($data['totalValues'])) ) {
             $data['totalValues'][0]['value_total'] = round(($data['totalValues'][0]['value_total']),2);
             $data['totalValues'][0]['value_tax'] = round(($data['totalValues'][0]['value_tax']),2);
             if (!(isset($data['totalValues'][0]['broken']))){

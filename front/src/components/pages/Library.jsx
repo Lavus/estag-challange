@@ -110,28 +110,24 @@ function Library () {
                             setRefresh(true)
                         )}
                         <div className={styles.twenty}>
-                                <>
-                                    <Table 
-                                        tableid = 'tableviewid'
-                                        tableSize = 'half'
-                                        tableNames = {['Code','Tax','Total']}
-                                        campsNames = {['order_code','value_tax','value_total']}
-                                        table = {libraryView['orders'] ? libraryView['orders'] : libraryView}
-                                        tableStyle = {styleLibrary.libraryViewID}
-                                    />
-                                </>
+                            <Table 
+                                tableid = 'tableviewid'
+                                tableSize = 'half'
+                                tableNames = {['Code','Tax','Total']}
+                                campsNames = {['order_code','value_tax','value_total']}
+                                table = {libraryView['orders'] ? libraryView['orders'] : libraryView}
+                                tableStyle = {styleLibrary.libraryViewID}
+                            />
                         </div>
                         <div className={styles.eighty}>
                             <div className={styles.scroll}>
-                                <>
-                                    <Table 
-                                        tableid = 'tableview'
-                                        tableNames = {['Product','Price','Amount','Total']}
-                                        campsNames = {['product_name','price','amount','total']}
-                                        table = {libraryView['rows'] ? libraryView['rows'] : libraryView}
-                                        tableStyle = {styleLibrary.libraryView}
-                                    />
-                                </>
+                                <Table 
+                                    tableid = 'tableview'
+                                    tableNames = {['Product','Price','Amount','Total']}
+                                    campsNames = {['product_name','price','amount','total']}
+                                    table = {libraryView['rows'] ? libraryView['rows'] : libraryView}
+                                    tableStyle = {styleLibrary.libraryView}
+                                />
                             </div>
                         </div>
                     </> ) : ( <Loading/> ) }

@@ -5,7 +5,7 @@
         if ($type == "Simple") {
             $sql_delete = "DELETE FROM ".$table." WHERE code = '".$code."';";
         } else if ($type == "SimpleWhere") {
-            $sql_delete = "DELETE FROM ".$table." WHERE '".$where;
+            $sql_delete = "DELETE FROM ".$table." WHERE ".$where;
         } else {
             return (FALSE);
         }

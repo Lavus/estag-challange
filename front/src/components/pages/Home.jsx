@@ -111,7 +111,7 @@ function Home () {
 
     function TriggerResponse(verification,message){
         if (verification == true){
-            alert(`Cart product ${message}, executed with success.`)
+            alert(`Cart product(s) ${message}, executed with success.`)
             RefreshAll()
         } else {
             alert(`There's some problem with the request of ${message}, please try again.`)
@@ -159,11 +159,11 @@ function Home () {
     }
 
     function TriggerFinish() {
-        setFormConfirm('Finish')
+        ((orderItems['rows'])&&(setFormConfirm('Finish')))
     }
 
     function TriggerCancel() {
-        setFormConfirm('Cancel')
+        ((orderItems['rows'])&&(setFormConfirm('Cancel')))
     }
 
     function TriggerEmptyCart(){
@@ -202,6 +202,7 @@ function Home () {
     }
     // set array, to make functions of css
     // need to fix delete, to auto update cart
+    // change update and insert to array return, for rollback in error
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Products'
     let iconLeftPage = ''
@@ -223,7 +224,7 @@ function Home () {
                     yesFunction = {TriggerDelete}
                     changeCode={deleteConfirm}
                     type='products'
-                    table={orderItems['rows']}
+                    table={orderItems['rows'] ? orderItems['rows'] : orderItems}
                 />
             </>))}
         </>))}
@@ -276,7 +277,7 @@ function Home () {
                                 tableid = 'tablecart'
                                 tableNames = {['Product','Price','Amount','Total']}
                                 campsNames = {['product_name','price','amount','total']}
-                                table = {orderItems['rows']}
+                                table = {orderItems['rows'] ? orderItems['rows'] : orderItems}
                                 last = 'delete'
                                 lastButton = '&#128465;'
                                 lastButtonFunction = {DeleteProduct}
@@ -289,7 +290,7 @@ function Home () {
                             tableid = 'tableValues'
                             tableNames = {['Tax: ','Total: ']}
                             campsNames = {['value_tax','value_total']}
-                            table = {orderItems['totalValues']}
+                            table = {orderItems['totalValues'] ? orderItems['totalValues'] : orderItems}
                             tableStyle = {styleHome.home}
                         />
                     </div>

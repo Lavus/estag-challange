@@ -67,8 +67,8 @@ function FormHome({ handleSubmit, cartItemData, productsData, buttonText, refres
     return (<>
         <form onSubmit={submit}>
             <DropDown
-                defaultTextNone = 'No products avaliable'
-                defaultText = 'Products'
+                defaultTextNone = 'No product avaliable at the moment'
+                defaultText = 'Product'
                 tableValues = {products}
                 valueFunction = {handleChangeDropdown}
                 sizeStyle = 'full'

@@ -16,7 +16,7 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
     function ShowSingleTd(simpleKey,value,type = 'none',buttonText = 'none',id = 'none', buttonFunction = undefined){
         return (
             ((type == 'none') ? (
-                <td key={simpleKey} title={value} className={((tableid == 'tableValues') ? ((table[0]['broken'] == "TRUE") ? (styles.redtext) : undefined) : undefined)}>
+                <td key={simpleKey} title={value} className={(((tableid == 'tableValues')&&(table[0])) ? ((table[0]['broken'] == "TRUE") ? (styles.redtext) : undefined) : undefined)}>
                     {value}
                 </td>
             ) : (
@@ -77,7 +77,7 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
             {campsNames.map((camp, indexcamp) => (
                 <tr key={indexcamp}>
                     {ShowSingleTd('th'+indexcamp,DecodeHtml(tableNames[indexcamp]),'Th')}
-                    {ShowSingleTd(indexcamp,DecodeHtml(table[0][camp]))}
+                    {ShowSingleTd( indexcamp, ( (table[0]) ? (DecodeHtml(table[0][camp])) : ('$0.00') ) )}
                 </tr>
             ))}
         </>)
