@@ -104,7 +104,7 @@
                                     }
                                 } else {
                                     if (in_array($camp,$campsAlias)){
-                                        DeleteSql(['simple','Broken'],$table,strval($row['code']));
+                                        DeleteSql(['Simple','Broken'],$table,strval($row['code']));
                                     } else if (in_array($camp,$caseVerificationAlias)){
                                         $deleted = TRUE;
                                     } else {
