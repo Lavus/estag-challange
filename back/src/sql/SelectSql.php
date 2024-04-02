@@ -103,7 +103,28 @@
                                         $temporary[$camp] = $item;
                                     }
                                 } else {
-                                    DeleteSql('simple',$table,$row['code']);//need work
+                                    if (in_array($camp,$campsAlias)){
+                                        DeleteSql(['simple','Broken'],$table,strval($row['code']));
+                                    } else if (in_array($camp,$caseVerificationAlias)){
+                                        $deleted = TRUE;
+                                    } else {
+                                        foreach($innerCampsAlias as $indexCampsAlias => $innerAlias) {
+                                            if (in_array($camp,$innerAlias)){
+                                                if ($foreignKey != 'none'){
+                                                    $foreign = $foreignKey;
+                                                } else if ($table == 'products'){
+                                                    $foreign = 'category_code';
+                                                } else if ($table == 'order_item'){
+                                                    if ($innerTables[$indexCampsAlias] == 'products'){
+                                                        $foreign = 'product_code';
+                                                    }else if ($innerTables[$indexCampsAlias] == 'orders'){
+                                                            $foreign = 'order_code';
+                                                    }
+                                                }
+                                                DeleteSql(['SimpleForeign','Broken'],$table,strval($row['code']),array($innerTables[$indexCampsAlias]),array($foreign));
+                                            }
+                                        }
+                                    }
                                     $deleted = TRUE;
                                 }
                             } else {

@@ -12,7 +12,6 @@ function Library ({css, cssRightFunction, cssLeftFunction}) {
     const [refresh, setRefresh] = useState(false)
     const [removeLoadingView, setRemoveLoadingView] = useState(false)
     const [libraryView, setLibraryView] = useState([])
-    let leftDescriptionPage = 'View insert category'
     const [selectValues, setSelectValues] =  useState({
         'type':['SimpleWhere'],
         'table':'orders',

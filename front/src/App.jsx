@@ -5,7 +5,7 @@ import Home from './components/pages/Home'
 import Products from './components/pages/Products'
 import Categories from './components/pages/Categories'
 import Library from './components/pages/Library'
-import NoPage from './components/pages/NoPage'
+// import NoPage from './components/pages/NoPage'
 import { useState } from 'react'
 
 

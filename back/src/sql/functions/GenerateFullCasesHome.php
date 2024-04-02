@@ -41,11 +41,11 @@ declare(strict_types=1);
                             $temporary['code'] = [$row["code"],"Good"];
                         }
                     } else {
-                        DeleteSql('DoubleForeign','order_item',$row['code'],["products","categories"],["product_code","category_code"]);
+                        DeleteSql(['DoubleForeign','Broken'],'order_item',strval($row['code']),["products","categories"],["product_code","category_code"]);
                         $deleted = TRUE;
                     }
                 } else {
-                    DeleteSql('SimpleForeign','order_item',$row['code'],["products"],["product_code"]);
+                    DeleteSql(['SimpleForeign','Broken'],'order_item',strval($row['code']),["products"],["product_code"]);
                     $deleted = TRUE;
                 }
             }
@@ -62,7 +62,7 @@ declare(strict_types=1);
                 }
             }
         } else {
-            DeleteSql('Simple','order_item',$row['code']);
+            DeleteSql(['Simple','Broken'],'order_item',strval($row['code']));
             $deleted = TRUE;
         }
         return (array($deleted,$temporary,$totalValues));

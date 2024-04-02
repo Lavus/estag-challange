@@ -212,8 +212,6 @@ function Home ({css, cssRightFunction, cssLeftFunction}) {
         setRefreshForm(true)
         setRemoveLoadingForm(false)
     }
-    // set array, to make functions of css
-    // need to fix delete on select
 
     function ExecuteLeft(){
         cssLeftFunction()

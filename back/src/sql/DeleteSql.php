@@ -7,6 +7,10 @@
         require_once __DIR__."/../security/SafeCrypto.php";
         if ($type[0] == "Simple") {
             $sql_delete = "DELETE FROM ".$table." WHERE code = '".$code."';";
+        } else if ($type[0] == "SimpleForeign") {
+            $sql_delete = "DELETE FROM ".$foreignTables[0]." WHERE ".$table.".code = '".$code."' AND ".$table.".".$foreignKeys[0]." = ".$foreignTables[0].".code;";
+        } else if ($type[0] == "DoubleForeign") {
+            $sql_delete = "DELETE FROM ".$foreignTables[1]." WHERE ".$table.".code = '".$code."' AND ".$table.".".$foreignKeys[0]." = ".$foreignTables[0].".code AND ".$table.".".$foreignKeys[1]." = ".$foreignTables[1].".code;";
         } else if ($type[0] == "SimpleWhere") {
             $sql_delete = "DELETE FROM ".$table." WHERE ".$where;
         } else {
