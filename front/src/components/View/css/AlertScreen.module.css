@@ -67,10 +67,6 @@
     text-overflow: ellipsis;
 }
 
-.alert .textalert table tr.last {
-    height: 100%;
-}
-
 .alert .yesbutton{
     height: 5vh;
     width: 18vw;

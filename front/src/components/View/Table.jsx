@@ -101,7 +101,7 @@ function Table( { tableid, tableNames, campsNames, table, tableSize, first, firs
                 </tbody>
             </table>
         </>) : (<>
-            <table id={tableid} className = {tableSize ? (`${styles.collapse} ${styles.half} ${tableStyle}`) : (`${styles.collapse} ${styles.lefttext} ${tableStyle}`)}>
+            <table id={tableid} className = {tableSize ? (`${styles.collapse} ${styles.half} ${tableStyle}`) : ((tableid != 'tableFinish')? (`${styles.collapse} ${styles.lefttext} ${tableStyle}`):undefined)}>
                 <tbody>
                     {ShowTh()}
                     {ShowContentTd()}

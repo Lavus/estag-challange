@@ -4,27 +4,30 @@ import { useState, useEffect } from 'react'
 import Loading from '../layout/Loading'
 import Button from '../form/Button'
 import FetchSelect from '../pages/functions/FetchSelect'
+import Table from './Table'
 
 function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, type, table } ) {
     const [removeLoading, setRemoveLoading] = useState(false)
     const [categoryItems, setCategoryItems] = useState([])
     const [refresh, setRefresh] = useState(false)
-    const [noButtonText,setNoButtonText] = useState('No')
+    const [noButtonText,setNoButtonText] = useState('NO')
 
     useEffect(() => {
-        setTimeout(() => setNoButtonText("NO 10s"), 1000)
-        setTimeout(() => setNoButtonText("NO 9s"), 2000)
-        setTimeout(() => setNoButtonText("NO 8s"), 3000)
-        setTimeout(() => setNoButtonText("NO 7s"), 4000)
-        setTimeout(() => setNoButtonText("NO 6s"), 5000)
-        setTimeout(() => setNoButtonText("NO 5s"), 6000)
-        setTimeout(() => setNoButtonText("NO 4s"), 7000)
-        setTimeout(() => setNoButtonText("NO 3s"), 8000)
-        setTimeout(() => setNoButtonText("NO 2s"), 9000)
-        setTimeout(() => setNoButtonText("NO 1s"), 10000)
-        let timerClose = setTimeout(() => refreshFunction(), 11000)
-        return () => {
-            clearTimeout(timerClose)
+        if (!(type == 'Finish')){
+            setTimeout(() => setNoButtonText("NO 10s"), 1000)
+            setTimeout(() => setNoButtonText("NO 9s"), 2000)
+            setTimeout(() => setNoButtonText("NO 8s"), 3000)
+            setTimeout(() => setNoButtonText("NO 7s"), 4000)
+            setTimeout(() => setNoButtonText("NO 6s"), 5000)
+            setTimeout(() => setNoButtonText("NO 5s"), 6000)
+            setTimeout(() => setNoButtonText("NO 4s"), 7000)
+            setTimeout(() => setNoButtonText("NO 3s"), 8000)
+            setTimeout(() => setNoButtonText("NO 2s"), 9000)
+            setTimeout(() => setNoButtonText("NO 1s"), 10000)
+            let timerClose = setTimeout(() => refreshFunction(), 11000)
+            return () => {
+                clearTimeout(timerClose)
+            }
         }
     }, [refresh])
 
@@ -67,7 +70,6 @@ function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, 
                         {alert("There's some problem with the request, please try again.")}
                         {refreshFunction()}
                     </>):(<>
-                        {/* {alert(JSON.stringify(categoryItems))} */}
                         <div className={styles.textalert}>
                             Do you really want to delete the category '{DecodeHtml(categoryItems[changeCode]['name'])}' ?<br/>
                             {((categoryItems[changeCode]['count_products_code'] != 0) && (<>
@@ -86,6 +88,22 @@ function AlertScreen( { selectValues, refreshFunction, yesFunction, changeCode, 
                                 Do you really want to empty your cart ?<br/>
                             </div>
                         </>):(<>
+                            {((type == 'Finish') ? (<>
+                            <div className={(`${styles.textalert} ${styles.alertremovefortable}`)}>
+                                <div className={styles.dividetext}>
+                                    The total price value of the products is ${(parseFloat((DecodeHtml(table['totalValues'][0]['value_total'])).slice(1)) - parseFloat((DecodeHtml(table['totalValues'][0]['value_tax'])).slice(1))).toFixed(2)}, the tax of the purchase is {DecodeHtml(table['totalValues'][0]['value_tax'])}, totalizing {DecodeHtml(table['totalValues'][0]['value_total'])}, do you want to confirm the purchase ?<br/>Down bellow is the list of all products being purchased :
+                                </div>
+                                <div className={styles.dividetable}>
+                                    <Table 
+                                        tableid = 'tableFinish'
+                                        tableNames = {['Product','Price','Amount','Total']}
+                                        campsNames = {['product_name','price','amount','total']}
+                                        table = {table['rows']}
+                                    />
+                                </div>
+                            </div>
+                            </>):(<>
+                            </>))}
                         </>))}
                     </>))}
                 </>))}

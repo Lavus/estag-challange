@@ -11,7 +11,7 @@ table.collapse td {
     color: #8D8D8D;
 }
 
-table.collapse tr.last {
+.last {
     height: 100%;
 }
 

@@ -159,7 +159,7 @@ function Home () {
     }
 
     function TriggerFinish() {
-        ((orderItems['rows'])&&(setFormConfirm('Finish')))
+        ((orderItems['rows'])&&(setFormConfirm('Finish'),RefreshAll()))
     }
 
     function TriggerCancel() {
@@ -177,6 +177,11 @@ function Home () {
             'where' : 'order_item.order_code IN (SELECT MAX(orders1.code) FROM orders AS orders1);'
         }
         FetchDelete(deleteCamp,TriggerResponse)
+    }
+
+    function TriggerCompletePurchase(){
+        setFormConfirm('0')
+        alert('Finish yes pressed')
     }
 
     function DeleteProduct(e) {
@@ -201,8 +206,7 @@ function Home () {
         setRemoveLoadingForm(false)
     }
     // set array, to make functions of css
-    // need to fix delete, to auto update cart
-    // change update and insert to array return, for rollback in error
+    // need to fix delete on select
     let leftDescriptionPage = 'View insert category'
     let rightDescriptionPage = 'View Products'
     let iconLeftPage = ''
@@ -218,13 +222,12 @@ function Home () {
                 type='Cancel'
             />
         </>) : (<>
-            {((formConfirm == 'Finish') && (<>
+            {(((formConfirm == 'Finish')&&(orderItems['rows'])) && (<>
                 <AlertScreen
                     refreshFunction = {TriggerRefresh}
-                    yesFunction = {TriggerDelete}
-                    changeCode={deleteConfirm}
-                    type='products'
-                    table={orderItems['rows'] ? orderItems['rows'] : orderItems}
+                    yesFunction = {TriggerCompletePurchase}
+                    type='Finish'
+                    table={orderItems}
                 />
             </>))}
         </>))}
