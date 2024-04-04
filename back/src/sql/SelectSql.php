@@ -58,6 +58,7 @@
         }
         $data = array();
         $cases = array('False','0',0);
+        $deletedTrue = FALSE;
         // error_log($sql);
         try {
             $prepare = $connection ->prepare($sql);
@@ -152,6 +153,8 @@
                         } else {
                             $data[$row['code']] = $temporary;
                         }
+                    } else {
+                        $deletedTrue = TRUE;
                     }
                 }
             }
@@ -194,6 +197,9 @@
             }
             $data['totalValues'][0]['value_total'] = SafeCrypto("$".number_format(($data['totalValues'][0]['value_total']), 2, '.', ''),'Html');;
             $data['totalValues'][0]['value_tax'] = SafeCrypto("$".number_format(($data['totalValues'][0]['value_tax']), 2, '.', ''),'Html');;
+        }
+        if (($deletedTrue)&&( (count($type) == 2) && ($type[0] == "SimpleWhere") && ($type[1] == "tableview") )){
+            $data=array();
         }
         return ($data);
     }

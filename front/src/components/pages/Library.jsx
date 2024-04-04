@@ -106,9 +106,10 @@ function Library ({css, cssRightFunction, cssLeftFunction}) {
             </div>
             <div className = {css.rightPage ? (`${styles.right} ${styles[css.rightPage]}`) : styles.right}>
                 {removeLoadingView ? (<>
-                    {libraryView['broken'] && (
+                    {((libraryView['broken'])||((Object.keys(libraryView).length == 0)&&(Object.keys(library).length > 0))) && (
                         alert("There's some problem with the request, please try again."),
                         setLibraryView([]),
+                        setLibrary([]),
                         setSelectValuesView({...selectValuesView, code: '0'}),
                         setRefresh(true)
                     )}

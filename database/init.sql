@@ -170,4 +170,3 @@ $autodeleteorder_item$ LANGUAGE plpgsql;
 
 CREATE TRIGGER autodeleteorder_item_trigger BEFORE DELETE ON orders
 FOR EACH ROW EXECUTE PROCEDURE autodeleteorder_item();
-

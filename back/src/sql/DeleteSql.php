@@ -71,6 +71,23 @@
                 return (FALSE);
             }
         }
+        if (($table == 'order_item')&&(count($type) == 2)){
+            $ordersCodes = SelectSql(
+                ['SimpleWhere'],
+                'order_item',
+                '0',
+                [['code']],
+                ['code'],
+                [[['code']]],
+                [['order_code']],
+                ['orders'],
+                'none',
+                'order_item.code = '.$code.' AND order_item.order_code = orders.code AND order_item.order_code NOT IN ( SELECT MAX( orders1.code ) FROM orders as orders1 ) ;'
+            );
+            if (count($ordersCodes) > 0){
+                $sql_delete = "DELETE FROM orders WHERE code = '".$ordersCodes[$code]['order_code']."';";
+            }
+        }
         $connection  = ConnectLocalHost();
         try {
             $connection ->beginTransaction();
